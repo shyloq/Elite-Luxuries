@@ -1,28 +1,34 @@
-// Shop items. Each one shows a placeholder icon in its color.
-// Set `soldOut: true` on an item to mark it sold out.
+// Shop items (VULT LABEL Drop 03). Set `soldOut: true` to mark one sold out.
 const PRODUCTS = [
-    { name: 'Élite Silk Evening Dress', price: '$899', icon: 'star', color: '#d8b4fe',
-      description: 'Luxurious silk evening dress with hand-embroidered details and premium Italian craftsmanship' },
-    { name: 'Élite Cashmere Blazer', price: '$1,299', icon: 'check', color: '#93c5fd',
-      description: 'Handwoven cashmere blazer with bespoke tailoring and gold-plated buttons' },
-    { name: 'Élite Diamond Cufflinks', price: '$2,499', icon: 'star', color: '#facc15',
-      description: 'Platinum cufflinks with genuine diamonds, handcrafted by master jewelers' },
-    { name: 'Élite Leather Handbag', price: '$1,899', icon: 'bag', color: '#fda4af',
-      description: 'Handcrafted Italian leather handbag with 24k gold hardware and silk lining' },
-    { name: 'Élite Wool Overcoat', price: '$1,599', icon: 'check', color: '#9ca3af',
-      description: 'Premium merino wool overcoat with cashmere lining and horn buttons' },
-    { name: 'Élite Silk Scarf', price: '$399', icon: 'star', color: '#6ee7b7',
-      description: 'Hand-painted silk scarf with exclusive artistic design and rolled edges' }
+    { name: 'Vault Hoodie', price: '$128', shape: 'hoodie', color: '#2b2f35',
+      description: '450 GSM brushed fleece, boxy fit. Numbered run of 120.' },
+    { name: 'Lot Tee', price: '$54', shape: 'tee', color: '#e9e4d8',
+      description: '280 GSM jersey, dropped shoulder. Numbered run of 150.' },
+    { name: 'Night Shift Tee', price: '$58', shape: 'tee', color: '#5a1f24',
+      description: '280 GSM jersey with back print. Numbered run of 80.' },
+    { name: 'Deposit Cargo', price: '$142', shape: 'cargo', color: '#5b5f4a',
+      description: '12 oz ripstop, relaxed taper. Numbered run of 60.' },
+    { name: 'Steel Work Jacket', price: '$210', shape: 'jacket', color: '#7e868d',
+      description: '14 oz canvas with quilted lining. Numbered run of 40.' },
+    { name: 'Keyholder Cap', price: '$42', shape: 'cap', color: '#131518',
+      description: 'Washed twill with a brass clasp. Numbered run of 90.' },
+    { name: 'Lockbox Tote', price: '$36', shape: 'tote', color: '#d8cfba',
+      description: '16 oz canvas with an interior pocket. Numbered run of 100.' },
+    { name: 'Combination Hoodie', price: '$134', shape: 'hoodie', color: '#c9a24a', soldOut: true,
+      description: '450 GSM brushed fleece with dial embroidery. Numbered run of 60.' }
 ];
 
-const ICONS = {
-    star: '<path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>',
-    check: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>',
-    bag: '<path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>'
+const GARMENTS = {
+    tee: '<path d="M34 14 L20 20 L6 36 L18 46 L26 40 L26 88 L74 88 L74 40 L82 46 L94 36 L80 20 L66 14 C62 22 38 22 34 14 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/>',
+    hoodie: '<path d="M36 16 C36 4 64 4 64 16 L80 22 L94 58 L82 62 L74 44 L74 90 L26 90 L26 44 L18 62 L6 58 L20 22 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/><path d="M38 16 C40 30 60 30 62 16" fill="none" stroke="#111" stroke-width="2"/><rect x="36" y="58" width="28" height="14" fill="none" stroke="#111" stroke-width="2"/>',
+    cargo: '<path d="M28 8 L72 8 L78 92 L58 92 L50 34 L42 92 L22 92 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/><rect x="24" y="48" width="12" height="16" fill="none" stroke="#111" stroke-width="2"/><rect x="64" y="48" width="12" height="16" fill="none" stroke="#111" stroke-width="2"/><path d="M28 16 L72 16" stroke="#111" stroke-width="2"/>',
+    jacket: '<path d="M36 12 L20 18 L8 64 L20 66 L26 44 L26 90 L48 90 L48 22 L52 22 L52 90 L74 90 L74 44 L80 66 L92 64 L80 18 L64 12 L56 22 L44 22 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/><rect x="30" y="54" width="12" height="10" fill="none" stroke="#111" stroke-width="2"/><rect x="58" y="54" width="12" height="10" fill="none" stroke="#111" stroke-width="2"/>',
+    cap: '<path d="M16 62 C16 30 84 30 84 62 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/><path d="M50 62 L96 62 C96 72 70 74 50 70 Z" fill="FILL" stroke="#111" stroke-width="2" stroke-linejoin="round"/><circle cx="50" cy="32" r="3" fill="#111"/>',
+    tote: '<path d="M36 34 C36 10 64 10 64 34" fill="none" stroke="#111" stroke-width="3"/><rect x="20" y="32" width="60" height="58" fill="FILL" stroke="#111" stroke-width="2"/><text x="50" y="66" text-anchor="middle" font-family="Big Shoulders Display, Impact, sans-serif" font-weight="900" font-size="16" fill="#111">VULT</text>'
 };
 
 function productArt(product) {
-    return '<svg viewBox="0 0 24 24" fill="' + product.color + '" aria-hidden="true">' + ICONS[product.icon] + '</svg>';
+    return '<svg viewBox="0 0 100 100" aria-hidden="true">' + GARMENTS[product.shape].replaceAll('FILL', product.color) + '</svg>';
 }
 
 function renderShop() {
@@ -48,14 +54,153 @@ function renderShop() {
 
 renderShop();
 
-window.addEventListener('load', function() {
-    setTimeout(() => {
-        document.getElementById('loadingScreen').style.opacity = '0';
+// Vault entry: turn the dial to each number of the combination to get in.
+(function setupVaultGate() {
+    const gate = document.getElementById('vaultGate');
+    const dial = document.getElementById('vaultDial');
+    const face = document.getElementById('vaultFace');
+    const readout = document.getElementById('vaultNumber');
+    const hint = document.getElementById('vaultHint');
+    const steps = document.querySelectorAll('#vaultCode li');
+    const COMBINATION = [12, 47, 83];
+    const DEG_PER_NUMBER = 3.6;
+
+    let unlocked = false;
+    try { unlocked = sessionStorage.getItem('vault-open') === '1'; } catch (e) {}
+    if (unlocked) { gate.hidden = true; return; }
+    document.body.style.overflow = 'hidden';
+
+    // Ticks and numbers around the dial
+    let ticks = '';
+    for (let i = 0; i < 100; i++) {
+        const a = (i / 100) * Math.PI * 2, long = i % 10 === 0, r2 = long ? 76 : 84;
+        const x1 = 100 + Math.sin(a) * 90, y1 = 100 - Math.cos(a) * 90;
+        const x2 = 100 + Math.sin(a) * r2, y2 = 100 - Math.cos(a) * r2;
+        ticks += '<line x1="' + x1.toFixed(2) + '" y1="' + y1.toFixed(2) + '" x2="' + x2.toFixed(2) + '" y2="' + y2.toFixed(2) + '" stroke="#e6e8ea" stroke-width="' + (long ? 2 : 0.8) + '"/>';
+        if (long) {
+            const xt = 100 + Math.sin(a) * 64, yt = 100 - Math.cos(a) * 64 + 3.5;
+            ticks += '<text x="' + xt.toFixed(2) + '" y="' + yt.toFixed(2) + '" text-anchor="middle" font-size="10" fill="#e6e8ea" font-family="IBM Plex Mono, monospace">' + i + '</text>';
+        }
+    }
+    face.insertAdjacentHTML('afterbegin', ticks);
+
+    let rotation = 0;      // degrees, clockwise
+    let step = 0;          // which number of the combination is next
+    let dragging = false;
+    let lastAngle = 0;
+
+    const valueOf = rot => ((Math.round(-rot / DEG_PER_NUMBER) % 100) + 100) % 100;
+    const pad = n => String(n).padStart(2, '0');
+
+    function render() {
+        face.style.transform = 'rotate(' + rotation + 'deg)';
+        const v = valueOf(rotation);
+        readout.textContent = pad(v);
+        dial.setAttribute('aria-valuenow', v);
+        dial.setAttribute('aria-valuetext', pad(v));
+    }
+
+    function showStep() {
+        steps.forEach((li, i) => {
+            li.classList.toggle('done', i < step);
+            li.classList.toggle('current', i === step);
+        });
+    }
+
+    function tryNumber() {
+        if (step >= COMBINATION.length) return;
+        const v = valueOf(rotation);
+        const target = COMBINATION[step];
+        // Accept one number either side: one number is only a few pixels of dial on a phone
+        const off = ((v - target + 150) % 100) - 50;
+        if (Math.abs(off) <= 1) {
+            rotation += off * DEG_PER_NUMBER;
+            render();
+            step++;
+            showStep();
+            gate.classList.remove('clicked');
+            void gate.offsetWidth;
+            gate.classList.add('clicked');
+            if (step === COMBINATION.length) {
+                openVault();
+            } else {
+                hint.textContent = 'Click. Now turn to ' + pad(COMBINATION[step]) + '.';
+            }
+        } else {
+            hint.textContent = 'That’s ' + pad(v) + '. Turn to ' + pad(COMBINATION[step]) + ', then let go.';
+            dial.classList.remove('nope');
+            void dial.offsetWidth;
+            dial.classList.add('nope');
+        }
+    }
+
+    function openVault() {
+        hint.textContent = 'Unlocked. Welcome in.';
+        gate.classList.add('open');
+        try { sessionStorage.setItem('vault-open', '1'); } catch (e) {}
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         setTimeout(() => {
-            document.getElementById('loadingScreen').style.display = 'none';
-        }, 500);
-    }, 1500);
-});
+            gate.hidden = true;
+            document.body.style.overflow = '';
+        }, reduce ? 300 : 1600);
+    }
+
+    function pointerAngle(e) {
+        const r = dial.getBoundingClientRect();
+        return Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2)) * 180 / Math.PI;
+    }
+
+    dial.addEventListener('pointerdown', e => {
+        if (gate.classList.contains('open')) return;
+        dragging = true;
+        lastAngle = pointerAngle(e);
+        dial.setPointerCapture(e.pointerId);
+        dial.classList.add('turning');
+        e.preventDefault();
+    });
+
+    dial.addEventListener('pointermove', e => {
+        if (!dragging) return;
+        const a = pointerAngle(e);
+        let delta = a - lastAngle;
+        if (delta > 180) delta -= 360;
+        if (delta < -180) delta += 360;
+        rotation += delta;
+        lastAngle = a;
+        render();
+    });
+
+    function release() {
+        if (!dragging) return;
+        dragging = false;
+        dial.classList.remove('turning');
+        rotation = Math.round(rotation / DEG_PER_NUMBER) * DEG_PER_NUMBER;
+        render();
+        tryNumber();
+    }
+    dial.addEventListener('pointerup', release);
+    dial.addEventListener('pointercancel', release);
+
+    dial.addEventListener('keydown', e => {
+        if (gate.classList.contains('open')) return;
+        const amount = e.shiftKey ? 10 : 1;
+        if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+            rotation -= amount * DEG_PER_NUMBER;
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+            rotation += amount * DEG_PER_NUMBER;
+        } else if (e.key === 'Enter' || e.key === ' ') {
+            tryNumber();
+        } else {
+            return;
+        }
+        e.preventDefault();
+        render();
+    });
+
+    showStep();
+    render();
+    dial.focus({ preventScroll: true });
+})();
 
 // Navbar scroll effect
 window.addEventListener('scroll', function() {

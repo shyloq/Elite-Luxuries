@@ -8,11 +8,32 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-white">
-    <!-- Loading Screen -->
-    <div id="loadingScreen" class="loading-overlay">
-        <div class="text-center">
-            <div class="loading-logo font-display font-bold">ÉLITE</div>
-            <div class="mt-4 text-yellow-400 text-sm tracking-widest">LUXURY FASHION</div>
+    <!-- Vault entry: turn the dial to the combination to enter the site -->
+    <div id="vaultGate" class="vault-gate" role="dialog" aria-modal="true" aria-labelledby="vaultTitle">
+        <div class="vault-inner">
+            <p class="vault-kicker">Drop 03 &middot; Members enter here</p>
+            <h2 id="vaultTitle" class="vault-title">VULT LABEL</h2>
+            <div class="vault-door">
+                <svg class="vault-bolts" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100.0" cy="7.0" r="2.6" fill="#3a4048"/><circle cx="165.8" cy="34.2" r="2.6" fill="#3a4048"/><circle cx="193.0" cy="100.0" r="2.6" fill="#3a4048"/><circle cx="165.8" cy="165.8" r="2.6" fill="#3a4048"/><circle cx="100.0" cy="193.0" r="2.6" fill="#3a4048"/><circle cx="34.2" cy="165.8" r="2.6" fill="#3a4048"/><circle cx="7.0" cy="100.0" r="2.6" fill="#3a4048"/><circle cx="34.2" cy="34.2" r="2.6" fill="#3a4048"/></svg>
+                <div id="vaultDial" class="vault-dial" tabindex="0" role="slider" aria-label="Combination dial"
+                     aria-valuemin="0" aria-valuemax="99" aria-valuenow="0">
+                    <svg viewBox="0 0 200 200" aria-hidden="true">
+                        <circle cx="100" cy="100" r="96" fill="#1a1d21" stroke="#3a4048" stroke-width="3"/>
+                        <g id="vaultFace" class="vault-face">
+                            <circle cx="100" cy="100" r="44" fill="#22262b" stroke="#3a4048" stroke-width="2"/>
+                            <path d="M100 58 L100 78" stroke="#c9a24a" stroke-width="4" stroke-linecap="round"/>
+                        </g>
+                        <circle cx="100" cy="100" r="28" fill="#0f1113" stroke="#3a4048" stroke-width="2"/>
+                        <text x="100" y="104" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="2" fill="#c9a24a">VULT</text>
+                        <path d="M100 2 L93 14 L107 14 Z" fill="#c9a24a"/>
+                    </svg>
+                </div>
+            </div>
+            <p class="vault-readout" aria-hidden="true"><span id="vaultNumber">00</span></p>
+            <ol id="vaultCode" class="vault-code" aria-label="Combination">
+                <li>12</li><li>47</li><li>83</li>
+            </ol>
+            <p id="vaultHint" class="vault-hint" role="status">Drag the dial to 12 and let go. Keyboard: arrow keys, then Enter.</p>
         </div>
     </div>
 

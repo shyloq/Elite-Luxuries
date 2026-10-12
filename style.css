@@ -1,5 +1,5 @@
 
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Big+Shoulders+Display:wght@800;900&display=swap');
         
         :root {
             --primary-gold: #D4AF37;
@@ -139,27 +139,6 @@
             transform: translateY(0);
         }
         
-        /* Premium Loading */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark-charcoal);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        
-        .loading-logo {
-            font-size: 3rem;
-            color: var(--primary-gold);
-            animation: pulse-gold 1.5s infinite;
-        }
-        
         /* Custom Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -178,7 +157,7 @@
             background: #B8860B;
         }
     
-        /* Shop grid: placeholder icons on plain white, small mono captions */
+        /* Shop grid: items on plain white, small mono captions */
         .shop {
             background: #fff;
             padding: 120px clamp(16px, 3vw, 56px) 96px;
@@ -227,8 +206,8 @@
         }
 
         .shop-art svg {
-            width: 36%;
-            height: 36%;
+            width: 64%;
+            height: 64%;
             transition: transform 0.5s ease;
         }
 
@@ -271,4 +250,126 @@
 
         @media (prefers-reduced-motion: reduce) {
             .shop-art svg, .shop-price { transition: none; }
+        }
+
+        /* Vault entry gate */
+        .vault-gate {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: radial-gradient(circle at 50% 40%, #1c2025 0%, #0f1113 70%);
+            color: #e6e8ea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            overflow-y: auto;
+            transition: opacity 0.6s ease 1s;
+        }
+
+        .vault-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 18px;
+            text-align: center;
+            width: 100%;
+            max-width: 440px;
+        }
+
+        .vault-kicker,
+        .vault-hint,
+        .vault-code {
+            font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .vault-kicker { color: #c9a24a; }
+
+        .vault-title {
+            font-family: 'Big Shoulders Display', Impact, 'Arial Narrow', sans-serif;
+            font-weight: 900;
+            font-size: clamp(48px, 12vw, 80px);
+            line-height: 0.9;
+            letter-spacing: 0.04em;
+        }
+
+        .vault-door {
+            position: relative;
+            width: min(78vw, 340px);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            background: #16191d;
+            box-shadow: inset 0 0 0 10px #22262b, inset 0 0 0 12px #3a4048, 0 30px 60px rgba(0,0,0,0.5);
+            display: grid;
+            place-items: center;
+            transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1) 0.3s;
+        }
+
+        .vault-bolts {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            width: 100%;
+            height: 100%;
+        }
+
+        .vault-dial {
+            width: 80%;
+            aspect-ratio: 1;
+            border-radius: 50%;
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+        }
+        .vault-dial.turning { cursor: grabbing; }
+        .vault-dial:focus-visible { outline: 2px solid #c9a24a; outline-offset: 6px; }
+        .vault-dial svg { width: 100%; height: 100%; display: block; }
+        .vault-face { transform-origin: 100px 100px; transform-box: view-box; }
+        .vault-dial.nope { animation: vault-nope 0.35s ease; }
+
+        @keyframes vault-nope {
+            25% { translate: -6px 0; } 75% { translate: 6px 0; }
+        }
+
+        .vault-readout {
+            font-family: 'Big Shoulders Display', Impact, sans-serif;
+            font-weight: 800;
+            font-size: 44px;
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+            color: #c9a24a;
+        }
+
+        .vault-code {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
+        .vault-code li {
+            min-width: 52px;
+            padding: 8px 0;
+            border: 1px solid #3a4048;
+            color: #9aa1a8;
+            font-variant-numeric: tabular-nums;
+        }
+        .vault-code li.current { border-color: #e6e8ea; color: #e6e8ea; }
+        .vault-code li.done { border-color: #c9a24a; background: #c9a24a; color: #0f1113; }
+
+        .vault-hint { color: #9aa1a8; text-transform: none; letter-spacing: 0.04em; min-height: 3em; max-width: 34ch; }
+
+        .vault-gate.clicked .vault-readout { animation: vault-click 0.3s ease; }
+        @keyframes vault-click { 50% { transform: scale(1.15); } }
+
+        .vault-gate.open { opacity: 0; pointer-events: none; }
+        .vault-gate.open .vault-door { transform: perspective(900px) rotateY(-75deg) scale(0.9); }
+        .vault-gate.open .vault-face { transition: transform 0.9s ease; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .vault-gate, .vault-door, .vault-gate.open .vault-face { transition: none; }
+            .vault-dial.nope, .vault-gate.clicked .vault-readout { animation: none; }
         }
