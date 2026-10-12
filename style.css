@@ -373,3 +373,207 @@
             .vault-gate, .vault-door, .vault-gate.open .vault-face { transition: none; }
             .vault-dial.nope, .vault-gate.clicked .vault-readout { animation: none; }
         }
+
+        /* The hidden attribute must win over utility classes such as Tailwind's flex */
+        [hidden] { display: none !important; }
+
+        /* Bag drawer and checkout (store.js) */
+        .bag-scrim {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.45);
+            z-index: 60;
+        }
+
+        .bag-drawer *,
+        .bag-drawer *::before,
+        .bag-drawer *::after { box-sizing: border-box; }
+
+        .bag-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: min(420px, 100%);
+            background: #fff;
+            color: #111;
+            z-index: 61;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid #111;
+        }
+
+        .bag-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .bag-head h2,
+        .bag-link,
+        .bag-form label,
+        .bag-row,
+        .bag-primary,
+        .bag-variant,
+        .store-toast {
+            font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .bag-link {
+            background: none;
+            border: 0;
+            padding: 4px 0;
+            color: #111;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            cursor: pointer;
+        }
+
+        .bag-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 20px 24px 24px;
+            overflow-y: auto;
+        }
+
+        .bag-items { flex: 1; }
+
+        .bag-empty {
+            color: #6b6b6b;
+            padding: 24px 0;
+        }
+
+        .bag-item {
+            display: grid;
+            grid-template-columns: 56px minmax(0, 1fr) auto;
+            gap: 14px;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .bag-thumb {
+            width: 56px;
+            height: 56px;
+            display: grid;
+            place-items: center;
+        }
+
+        .bag-thumb svg { width: 100%; height: 100%; }
+
+        .bag-name {
+            display: block;
+            font-weight: 500;
+        }
+
+        .bag-variant {
+            display: block;
+            color: #6b6b6b;
+            margin-top: 2px;
+        }
+
+        .bag-qty {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .bag-qty button {
+            width: 28px;
+            height: 28px;
+            border: 1px solid #ccc;
+            background: #fff;
+            cursor: pointer;
+        }
+
+        .bag-foot {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            border-top: 1px solid #111;
+            padding-top: 16px;
+        }
+
+        .bag-row {
+            display: flex;
+            justify-content: space-between;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .bag-muted { color: #6b6b6b; }
+
+        .bag-primary {
+            width: 100%;
+            padding: 15px;
+            background: #111;
+            color: #fff;
+            border: 1px solid #111;
+            cursor: pointer;
+        }
+
+        .bag-primary:hover:not(:disabled) { background: #fff; color: #111; }
+        .bag-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .bag-note {
+            font-size: 13px;
+            color: #6b6b6b;
+            min-height: 1em;
+        }
+
+        .bag-error {
+            font-size: 13px;
+            color: #b42318;
+        }
+
+        .bag-error:empty { display: none; }
+
+        .bag-form label { color: #444; margin-bottom: -6px; }
+
+        .bag-form input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid #ccc;
+            font: inherit;
+            font-size: 15px;
+        }
+
+        .bag-form input:focus { outline: 2px solid #111; outline-offset: 0; border-color: #111; }
+
+        .bag-pair {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .bag-pair > div {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .bag-done {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+
+        .store-toast {
+            position: fixed;
+            top: 96px;
+            right: 16px;
+            z-index: 70;
+            max-width: calc(100% - 32px);
+            padding: 14px 18px;
+            background: #111;
+            color: #fff;
+        }
+
+        .store-toast--error { background: #b42318; }

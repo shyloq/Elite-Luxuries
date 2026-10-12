@@ -67,11 +67,11 @@
                         </svg>
                         <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center animate-pulse">2</span>
                     </button>
-                    <button class="text-gray-600 hover:text-yellow-600 transition-colors duration-300 premium-hover p-2 relative">
+                    <button id="bagButton" type="button" aria-label="Open bag" class="text-gray-600 hover:text-yellow-600 transition-colors duration-300 premium-hover p-2 relative">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
                         </svg>
-                        <span class="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center animate-bounce">3</span>
+                        <span id="bagCount" class="absolute -top-1 -right-1 bg-yellow-500 text-white text-xs rounded-full h-4 w-4 flex items-center justify-center" hidden>0</span>
                     </button>
                     <button class="md:hidden text-gray-600 hover:text-yellow-600 transition-colors duration-300" onclick="toggleMobileMenu()">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -380,15 +380,8 @@
             <div class="flex justify-between items-center mb-6">
                 <span id="modalPrice" class="text-3xl font-bold text-gray-900"></span>
                 <div class="flex items-center space-x-3">
-                    <label class="text-sm text-gray-600 font-medium">Size:</label>
-                    <select class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-transparent">
-                        <option>XS</option>
-                        <option>S</option>
-                        <option>M</option>
-                        <option>L</option>
-                        <option>XL</option>
-                        <option>XXL</option>
-                    </select>
+                    <label for="modalSize" class="text-sm text-gray-600 font-medium">Size:</label>
+                    <select id="modalSize" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 focus:border-transparent"></select>
                 </div>
             </div>
             
@@ -396,13 +389,74 @@
                 <button onclick="addToWishlist()" class="border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:border-yellow-400 hover:text-yellow-600 transition-colors duration-300">
                     ADD TO WISHLIST
                 </button>
-                <button onclick="addToCart()" class="luxury-btn text-white py-3 rounded-lg font-semibold">
+                <button id="modalAdd" onclick="addToCart()" class="luxury-btn text-white py-3 rounded-lg font-semibold">
                     ADD TO CART
                 </button>
             </div>
         </div>
     </div>
+    <!-- Bag and checkout (store.js) -->
+    <div id="bagScrim" class="bag-scrim" hidden></div>
+    <aside id="bagDrawer" class="bag-drawer" role="dialog" aria-modal="true" aria-labelledby="bagTitle" hidden>
+        <div class="bag-head">
+            <h2 id="bagTitle">Bag</h2>
+            <button id="bagClose" type="button" class="bag-link">Close</button>
+        </div>
+
+        <div id="bagView" class="bag-body">
+            <div id="bagItems" class="bag-items"></div>
+            <div class="bag-foot">
+                <div class="bag-row"><span>Subtotal</span><span id="bagSubtotal">$0</span></div>
+                <div class="bag-row bag-muted"><span>Shipping</span><span>Added at checkout</span></div>
+                <button id="bagCheckout" type="button" class="bag-primary" disabled>Checkout</button>
+                <p id="bagNote" class="bag-note" role="status"></p>
+            </div>
+        </div>
+
+        <form id="checkoutForm" class="bag-body bag-form" novalidate hidden>
+            <label for="coEmail">Email</label>
+            <input id="coEmail" name="email" type="email" autocomplete="email" required>
+            <div class="bag-pair">
+                <div>
+                    <label for="coFirst">First name</label>
+                    <input id="coFirst" name="first_name" autocomplete="given-name" required>
+                </div>
+                <div>
+                    <label for="coLast">Last name</label>
+                    <input id="coLast" name="last_name" autocomplete="family-name" required>
+                </div>
+            </div>
+            <label for="coAddress">Street address</label>
+            <input id="coAddress" name="address_1" autocomplete="address-line1" required>
+            <label for="coCity">City</label>
+            <input id="coCity" name="city" autocomplete="address-level2" required>
+            <div class="bag-pair">
+                <div>
+                    <label for="coState">State</label>
+                    <input id="coState" name="province" autocomplete="address-level1" required>
+                </div>
+                <div>
+                    <label for="coZip">ZIP code</label>
+                    <input id="coZip" name="postal_code" autocomplete="postal-code" inputmode="numeric" required>
+                </div>
+            </div>
+            <p class="bag-note">Ships within the United States. Standard shipping is $8, free on orders of $150 or more.</p>
+            <p class="bag-note">Test mode: the order is recorded and no card is charged.</p>
+            <p id="checkoutError" class="bag-error" role="alert"></p>
+            <button id="checkoutSubmit" type="submit" class="bag-primary">Place order</button>
+            <button id="checkoutBack" type="button" class="bag-link">Back to bag</button>
+        </form>
+
+        <div id="orderDone" class="bag-body" hidden>
+            <p id="orderDoneText" class="bag-done"></p>
+            <div id="orderDoneTotals" class="bag-foot"></div>
+            <button id="orderDoneClose" type="button" class="bag-primary">Keep shopping</button>
+        </div>
+    </aside>
+
+    <script src="store-config.js"></script>
     <script src="script.js"></script>
+    <script src="store.js"></script>
 </body>
 </html>
 

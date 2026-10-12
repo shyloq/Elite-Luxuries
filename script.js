@@ -1,20 +1,21 @@
-// Shop items (VULT LABEL Drop 03). Set `soldOut: true` to mark one sold out.
-const PRODUCTS = [
-    { name: 'Vault Hoodie', price: '$128', shape: 'hoodie', color: '#2b2f35',
+// Built-in shop items (VULT LABEL Drop 03). store.js replaces this list with the
+// live products from the Medusa backend when store-config.js points at one.
+let PRODUCTS = [
+    { name: 'Vault Hoodie', sizes: ['S', 'M', 'L', 'XL'], price: '$128', shape: 'hoodie', color: '#2b2f35',
       description: '450 GSM brushed fleece, boxy fit. Numbered run of 120.' },
-    { name: 'Lot Tee', price: '$54', shape: 'tee', color: '#e9e4d8',
+    { name: 'Lot Tee', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: '$54', shape: 'tee', color: '#e9e4d8',
       description: '280 GSM jersey, dropped shoulder. Numbered run of 150.' },
-    { name: 'Night Shift Tee', price: '$58', shape: 'tee', color: '#5a1f24',
+    { name: 'Night Shift Tee', sizes: ['S', 'M', 'L', 'XL'], price: '$58', shape: 'tee', color: '#5a1f24',
       description: '280 GSM jersey with back print. Numbered run of 80.' },
-    { name: 'Deposit Cargo', price: '$142', shape: 'cargo', color: '#5b5f4a',
+    { name: 'Deposit Cargo', sizes: ['28', '30', '32', '34', '36'], price: '$142', shape: 'cargo', color: '#5b5f4a',
       description: '12 oz ripstop, relaxed taper. Numbered run of 60.' },
-    { name: 'Steel Work Jacket', price: '$210', shape: 'jacket', color: '#7e868d',
+    { name: 'Steel Work Jacket', sizes: ['S', 'M', 'L', 'XL'], price: '$210', shape: 'jacket', color: '#7e868d',
       description: '14 oz canvas with quilted lining. Numbered run of 40.' },
-    { name: 'Keyholder Cap', price: '$42', shape: 'cap', color: '#131518',
+    { name: 'Keyholder Cap', sizes: ['OS'], price: '$42', shape: 'cap', color: '#131518',
       description: 'Washed twill with a brass clasp. Numbered run of 90.' },
-    { name: 'Lockbox Tote', price: '$36', shape: 'tote', color: '#d8cfba',
+    { name: 'Lockbox Tote', sizes: ['OS'], price: '$36', shape: 'tote', color: '#d8cfba',
       description: '16 oz canvas with an interior pocket. Numbered run of 100.' },
-    { name: 'Combination Hoodie', price: '$134', shape: 'hoodie', color: '#c9a24a', soldOut: true,
+    { name: 'Combination Hoodie', sizes: ['S', 'M', 'L', 'XL'], price: '$134', shape: 'hoodie', color: '#c9a24a', soldOut: true,
       description: '450 GSM brushed fleece with dial embroidery. Numbered run of 60.' }
 ];
 
@@ -246,12 +247,33 @@ function scrollToCollections() {
 }
 
 // Product modal functions
+let modalProduct = null;
+
 function openProductModal(index) {
     const product = PRODUCTS[index];
+    modalProduct = product;
     document.getElementById('modalTitle').textContent = product.name;
-    document.getElementById('modalPrice').textContent = product.price;
+    document.getElementById('modalPrice').textContent = product.soldOut ? 'Sold out' : product.price;
     document.getElementById('modalDescription').textContent = product.description;
     document.getElementById('modalImage').innerHTML = productArt(product);
+
+    // Live products carry variants with stock; the built-in list only has size names
+    const select = document.getElementById('modalSize');
+    select.innerHTML = '';
+    const sizes = product.variants || (product.sizes || []).map(size => ({ id: '', size, inStock: !product.soldOut }));
+    sizes.forEach(v => {
+        const option = document.createElement('option');
+        option.value = v.id;
+        option.textContent = v.inStock ? v.size : v.size + ' (sold out)';
+        option.disabled = !v.inStock;
+        select.appendChild(option);
+    });
+    const firstInStock = sizes.find(v => v.inStock);
+    if (firstInStock) select.value = firstInStock.id;
+    const addButton = document.getElementById('modalAdd');
+    addButton.disabled = !firstInStock;
+    addButton.textContent = firstInStock ? 'ADD TO CART' : 'SOLD OUT';
+
     document.getElementById('productModal').classList.remove('hidden');
     document.body.style.overflow = 'hidden';
 }
@@ -261,18 +283,32 @@ function closeProductModal() {
     document.body.style.overflow = 'auto';
 }
 
-function addToCart() {
-    // Create success notification
+function showToast(message, isError) {
     const notification = document.createElement('div');
-    notification.className = 'fixed top-24 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 animate-fade-in-right';
-    notification.innerHTML = '✓ Added to cart successfully!';
+    notification.className = 'store-toast' + (isError ? ' store-toast--error' : '');
+    notification.setAttribute('role', 'status');
+    notification.textContent = message;
     document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
-    
-    closeProductModal();
+    setTimeout(() => notification.remove(), 3000);
+}
+
+async function addToCart() {
+    if (typeof VultStore === 'undefined' || !VultStore.connected) {
+        showToast('The store is offline right now. Try again soon.', true);
+        return;
+    }
+    const variantId = document.getElementById('modalSize').value;
+    const addButton = document.getElementById('modalAdd');
+    addButton.disabled = true;
+    try {
+        await VultStore.addToBag(variantId);
+        closeProductModal();
+        showToast(modalProduct.name + ' added to your bag.');
+    } catch (e) {
+        showToast(e.message, true);
+    } finally {
+        addButton.disabled = false;
+    }
 }
 
 function addToWishlist() {
