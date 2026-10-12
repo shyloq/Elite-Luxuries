@@ -85,6 +85,7 @@ const VultStore = (() => {
             }))
             .sort((a, b) => sizeRank(a.size) - sizeRank(b.size));
         const prices = variants.map(v => v.price).filter(n => n !== null);
+        const tracked = (p.variants || []).filter(v => v.manage_inventory !== false);
         return {
             id: p.id,
             name: p.title,
@@ -93,6 +94,9 @@ const VultStore = (() => {
             shape: GARMENTS[meta.shape] ? meta.shape : 'tee',
             color: meta.color || '#d9d9d9',
             position: Number(meta.position) || 0,
+            run: Number(meta.run) || null,
+            // Units left across sizes, straight from stock; null when stock is not tracked
+            left: tracked.length ? tracked.reduce((n, v) => n + Math.max(0, v.inventory_quantity || 0), 0) : null,
             variants,
             soldOut: variants.length > 0 && variants.every(v => !v.inStock)
         };
@@ -166,7 +170,6 @@ const VultStore = (() => {
         const items = (cart && cart.items) || [];
         const count = items.reduce((n, item) => n + item.quantity, 0);
         els.count.textContent = count;
-        els.count.hidden = count === 0;
         els.subtotal.textContent = money(cart ? cart.item_total : 0);
         els.checkout.disabled = !connected || count === 0;
 
@@ -190,9 +193,9 @@ const VultStore = (() => {
                     '<div class="bag-thumb">' + (product ? productArt(product) : '') + '</div>' +
                     '<div class="bag-meta"><span class="bag-name"></span><span class="bag-variant"></span></div>' +
                     '<div class="bag-qty">' +
-                        '<button type="button" data-step="-1" aria-label="Remove one">&minus;</button>' +
+                        '<button type="button" data-step="-1" aria-label="Remove one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12"/></svg></button>' +
                         '<span></span>' +
-                        '<button type="button" data-step="1" aria-label="Add one">+</button>' +
+                        '<button type="button" data-step="1" aria-label="Add one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12 M7 2 V12"/></svg></button>' +
                     '</div>';
                 row.querySelector('.bag-name').textContent = item.product_title;
                 row.querySelector('.bag-variant').textContent = 'Size ' + item.variant_title + ' · ' + money(item.unit_price);

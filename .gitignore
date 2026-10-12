@@ -1,1 +1,5 @@
 store-config.js
+# Impeccable runtime state and review captures (the surface brief in .impeccable/surfaces is kept)
+.impeccable/questions/
+.impeccable/review/
+.impeccable/build/
