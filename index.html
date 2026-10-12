@@ -13,7 +13,7 @@
 </head>
 <body>
     <!-- Vault entry: turn the dial to the combination to enter the site -->
-    <div id="vaultGate" class="vault-gate" role="dialog" aria-modal="true" aria-labelledby="vaultTitle">
+    <div id="vaultGate" class="vault-gate" data-overlay role="dialog" aria-modal="true" aria-labelledby="vaultTitle">
         <div class="feed-noise" aria-hidden="true"></div>
         <p class="osd osd--tl"><span class="rec-dot" aria-hidden="true"></span>REC&ensp;CAM 00 &middot; ENTRY</p>
         <p class="osd osd--tr"><time class="osd-clock" data-format="full"></time></p>
@@ -125,7 +125,7 @@
     </footer>
 
     <!-- Product view: the selected camera, fullscreen -->
-    <div id="productModal" class="cam-view" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div id="productModal" class="cam-view" data-overlay role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
         <div class="cam-view__panel">
             <div id="modalFeed" class="cam-view__feed">
                 <div id="modalImage" class="cam-view__art"></div>
@@ -154,7 +154,7 @@
 
     <!-- Bag and checkout (store.js) -->
     <div id="bagScrim" class="bag-scrim" hidden></div>
-    <aside id="bagDrawer" class="bag-drawer" role="dialog" aria-modal="true" aria-labelledby="bagTitle" hidden>
+    <aside id="bagDrawer" class="bag-drawer" data-overlay role="dialog" aria-modal="true" aria-labelledby="bagTitle" hidden>
         <div class="bag-head">
             <h2 id="bagTitle">Bag</h2>
             <button id="bagClose" type="button" class="bag-link">Close</button>
@@ -194,7 +194,7 @@
                 </div>
                 <div>
                     <label for="coZip">ZIP code</label>
-                    <input id="coZip" name="postal_code" autocomplete="postal-code" inputmode="numeric" required>
+                    <input id="coZip" name="postal_code" autocomplete="postal-code" inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" title="A 5-digit ZIP code, like 90012" required>
                 </div>
             </div>
             <p class="bag-note">Ships within the United States. Standard shipping is $8, free on orders of $150 or more.</p>

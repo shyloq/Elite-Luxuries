@@ -166,6 +166,7 @@ button { font: inherit; color: inherit; }
 
 .btn:hover:not(:disabled) { background: var(--osd); color: var(--ink); }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn[aria-disabled="true"] { opacity: 0.7; cursor: progress; }
 .btn--wide { width: 100%; }
 
 /* ---------- Top bar ---------- */
@@ -527,7 +528,7 @@ button { font: inherit; color: inherit; }
     font-family: var(--f-display);
     font-weight: 900;
     font-stretch: 125%;
-    font-size: clamp(44px, 8vw, 96px);
+    font-size: clamp(30px, 11vw, 96px);
     line-height: 0.88;
     letter-spacing: -0.035em;
     white-space: nowrap;
@@ -763,6 +764,7 @@ button { font: inherit; color: inherit; }
     line-height: 1.05;
     letter-spacing: 0.03em;
     text-transform: uppercase;
+    pointer-events: none;
 }
 
 .store-toast--error::before {
@@ -1027,7 +1029,7 @@ button { font: inherit; color: inherit; }
     font-family: var(--f-display);
     font-weight: 900;
     font-stretch: 125%;
-    font-size: clamp(40px, 10vw, 72px);
+    font-size: clamp(32px, 10vw, 72px);
     line-height: 0.9;
     letter-spacing: -0.03em;
     white-space: nowrap;
@@ -1164,6 +1166,14 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 420px) {
     .feed-tile .osd--tr { display: none; }
+    .feed-tile .feed-tile__nosignal { place-items: start center; padding-top: 26%; }
+    .feed-tile .feed-tile__nosignal span { font-size: 18px; padding: 4px 8px 2px; }
+}
+
+@media (max-width: 379px) {
+    .osd-date { display: none; }
+    .wordmark { font-size: 14px; }
+    .bar-nav { gap: 10px; font-size: 11px; letter-spacing: 0.03em; }
 }
 
 @media (prefers-reduced-motion: reduce) {

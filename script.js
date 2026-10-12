@@ -35,6 +35,38 @@ function productArt(product) {
 
 const pad2 = n => String(n).padStart(2, '0');
 
+// One owner for the page's overlays (vault entry, product view, bag). The newest open
+// overlay owns focus: everything else on the page is inert and the page does not scroll.
+const Overlays = (() => {
+    const stack = [];
+    function sync() {
+        const top = stack[stack.length - 1] || null;
+        document.querySelectorAll('body > .bar, body > main, body > .foot, body > [data-overlay]').forEach(el => {
+            el.inert = top !== null && el !== top;
+        });
+        document.body.style.overflow = top ? 'hidden' : '';
+    }
+    return {
+        open(el) {
+            if (!stack.includes(el)) stack.push(el);
+            sync();
+        },
+        close(el) {
+            const i = stack.indexOf(el);
+            if (i !== -1) stack.splice(i, 1);
+            sync();
+        },
+        isTop(el) { return stack[stack.length - 1] === el; }
+    };
+})();
+
+// Product view state (the view itself is set up further down)
+const productModal = document.getElementById('productModal');
+let modalProduct = null;
+let modalIndex = -1;
+let modalReturnFocus = null;
+let adding = false;
+
 // Each product is a camera on the monitor wall; camera 01 is the vault door.
 function cameraLabel(index) {
     return 'CAM ' + pad2(index + 2);
@@ -70,9 +102,13 @@ function stockText(product) {
 function updateClocks() {
     const now = new Date();
     const time = pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
-    const full = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate()) + ' ' + time;
+    const date = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate());
     document.querySelectorAll('.osd-clock').forEach(el => {
-        el.textContent = el.dataset.format === 'full' ? full : time;
+        if (el.dataset.format === 'full') {
+            el.innerHTML = '<span class="osd-date">' + date + '&nbsp;</span>' + time;
+        } else {
+            el.textContent = time;
+        }
     });
 }
 
@@ -109,6 +145,13 @@ function renderShop() {
     document.getElementById('heroStatus').textContent =
         'Drop 03 · ' + (PRODUCTS.length - gone) + ' of ' + PRODUCTS.length + ' in stock';
     updateClocks();
+
+    // The product view may be showing a product from the list this render replaced
+    if (!productModal.hidden && modalProduct) {
+        const i = PRODUCTS.findIndex(p => (modalProduct.id && p.id === modalProduct.id) || p.name === modalProduct.name);
+        if (i === -1) closeProductModal();
+        else openProductModal(i, null, { refresh: true });
+    }
 }
 
 renderShop();
@@ -127,7 +170,7 @@ renderShop();
     let unlocked = false;
     try { unlocked = sessionStorage.getItem('vault-open') === '1'; } catch (e) {}
     if (unlocked) { gate.hidden = true; return; }
-    document.body.style.overflow = 'hidden';
+    Overlays.open(gate);
 
     // Ticks and numbers around the dial
     let ticks = '';
@@ -199,7 +242,8 @@ renderShop();
         const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         setTimeout(() => {
             gate.hidden = true;
-            document.body.style.overflow = '';
+            Overlays.close(gate);
+            document.querySelector('.cam-hero .btn').focus({ preventScroll: true });
         }, reduce ? 300 : 1600);
     }
 
@@ -262,19 +306,22 @@ renderShop();
 
 document.getElementById('lockVault').addEventListener('click', () => {
     try { sessionStorage.removeItem('vault-open'); } catch (e) {}
-    window.scrollTo(0, 0);
+    history.scrollRestoration = 'manual';
+    window.scrollTo({ top: 0, behavior: 'instant' });
     location.reload();
 });
 
 // Product view: the selected camera, fullscreen
-const productModal = document.getElementById('productModal');
-let modalProduct = null;
-let modalReturnFocus = null;
-
-function openProductModal(index, opener) {
+// options.refresh: the list was re-rendered while the view was open; keep the shopper's place
+function openProductModal(index, opener, options = {}) {
     const product = PRODUCTS[index];
+    const list = document.getElementById('modalSize');
+    const previous = list.querySelector('input:checked');
+    const keepSize = options.refresh && previous ? previous.nextElementSibling.textContent : null;
+    const sizeHadFocus = options.refresh && list.contains(document.activeElement);
     modalProduct = product;
-    modalReturnFocus = opener || document.activeElement;
+    modalIndex = index;
+    if (!options.refresh) modalReturnFocus = opener || document.activeElement;
 
     document.getElementById('modalCam').textContent = cameraLabel(index);
     document.getElementById('modalTitle').textContent = product.name;
@@ -287,7 +334,6 @@ function openProductModal(index, opener) {
         : productArt(product);
 
     // Live products carry variants with stock; the built-in list only has size names
-    const list = document.getElementById('modalSize');
     list.innerHTML = '';
     const sizes = product.variants || (product.sizes || []).map(size => ({ id: '', size, inStock: !product.soldOut }));
     let firstInStock = null;
@@ -304,25 +350,31 @@ function openProductModal(index, opener) {
         if (!v.inStock) label.title = v.size + ' is sold out';
         label.append(input, text);
         list.appendChild(label);
-        if (v.inStock && !firstInStock) {
-            firstInStock = input;
-            input.checked = true;
-        }
+        if (v.inStock && !firstInStock) firstInStock = input;
+        if (v.inStock && v.size === keepSize) firstInStock = input;
     });
+    if (firstInStock) firstInStock.checked = true;
 
     const addButton = document.getElementById('modalAdd');
     addButton.disabled = !firstInStock;
-    addButton.textContent = firstInStock ? 'Add to bag' : 'Sold out';
+    if (!adding) addButton.textContent = firstInStock ? 'Add to bag' : 'Sold out';
 
     productModal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    (firstInStock ? addButton : document.getElementById('modalClose')).focus();
+    Overlays.open(productModal);
+    if (!options.refresh) {
+        (firstInStock ? addButton : document.getElementById('modalClose')).focus();
+    } else if (sizeHadFocus) {
+        (firstInStock || document.getElementById('modalClose')).focus();
+    }
 }
 
 function closeProductModal() {
     productModal.hidden = true;
-    document.body.style.overflow = '';
-    if (modalReturnFocus && document.contains(modalReturnFocus)) modalReturnFocus.focus();
+    Overlays.close(productModal);
+    // The tile that opened the view may have been replaced by a re-render
+    let target = modalReturnFocus;
+    if (!target || !document.contains(target)) target = document.querySelectorAll('.feed-tile')[modalIndex];
+    if (target) target.focus();
 }
 
 function showToast(message, isError) {
@@ -335,22 +387,37 @@ function showToast(message, isError) {
 }
 
 async function addToCart() {
-    if (typeof VultStore === 'undefined' || !VultStore.connected) {
+    if (adding) return;
+    const state = typeof VultStore === 'undefined' ? 'offline' : VultStore.state;
+    if (state === 'loading') {
+        showToast('The store is still loading. Try again in a moment.');
+        return;
+    }
+    if (state !== 'connected') {
         showToast('The store is offline right now. Try again soon.', true);
         return;
     }
     const checked = document.querySelector('#modalSize input:checked');
-    if (!checked) return;
+    if (!checked || !checked.value) {
+        showToast('Pick a size first.', true);
+        return;
+    }
+    // Remember what is being added: the shopper may switch products before the bag answers
+    const product = modalProduct;
     const addButton = document.getElementById('modalAdd');
-    addButton.disabled = true;
+    adding = true;
+    addButton.setAttribute('aria-disabled', 'true');
+    addButton.textContent = 'Adding...';
     try {
         await VultStore.addToBag(checked.value);
-        closeProductModal();
-        showToast(modalProduct.name + ' added to your bag.');
+        if (modalProduct === product && !productModal.hidden) closeProductModal();
+        showToast(product.name + ' added to your bag.');
     } catch (e) {
         showToast(e.message, true);
     } finally {
-        addButton.disabled = false;
+        adding = false;
+        addButton.removeAttribute('aria-disabled');
+        addButton.textContent = modalProduct && modalProduct.soldOut ? 'Sold out' : 'Add to bag';
     }
 }
 
@@ -362,24 +429,5 @@ productModal.addEventListener('click', e => {
 });
 
 document.addEventListener('keydown', e => {
-    if (productModal.hidden) return;
-    if (e.key === 'Escape') {
-        closeProductModal();
-        return;
-    }
-    // Keep keyboard focus inside the product view while it is open
-    if (e.key === 'Tab') {
-        const focusable = [...productModal.querySelectorAll('button:not(:disabled), input:not(:disabled)')]
-            .filter(el => el.type !== 'radio' || el.checked);
-        if (!focusable.length) return;
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-            e.preventDefault();
-            last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-            e.preventDefault();
-            first.focus();
-        }
-    }
+    if (e.key === 'Escape' && Overlays.isTop(productModal)) closeProductModal();
 });
