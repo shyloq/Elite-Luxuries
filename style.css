@@ -1,5 +1,5 @@
 
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
         
         :root {
             --primary-gold: #D4AF37;
@@ -178,3 +178,100 @@
             background: #B8860B;
         }
     
+        /* Shop grid: product cut-outs on plain white, small mono captions */
+        .shop {
+            background: #fff;
+            padding: 120px clamp(16px, 3vw, 56px) 96px;
+        }
+
+        .shop-head {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+            font-size: 12px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #111;
+            margin-bottom: 48px;
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            column-gap: clamp(16px, 3vw, 56px);
+            row-gap: 72px;
+        }
+
+        @media (max-width: 1024px) {
+            .shop-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 48px; }
+        }
+
+        .shop-item {
+            display: block;
+            width: 100%;
+            background: none;
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            text-align: center;
+            color: #111;
+        }
+
+        .shop-art {
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+
+        .shop-art img,
+        .shop-art svg {
+            max-width: 82%;
+            max-height: 82%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+
+        .shop-item:hover .shop-art img,
+        .shop-item:hover .shop-art svg {
+            transform: scale(1.03);
+        }
+
+        .shop-name,
+        .shop-price {
+            display: block;
+            font-family: 'IBM Plex Mono', ui-monospace, Menlo, monospace;
+            font-size: 12px;
+            line-height: 1.5;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .shop-name { margin-top: 24px; }
+
+        /* Price stays hidden until hover, like the reference grid; always shown on touch screens */
+        .shop-price {
+            color: #6b6b6b;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .shop-item:hover .shop-price,
+        .shop-item:focus-visible .shop-price { opacity: 1; }
+
+        @media (hover: none) {
+            .shop-price { opacity: 1; }
+        }
+
+        .shop-item:focus-visible {
+            outline: 1px solid #111;
+            outline-offset: 6px;
+        }
+
+        .shop-sold { color: #6b6b6b; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .shop-art img, .shop-art svg, .shop-price { transition: none; }
+        }

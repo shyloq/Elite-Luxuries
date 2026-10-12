@@ -102,145 +102,13 @@
     </section>
 
     <!-- Collections Section -->
-    <section id="collections" class="py-20 bg-gray-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16 scroll-animate">
-                <h3 class="text-5xl font-display font-bold text-gray-900 mb-6">Exclusive Collections</h3>
-                <p class="text-gray-600 text-xl max-w-2xl mx-auto">Handcrafted pieces that embody sophistication and timeless elegance</p>
-                <div class="w-24 h-1 gold-gradient mx-auto mt-6 rounded-full"></div>
-            </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Product 1 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Silk Evening Dress', '$899', 'Luxurious silk evening dress with hand-embroidered details and premium Italian craftsmanship')" style="animation-delay: 0.1s;">
-                    <div class="h-80 bg-gradient-to-br from-purple-100 to-pink-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-purple-300 animate-float" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-yellow-400 text-white px-3 py-1 rounded-full text-sm font-semibold">NEW</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Silk Evening Dress</h4>
-                        <p class="text-gray-600 mb-4">Premium Italian silk</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-3xl font-bold text-gray-900">$899</span>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 2 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Cashmere Blazer', '$1,299', 'Handwoven cashmere blazer with bespoke tailoring and gold-plated buttons')" style="animation-delay: 0.2s;">
-                    <div class="h-80 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-blue-300 animate-float" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 0.5s;">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-semibold">SALE</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Cashmere Blazer</h4>
-                        <p class="text-gray-600 mb-4">Handwoven cashmere</p>
-                        <div class="flex justify-between items-center">
-                            <div>
-                                <span class="text-3xl font-bold text-gray-900">$1,299</span>
-                                <span class="text-lg text-gray-400 line-through ml-2">$1,599</span>
-                            </div>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 3 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Diamond Cufflinks', '$2,499', 'Platinum cufflinks with genuine diamonds, handcrafted by master jewelers')" style="animation-delay: 0.3s;">
-                    <div class="h-80 bg-gradient-to-br from-yellow-100 to-amber-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-yellow-400 animate-float" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 1s;">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold">LUXURY</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Diamond Cufflinks</h4>
-                        <p class="text-gray-600 mb-4">Platinum & diamonds</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-3xl font-bold text-gray-900">$2,499</span>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 4 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Leather Handbag', '$1,899', 'Handcrafted Italian leather handbag with 24k gold hardware and silk lining')" style="animation-delay: 0.4s;">
-                    <div class="h-80 bg-gradient-to-br from-rose-100 to-pink-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-rose-300 animate-float" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 1.5s;">
-                            <path d="M19 7h-3V6a4 4 0 0 0-8 0v1H5a1 1 0 0 0-1 1v11a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V8a1 1 0 0 0-1-1zM10 6a2 2 0 0 1 4 0v1h-4V6zm8 13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V9h2v1a1 1 0 0 0 2 0V9h4v1a1 1 0 0 0 2 0V9h2v10z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold">ECO</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Leather Handbag</h4>
-                        <p class="text-gray-600 mb-4">Italian leather</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-3xl font-bold text-gray-900">$1,899</span>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 5 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Wool Overcoat', '$1,599', 'Premium merino wool overcoat with cashmere lining and horn buttons')" style="animation-delay: 0.5s;">
-                    <div class="h-80 bg-gradient-to-br from-gray-100 to-slate-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-gray-400 animate-float" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 2s;">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-blue-500 text-white px-3 py-1 rounded-full text-sm font-semibold">WINTER</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Wool Overcoat</h4>
-                        <p class="text-gray-600 mb-4">Merino wool blend</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-3xl font-bold text-gray-900">$1,599</span>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Product 6 -->
-                <div class="bg-white rounded-2xl shadow-lg premium-hover cursor-pointer scroll-animate" onclick="openProductModal('Silk Scarf', '$399', 'Hand-painted silk scarf with exclusive artistic design and rolled edges')" style="animation-delay: 0.6s;">
-                    <div class="h-80 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-t-2xl flex items-center justify-center relative overflow-hidden">
-                        <div class="shimmer absolute inset-0"></div>
-                        <svg class="w-32 h-32 text-emerald-300 animate-float" fill="currentColor" viewBox="0 0 24 24" style="animation-delay: 2.5s;">
-                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
-                        <div class="absolute top-4 right-4 bg-orange-500 text-white px-3 py-1 rounded-full text-sm font-semibold">ART</div>
-                    </div>
-                    <div class="p-8">
-                        <h4 class="text-xl font-display font-semibold text-gray-900 mb-3">Silk Scarf</h4>
-                        <p class="text-gray-600 mb-4">Hand-painted silk</p>
-                        <div class="flex justify-between items-center">
-                            <span class="text-3xl font-bold text-gray-900">$399</span>
-                            <button class="luxury-btn text-white px-6 py-2 rounded-full font-semibold text-sm">
-                                ADD TO CART
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="collections" class="shop">
+        <div class="shop-head">
+            <span>Shop All</span>
+            <span id="shopCount"></span>
         </div>
+        <!-- Items are rendered from the PRODUCTS list in script.js -->
+        <div class="shop-grid" id="shopGrid"></div>
     </section>
 
     <!-- About Section -->
@@ -484,12 +352,7 @@
                 </button>
             </div>
             
-            <div class="h-64 bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl mb-6 flex items-center justify-center relative overflow-hidden">
-                <div class="shimmer absolute inset-0"></div>
-                <svg class="w-24 h-24 text-gray-400 animate-float" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
-            </div>
+            <div id="modalImage" class="shop-art h-64 mb-6"></div>
             
             <p id="modalDescription" class="text-gray-600 mb-6 leading-relaxed"></p>
             
