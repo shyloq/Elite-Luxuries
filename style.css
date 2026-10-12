@@ -178,7 +178,7 @@
             background: #B8860B;
         }
     
-        /* Shop grid: product cut-outs on plain white, small mono captions */
+        /* Shop grid: placeholder icons on plain white, small mono captions */
         .shop {
             background: #fff;
             padding: 120px clamp(16px, 3vw, 56px) 96px;
@@ -226,15 +226,12 @@
             background: #fff;
         }
 
-        .shop-art img,
         .shop-art svg {
-            max-width: 82%;
-            max-height: 82%;
-            object-fit: contain;
+            width: 36%;
+            height: 36%;
             transition: transform 0.5s ease;
         }
 
-        .shop-item:hover .shop-art img,
         .shop-item:hover .shop-art svg {
             transform: scale(1.03);
         }
@@ -273,5 +270,5 @@
         .shop-sold { color: #6b6b6b; }
 
         @media (prefers-reduced-motion: reduce) {
-            .shop-art img, .shop-art svg, .shop-price { transition: none; }
+            .shop-art svg, .shop-price { transition: none; }
         }
