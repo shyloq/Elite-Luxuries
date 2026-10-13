@@ -38,7 +38,7 @@ const DROP_03 = [
     sizes: ["S", "M", "L", "XL"],
     shape: "hoodie",
     color: "#2b2f35",
-    description: "450 GSM brushed fleece, boxy fit. Numbered run of 120.",
+    description: "450 GSM brushed fleece, boxy fit.",
   },
   {
     title: "Lot Tee",
@@ -50,7 +50,7 @@ const DROP_03 = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     shape: "tee",
     color: "#e9e4d8",
-    description: "280 GSM jersey, dropped shoulder. Numbered run of 150.",
+    description: "280 GSM jersey, dropped shoulder.",
   },
   {
     title: "Night Shift Tee",
@@ -62,7 +62,7 @@ const DROP_03 = [
     sizes: ["S", "M", "L", "XL"],
     shape: "tee",
     color: "#5a1f24",
-    description: "280 GSM jersey with back print. Numbered run of 80.",
+    description: "280 GSM jersey with back print.",
   },
   {
     title: "Deposit Cargo",
@@ -74,7 +74,7 @@ const DROP_03 = [
     sizes: ["28", "30", "32", "34", "36"],
     shape: "cargo",
     color: "#5b5f4a",
-    description: "12 oz ripstop, relaxed taper. Numbered run of 60.",
+    description: "12 oz ripstop, relaxed taper.",
   },
   {
     title: "Steel Work Jacket",
@@ -86,7 +86,7 @@ const DROP_03 = [
     sizes: ["S", "M", "L", "XL"],
     shape: "jacket",
     color: "#7e868d",
-    description: "14 oz canvas with quilted lining. Numbered run of 40.",
+    description: "14 oz canvas with quilted lining.",
   },
   {
     title: "Keyholder Cap",
@@ -98,7 +98,7 @@ const DROP_03 = [
     sizes: ["OS"],
     shape: "cap",
     color: "#131518",
-    description: "Washed twill with a brass clasp. Numbered run of 90.",
+    description: "Washed twill with a brass clasp.",
   },
   {
     title: "Lockbox Tote",
@@ -110,7 +110,7 @@ const DROP_03 = [
     sizes: ["OS"],
     shape: "tote",
     color: "#d8cfba",
-    description: "16 oz canvas with an interior pocket. Numbered run of 100.",
+    description: "16 oz canvas with an interior pocket.",
   },
   {
     title: "Combination Hoodie",
@@ -122,8 +122,7 @@ const DROP_03 = [
     sizes: ["S", "M", "L", "XL"],
     shape: "hoodie",
     color: "#c9a24a",
-    description:
-      "450 GSM brushed fleece with dial embroidery. Numbered run of 60.",
+    description: "450 GSM brushed fleece with dial embroidery.",
   },
 ]
 

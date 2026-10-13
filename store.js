@@ -131,12 +131,20 @@ const VultStore = (() => {
         if (!cart) writeCartId(null);
     }
 
+    // One cart per shopper: adds that overlap share the same creation request
+    let cartRequest = null;
     async function ensureCart() {
         if (cart) return cart;
-        const data = await api('/store/carts', { method: 'POST', body: { region_id: region.id } });
-        cart = data.cart;
-        writeCartId(cart.id);
-        return cart;
+        if (!cartRequest) {
+            cartRequest = api('/store/carts', { method: 'POST', body: { region_id: region.id } })
+                .then(data => {
+                    cart = data.cart;
+                    writeCartId(cart.id);
+                    return cart;
+                })
+                .finally(() => { cartRequest = null; });
+        }
+        return cartRequest;
     }
 
     function friendlyError(error) {
@@ -163,16 +171,21 @@ const VultStore = (() => {
     const pendingQty = new Map();
     let qtyQueue = Promise.resolve();
 
-    function changeQuantity(lineId, current, step) {
-        const base = pendingQty.has(lineId) ? pendingQty.get(lineId) : current;
+    function lineQuantity(lineId) {
+        const line = cart && cart.items.find(i => i.id === lineId);
+        return line ? line.quantity : 0;
+    }
+
+    function changeQuantity(lineId, step) {
+        const base = pendingQty.has(lineId) ? pendingQty.get(lineId) : lineQuantity(lineId);
         const next = Math.max(0, base + step);
         pendingQty.set(lineId, next);
         const shown = els.items.querySelector('[data-line="' + lineId + '"] .bag-qty span');
         if (shown) shown.textContent = next;
-        qtyQueue = qtyQueue.then(() => setQuantity(lineId, next, step));
+        qtyQueue = qtyQueue.then(() => setQuantity(lineId, next));
     }
 
-    async function setQuantity(lineId, quantity, step) {
+    async function setQuantity(lineId, quantity) {
         if (pendingQty.get(lineId) !== quantity) return; // a later click replaced this one
         els.note.textContent = '';
         try {
@@ -186,13 +199,39 @@ const VultStore = (() => {
         }
         if (pendingQty.get(lineId) !== quantity) return; // more clicks arrived; their request renders
         pendingQty.delete(lineId);
-        const focusInBag = els.drawer.contains(document.activeElement) || document.activeElement === document.body;
         renderBag();
-        if (focusInBag && !els.drawer.hidden) {
-            // The row's buttons were rebuilt; keep the shopper's place
-            const same = els.items.querySelector('[data-line="' + lineId + '"] [data-step="' + step + '"]');
-            (same || (els.checkout.disabled ? els.close : els.checkout)).focus();
+        // Rows update in place, so focus only needs a new home when its row was removed
+        const active = document.activeElement;
+        if (!els.drawer.hidden && (active === document.body || !document.contains(active))) {
+            (els.checkout.disabled ? els.close : els.checkout).focus();
         }
+    }
+
+    function showBagMessage(text) {
+        const message = document.createElement('p');
+        message.className = 'bag-empty';
+        message.textContent = text;
+        els.items.replaceChildren(message);
+    }
+
+    // A row is built once per line; later renders update it in place, so a button the
+    // shopper is pressing or has focused is never swapped out underneath them.
+    function bagRow(lineId) {
+        const row = document.createElement('div');
+        row.className = 'bag-item';
+        row.dataset.line = lineId;
+        row.innerHTML =
+            '<div class="bag-thumb"></div>' +
+            '<div class="bag-meta"><span class="bag-name"></span><span class="bag-variant"></span></div>' +
+            '<div class="bag-qty">' +
+                '<button type="button" data-step="-1" aria-label="Remove one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12"/></svg></button>' +
+                '<span></span>' +
+                '<button type="button" data-step="1" aria-label="Add one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12 M7 2 V12"/></svg></button>' +
+            '</div>';
+        row.querySelectorAll('[data-step]').forEach(btn => {
+            btn.addEventListener('click', () => changeQuantity(lineId, Number(btn.dataset.step)));
+        });
+        return row;
     }
 
     function renderBag() {
@@ -202,43 +241,28 @@ const VultStore = (() => {
         els.subtotal.textContent = money(cart ? cart.item_total : 0);
         els.checkout.disabled = !connected || count === 0;
 
-        els.items.innerHTML = '';
-        if (state === 'loading') {
-            els.items.innerHTML = '<p class="bag-empty">Opening the vault. One moment.</p>';
-            return;
-        }
-        if (!connected) {
-            els.items.innerHTML = '<p class="bag-empty">The store is offline right now, so the bag is unavailable.</p>';
-            return;
-        }
-        if (count === 0) {
-            els.items.innerHTML = '<p class="bag-empty">Your bag is empty.</p>';
-            return;
-        }
-        items
-            .slice()
-            .sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)))
-            .forEach(item => {
-                const product = PRODUCTS.find(p => p.id === item.product_id);
-                const row = document.createElement('div');
-                row.className = 'bag-item';
-                row.dataset.line = item.id;
-                row.innerHTML =
-                    '<div class="bag-thumb">' + (product ? productArt(product) : '') + '</div>' +
-                    '<div class="bag-meta"><span class="bag-name"></span><span class="bag-variant"></span></div>' +
-                    '<div class="bag-qty">' +
-                        '<button type="button" data-step="-1" aria-label="Remove one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12"/></svg></button>' +
-                        '<span></span>' +
-                        '<button type="button" data-step="1" aria-label="Add one"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12 M7 2 V12"/></svg></button>' +
-                    '</div>';
-                row.querySelector('.bag-name').textContent = item.product_title;
-                row.querySelector('.bag-variant').textContent = 'Size ' + item.variant_title + ' · ' + money(item.unit_price);
-                row.querySelector('.bag-qty span').textContent = item.quantity;
-                row.querySelectorAll('[data-step]').forEach(btn => {
-                    btn.addEventListener('click', () => changeQuantity(item.id, item.quantity, Number(btn.dataset.step)));
-                });
-                els.items.appendChild(row);
-            });
+        if (state === 'loading') return showBagMessage('Opening the vault. One moment.');
+        if (!connected) return showBagMessage('The store is offline right now, so the bag is unavailable.');
+        if (count === 0) return showBagMessage('Your bag is empty.');
+
+        const lines = items.slice().sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
+        const keep = new Set(lines.map(item => item.id));
+        [...els.items.children].forEach(node => {
+            if (!node.dataset.line || !keep.has(node.dataset.line)) node.remove();
+        });
+        lines.forEach((item, index) => {
+            let row = [...els.items.children].find(node => node.dataset.line === item.id);
+            if (!row) row = bagRow(item.id);
+            const thumb = row.querySelector('.bag-thumb');
+            const product = PRODUCTS.find(p => p.id === item.product_id);
+            if (!thumb.firstChild && product) thumb.innerHTML = productArt(product);
+            row.querySelector('.bag-name').textContent = item.product_title;
+            row.querySelector('.bag-variant').textContent = 'Size ' + item.variant_title + ' · ' + money(item.unit_price);
+            row.querySelector('.bag-qty span').textContent =
+                pendingQty.has(item.id) ? pendingQty.get(item.id) : item.quantity;
+            // Only move a row when it is out of place; moving a node drops focus and clicks
+            if (els.items.children[index] !== row) els.items.insertBefore(row, els.items.children[index] || null);
+        });
     }
 
     // Switching panels moves focus into the panel that is now showing
@@ -266,11 +290,14 @@ const VultStore = (() => {
         els.drawer.hidden = true;
         els.scrim.hidden = true;
         Overlays.close(els.drawer);
-        els.button.focus();
+        els.button.focus({ preventScroll: true });
     }
+
+    let placing = false;
 
     async function placeOrder(event) {
         event.preventDefault();
+        if (placing) return;
         // A field of spaces is an empty field
         els.form.querySelectorAll('input').forEach(input => { input.value = input.value.trim(); });
         if (!els.form.reportValidity()) return;
@@ -285,7 +312,9 @@ const VultStore = (() => {
             country_code: 'us'
         };
         els.error.textContent = '';
-        els.submit.disabled = true;
+        // aria-disabled rather than disabled: a disabled button drops keyboard focus
+        placing = true;
+        els.submit.setAttribute('aria-disabled', 'true');
         els.submit.textContent = 'Placing order...';
         try {
             const id = cart.id;
@@ -332,7 +361,8 @@ const VultStore = (() => {
         } catch (e) {
             els.error.textContent = friendlyError(e);
         } finally {
-            els.submit.disabled = false;
+            placing = false;
+            els.submit.removeAttribute('aria-disabled');
             els.submit.textContent = 'Place order';
         }
     }
@@ -356,9 +386,11 @@ const VultStore = (() => {
             region = regions[0];
             if (!region) throw new Error('The store has no region set up.');
             await loadProducts();
+            // Restore a returning shopper's bag before anything can be added to it
+            await loadCart();
             connected = true;
             state = 'connected';
-            await loadCart();
+            document.querySelectorAll('.store-toast--loading').forEach(t => t.remove());
         } catch (e) {
             connected = false;
             state = 'offline';

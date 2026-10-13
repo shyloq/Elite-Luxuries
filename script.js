@@ -3,21 +3,21 @@
 // The built-in list has no live stock, so it shows run sizes instead of units left.
 let PRODUCTS = [
     { name: 'Vault Hoodie', sizes: ['S', 'M', 'L', 'XL'], price: '$128', shape: 'hoodie', color: '#2b2f35', run: 120,
-      description: '450 GSM brushed fleece, boxy fit. Numbered run of 120.' },
+      description: '450 GSM brushed fleece, boxy fit.' },
     { name: 'Lot Tee', sizes: ['S', 'M', 'L', 'XL', 'XXL'], price: '$54', shape: 'tee', color: '#e9e4d8', run: 150,
-      description: '280 GSM jersey, dropped shoulder. Numbered run of 150.' },
+      description: '280 GSM jersey, dropped shoulder.' },
     { name: 'Night Shift Tee', sizes: ['S', 'M', 'L', 'XL'], price: '$58', shape: 'tee', color: '#5a1f24', run: 80,
-      description: '280 GSM jersey with back print. Numbered run of 80.' },
+      description: '280 GSM jersey with back print.' },
     { name: 'Deposit Cargo', sizes: ['28', '30', '32', '34', '36'], price: '$142', shape: 'cargo', color: '#5b5f4a', run: 60,
-      description: '12 oz ripstop, relaxed taper. Numbered run of 60.' },
+      description: '12 oz ripstop, relaxed taper.' },
     { name: 'Steel Work Jacket', sizes: ['S', 'M', 'L', 'XL'], price: '$210', shape: 'jacket', color: '#7e868d', run: 40,
-      description: '14 oz canvas with quilted lining. Numbered run of 40.' },
+      description: '14 oz canvas with quilted lining.' },
     { name: 'Keyholder Cap', sizes: ['OS'], price: '$42', shape: 'cap', color: '#131518', run: 90,
-      description: 'Washed twill with a brass clasp. Numbered run of 90.' },
+      description: 'Washed twill with a brass clasp.' },
     { name: 'Lockbox Tote', sizes: ['OS'], price: '$36', shape: 'tote', color: '#d8cfba', run: 100,
-      description: '16 oz canvas with an interior pocket. Numbered run of 100.' },
+      description: '16 oz canvas with an interior pocket.' },
     { name: 'Combination Hoodie', sizes: ['S', 'M', 'L', 'XL'], price: '$134', shape: 'hoodie', color: '#c9a24a', run: 60, soldOut: true,
-      description: '450 GSM brushed fleece with dial embroidery. Numbered run of 60.' }
+      description: '450 GSM brushed fleece with dial embroidery.' }
 ];
 
 const GARMENTS = {
@@ -65,7 +65,8 @@ const productModal = document.getElementById('productModal');
 let modalProduct = null;
 let modalIndex = -1;
 let modalReturnFocus = null;
-let adding = false;
+// Products with an Add to bag request in flight
+const addingProducts = new Set();
 
 // Each product is a camera on the monitor wall; camera 01 is the vault door.
 function cameraLabel(index) {
@@ -117,6 +118,8 @@ setInterval(updateClocks, 1000);
 
 function renderShop() {
     const grid = document.getElementById('shopGrid');
+    // A late render (live products arriving) replaces the tiles; keep a focused tile's place
+    const focusedTile = [...grid.children].indexOf(document.activeElement);
     grid.innerHTML = '';
     PRODUCTS.forEach((product, index) => {
         const tile = document.createElement('button');
@@ -133,7 +136,7 @@ function renderShop() {
         tile.querySelector('.feed-tile__cam').textContent = cameraLabel(index);
         tile.querySelector('.feed-tile__name').textContent = product.name;
         tile.querySelector('.feed-tile__meta').textContent = product.soldOut
-            ? stockText(product)
+            ? 'Sold out'
             : [product.price, stockText(product)].filter(Boolean).join(' · ');
         tile.addEventListener('click', () => openProductModal(index, tile));
         grid.appendChild(tile);
@@ -145,6 +148,7 @@ function renderShop() {
     document.getElementById('heroStatus').textContent =
         'Drop 03 · ' + (PRODUCTS.length - gone) + ' of ' + PRODUCTS.length + ' in stock';
     updateClocks();
+    if (focusedTile !== -1 && grid.children[focusedTile]) grid.children[focusedTile].focus({ preventScroll: true });
 
     // The product view may be showing a product from the list this render replaced
     if (!productModal.hidden && modalProduct) {
@@ -357,7 +361,13 @@ function openProductModal(index, opener, options = {}) {
 
     const addButton = document.getElementById('modalAdd');
     addButton.disabled = !firstInStock;
-    if (!adding) addButton.textContent = firstInStock ? 'Add to bag' : 'Sold out';
+    if (addingProducts.has(product.name)) {
+        addButton.setAttribute('aria-disabled', 'true');
+        addButton.textContent = 'Adding...';
+    } else {
+        addButton.removeAttribute('aria-disabled');
+        addButton.textContent = firstInStock ? 'Add to bag' : 'Sold out';
+    }
 
     productModal.hidden = false;
     Overlays.open(productModal);
@@ -377,9 +387,13 @@ function closeProductModal() {
     if (target) target.focus();
 }
 
-function showToast(message, isError) {
+// kind: 'error' or 'loading'. While the bag is open it shows the change itself, so
+// confirmations are skipped and errors drop to the bottom corner, clear of the drawer.
+function showToast(message, kind) {
+    const bagOpen = !document.getElementById('bagDrawer').hidden;
+    if (bagOpen && kind !== 'error') return;
     const notification = document.createElement('div');
-    notification.className = 'store-toast' + (isError ? ' store-toast--error' : '');
+    notification.className = 'store-toast' + (kind ? ' store-toast--' + kind : '') + (bagOpen ? ' store-toast--low' : '');
     notification.setAttribute('role', 'status');
     notification.textContent = message;
     document.body.appendChild(notification);
@@ -387,37 +401,41 @@ function showToast(message, isError) {
 }
 
 async function addToCart() {
-    if (adding) return;
+    // Remember what is being added: the shopper may switch products before the bag answers
+    const product = modalProduct;
+    if (addingProducts.has(product.name)) return;
     const state = typeof VultStore === 'undefined' ? 'offline' : VultStore.state;
     if (state === 'loading') {
-        showToast('The store is still loading. Try again in a moment.');
+        showToast('The store is still loading. Try again in a moment.', 'loading');
         return;
     }
     if (state !== 'connected') {
-        showToast('The store is offline right now. Try again soon.', true);
+        showToast('The store is offline right now. Try again soon.', 'error');
         return;
     }
     const checked = document.querySelector('#modalSize input:checked');
     if (!checked || !checked.value) {
-        showToast('Pick a size first.', true);
+        showToast('Pick a size first.', 'error');
         return;
     }
-    // Remember what is being added: the shopper may switch products before the bag answers
-    const product = modalProduct;
     const addButton = document.getElementById('modalAdd');
-    adding = true;
+    addingProducts.add(product.name);
     addButton.setAttribute('aria-disabled', 'true');
     addButton.textContent = 'Adding...';
     try {
         await VultStore.addToBag(checked.value);
-        if (modalProduct === product && !productModal.hidden) closeProductModal();
+        const stillShowing = () => modalProduct && modalProduct.name === product.name;
+        if (stillShowing() && !productModal.hidden) closeProductModal();
         showToast(product.name + ' added to your bag.');
     } catch (e) {
-        showToast(e.message, true);
+        showToast(e.message, 'error');
     } finally {
-        adding = false;
-        addButton.removeAttribute('aria-disabled');
-        addButton.textContent = modalProduct && modalProduct.soldOut ? 'Sold out' : 'Add to bag';
+        addingProducts.delete(product.name);
+        // Only reset the button if it still belongs to this product
+        if (modalProduct && modalProduct.name === product.name) {
+            addButton.removeAttribute('aria-disabled');
+            addButton.textContent = addButton.disabled ? 'Sold out' : 'Add to bag';
+        }
     }
 }
 
