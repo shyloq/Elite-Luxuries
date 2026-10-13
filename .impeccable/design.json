@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-13T05:02:29+00:00",
+  "generatedAt": "2026-10-13T14:46:46+00:00",
   "title": "Design System: VULT LABEL",
   "extensions": {
     "colorMeta": {
@@ -122,6 +122,36 @@
           "oklch(72% 0.002 145)",
           "oklch(84% 0.002 145)",
           "oklch(95% 0.002 145)"
+        ]
+      },
+      "dvr": {
+        "role": "neutral",
+        "displayName": "Recorder Black",
+        "canonical": "oklch(15.7% 0.003 145)",
+        "tonalRamp": [
+          "oklch(15% 0.003 145)",
+          "oklch(26% 0.003 145)",
+          "oklch(38% 0.003 145)",
+          "oklch(49% 0.003 145)",
+          "oklch(61% 0.003 145)",
+          "oklch(72% 0.003 145)",
+          "oklch(84% 0.003 145)",
+          "oklch(95% 0.003 145)"
+        ]
+      },
+      "dvr-edge": {
+        "role": "neutral",
+        "displayName": "Recorder Edge",
+        "canonical": "oklch(32.7% 0.004 129)",
+        "tonalRamp": [
+          "oklch(15% 0.004 129)",
+          "oklch(26% 0.004 129)",
+          "oklch(38% 0.004 129)",
+          "oklch(49% 0.004 129)",
+          "oklch(61% 0.004 129)",
+          "oklch(72% 0.004 129)",
+          "oklch(84% 0.004 129)",
+          "oklch(95% 0.004 129)"
         ]
       },
       "ink": {
@@ -263,6 +293,14 @@
       "osd-price": {
         "displayName": "OSD price",
         "purpose": "Product price in the product view."
+      },
+      "osd-timecode": {
+        "displayName": "OSD timecode",
+        "purpose": "The recorder panel's running timecode."
+      },
+      "osd-tag": {
+        "displayName": "OSD tag",
+        "purpose": "The 'Motion' tab on the motion-detection box, black on OSD White."
       }
     },
     "shadows": [
@@ -275,6 +313,16 @@
         "name": "rec-ring",
         "value": "0 0 0 1px #000",
         "purpose": "Keyline round the REC dot."
+      },
+      {
+        "name": "track-keyline",
+        "value": "0 0 0 1px #000, inset 0 0 0 1px #000",
+        "purpose": "Black stroke on the motion box's 2px OSD White frame (the tag takes 0 0 0 1px #000). Zero offset, zero blur."
+      },
+      {
+        "name": "recorder-edge",
+        "value": "inset 0 0 0 1px var(--dvr-edge)",
+        "purpose": "Bezel line of the recorder panel against the rack."
       },
       {
         "name": "statement-lift",
@@ -301,12 +349,32 @@
       {
         "name": "go-live",
         "value": "0.24s steps(3, end)",
-        "purpose": "Colour returning to a feed's subject."
+        "purpose": "Colour returning to a feed's subject and the live crop to scale(1.06)."
       },
       {
         "name": "camera-cut",
         "value": "0.24s steps(4, end)",
         "purpose": "Product view opening from a horizontal slit (clip-path inset 49% to 0)."
+      },
+      {
+        "name": "cam-zoom",
+        "value": "0.4s steps(5, end) 0.2s",
+        "purpose": "Product view stage zooming in from scale(0.5); dropped on lost feeds."
+      },
+      {
+        "name": "track-lock",
+        "value": "0.24s steps(3, end)",
+        "purpose": "Motion box growing onto its target from scale(0.8); 0.12s delay on tiles, 0.6s in the product view, 0.2s steps(2) at the vault door."
+      },
+      {
+        "name": "track-drift",
+        "value": "3.6s steps(1, end) 0.9s infinite",
+        "purpose": "Motion box jitter of a few pixels in the product view."
+      },
+      {
+        "name": "timecode-frames",
+        "value": "25 fps, requestAnimationFrame while on screen",
+        "purpose": "Frame count on timecode clocks; clocks otherwise tick on the second."
       },
       {
         "name": "rec-blink",
@@ -336,7 +404,7 @@
       {
         "name": "reduced-motion",
         "value": "prefers-reduced-motion: reduce",
-        "purpose": "Removes drift, grain movement, scan roll, REC blink, camera cut, dial shake and door transitions."
+        "purpose": "Removes drift, grain movement, scan roll, REC blink, tile crop, motion box animations, camera cut, zoom, timecode frames, dial shake and door transitions."
       }
     ],
     "breakpoints": [
@@ -365,7 +433,7 @@
       "refersTo": "button-primary",
       "description": "Ink slab with OSD White text; inverts in a two-step cut on hover. Used for Add to bag, Checkout, Place order.",
       "html": "<button class=\"ds-btn\">Add to bag</button>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;background:var(--ink);color:var(--osd);border:2px solid var(--ink);border-radius:0;cursor:pointer;transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn:hover{background:var(--osd);color:var(--ink);} .ds-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;} .ds-btn:disabled{opacity:0.45;cursor:not-allowed;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;background:var(--ink);color:var(--osd);border:2px solid var(--ink);border-radius:0;cursor:pointer;transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn:hover{background:var(--osd);color:var(--ink);} .ds-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;} .ds-btn:disabled{opacity:0.45;cursor:not-allowed;}"
     },
     {
       "name": "Button On Feed",
@@ -373,7 +441,7 @@
       "refersTo": "button-on-feed",
       "description": "The primary action over camera 01: starts inverted, hovers to Ink.",
       "html": "<div class=\"ds-feedbg\"><a class=\"ds-btn-feed\" href=\"#\">View Drop 03</a></div>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feedbg{padding:32px;background:#5c5e5a;} .ds-btn-feed{display:inline-flex;align-items:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;background:var(--osd);color:var(--ink);border:2px solid var(--osd);transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn-feed:hover{background:var(--ink);color:var(--osd);} .ds-btn-feed:focus-visible{outline:2px solid var(--osd);outline-offset:3px;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feedbg{padding:32px;background:#5c5e5a;} .ds-btn-feed{display:inline-flex;align-items:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;background:var(--osd);color:var(--ink);border:2px solid var(--osd);transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn-feed:hover{background:var(--ink);color:var(--osd);} .ds-btn-feed:focus-visible{outline:2px solid var(--osd);outline-offset:3px;}"
     },
     {
       "name": "Icon Button",
@@ -381,7 +449,7 @@
       "refersTo": "icon-button",
       "description": "44px square close control with a stroked SVG.",
       "html": "<button class=\"ds-icon-btn\" aria-label=\"Close\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 5 L19 19 M19 5 L5 19\"/></svg></button>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-icon-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;cursor:pointer;} .ds-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;} .ds-icon-btn:hover{background:var(--ink);color:var(--osd);} .ds-icon-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-icon-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;cursor:pointer;} .ds-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;} .ds-icon-btn:hover{background:var(--ink);color:var(--osd);} .ds-icon-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
     },
     {
       "name": "Size Chip",
@@ -389,7 +457,7 @@
       "refersTo": "size-chip",
       "description": "Square size picker cells: hover Deep Concrete, selected Ink, unavailable struck through.",
       "html": "<div class=\"ds-sizes\"><label class=\"ds-size\"><input type=\"radio\" name=\"s\"><span>S</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"s\" checked><span>M</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"s\" disabled><span>L</span></label></div>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-sizes{display:flex;gap:8px;background:var(--concrete);padding:16px;} .ds-size{position:relative;} .ds-size input{position:absolute;opacity:0;width:1px;height:1px;} .ds-size span{display:grid;place-items:center;min-width:58px;height:48px;padding:0 12px;border:1px solid var(--ink);color:var(--ink);font-family:var(--f-body);font-weight:700;font-stretch:112%;font-size:15px;line-height:1;letter-spacing:0.04em;cursor:pointer;} .ds-size:hover span{background:var(--concrete-deep);} .ds-size input:checked+span{background:var(--ink);color:var(--osd);} .ds-size input:focus-visible+span{outline:2px solid var(--ink);outline-offset:3px;} .ds-size input:disabled+span{border-color:var(--line);color:#6b6d69;text-decoration:line-through;background:transparent;cursor:not-allowed;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-sizes{display:flex;gap:8px;background:var(--concrete);padding:16px;} .ds-size{position:relative;} .ds-size input{position:absolute;opacity:0;width:1px;height:1px;} .ds-size span{display:grid;place-items:center;min-width:58px;height:48px;padding:0 12px;border:1px solid var(--ink);color:var(--ink);font-family:var(--f-body);font-weight:700;font-stretch:112%;font-size:15px;line-height:1;letter-spacing:0.04em;cursor:pointer;} .ds-size:hover span{background:var(--concrete-deep);} .ds-size input:checked+span{background:var(--ink);color:var(--osd);} .ds-size input:focus-visible+span{outline:2px solid var(--ink);outline-offset:3px;} .ds-size input:disabled+span{border-color:var(--line);color:#6b6d69;text-decoration:line-through;background:transparent;cursor:not-allowed;}"
     },
     {
       "name": "Checkout Field",
@@ -397,7 +465,7 @@
       "refersTo": "input-field",
       "description": "Field Concrete input with an Archivo label above.",
       "html": "<div class=\"ds-field\"><label for=\"ds-e\">Email</label><input id=\"ds-e\" type=\"email\"></div>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-field{display:flex;flex-direction:column;gap:6px;padding:16px;background:var(--concrete);} .ds-field label{font-family:var(--f-body);font-weight:800;font-stretch:112%;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);} .ds-field input{width:100%;padding:12px;background:#e3e3de;color:var(--ink);border:1px solid var(--ink);border-radius:0;font:16px var(--f-body);} .ds-field input:focus{outline:2px solid var(--ink);outline-offset:0;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-field{display:flex;flex-direction:column;gap:6px;padding:16px;background:var(--concrete);} .ds-field label{font-family:var(--f-body);font-weight:800;font-stretch:112%;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);} .ds-field input{width:100%;padding:12px;background:#e3e3de;color:var(--ink);border:1px solid var(--ink);border-radius:0;font:16px var(--f-body);} .ds-field input:focus{outline:2px solid var(--ink);outline-offset:0;}"
     },
     {
       "name": "Top Bar",
@@ -405,15 +473,15 @@
       "refersTo": "top-bar",
       "description": "Sticky concrete bar: wide wordmark left, label-set links and bag count right.",
       "html": "<header class=\"ds-bar\"><a class=\"ds-wordmark\" href=\"#\">VULT LABEL</a><nav class=\"ds-nav\"><a href=\"#\">Drop 03</a><a href=\"#\">Info</a><button type=\"button\">Bag [0]</button></nav></header>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:52px;padding:0 24px;background:var(--concrete);color:var(--ink);border-bottom:1px solid var(--ink);} .ds-wordmark{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:19px;line-height:1;letter-spacing:-0.01em;text-decoration:none;color:inherit;white-space:nowrap;} .ds-nav{display:flex;align-items:center;gap:28px;font-family:var(--f-body);font-weight:750;font-stretch:112%;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;} .ds-nav a,.ds-nav button{color:inherit;text-decoration:none;text-underline-offset:5px;text-decoration-thickness:2px;background:none;border:0;padding:8px 0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;} .ds-nav a:hover,.ds-nav button:hover{text-decoration:underline;} .ds-nav a:focus-visible,.ds-nav button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:52px;padding:0 24px;background:var(--concrete);color:var(--ink);border-bottom:1px solid var(--ink);} .ds-wordmark{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:19px;line-height:1;letter-spacing:-0.01em;text-decoration:none;color:inherit;white-space:nowrap;} .ds-nav{display:flex;align-items:center;gap:28px;font-family:var(--f-body);font-weight:750;font-stretch:112%;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;} .ds-nav a,.ds-nav button{color:inherit;text-decoration:none;text-underline-offset:5px;text-decoration-thickness:2px;background:none;border:0;padding:8px 0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;} .ds-nav a:hover,.ds-nav button:hover{text-decoration:underline;} .ds-nav a:focus-visible,.ds-nav button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
     },
     {
       "name": "Feed Tile",
       "kind": "card",
       "refersTo": "feed-tile",
-      "description": "One product as one camera: grey feed, greyscale subject, OSD corners; goes live on hover or focus.",
-      "html": "<button class=\"ds-feed\"><div class=\"ds-feed__art\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><path d=\"M30 20 L45 14 H55 L70 20 L84 34 L74 44 L68 40 V88 H32 V40 L26 44 L16 34 Z\" fill=\"#3d5a80\"/></svg></div><div class=\"ds-feed__noise\"></div><p class=\"ds-osd ds-osd--tl\"><span class=\"ds-rec\"></span>CAM 02</p><p class=\"ds-osd ds-osd--tr\">21:04:17</p><p class=\"ds-osd ds-osd--bl\"><span>Heavy hoodie</span><span>$140 &middot; 9 left</span></p></button>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feed{position:relative;display:block;width:320px;aspect-ratio:4/3;padding:0;overflow:hidden;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 38%,var(--feed-hi),var(--feed-lo) 78%);color:var(--osd);cursor:pointer;text-align:left;} .ds-feed::after{content:'';position:absolute;inset:0;z-index:4;border:3px solid transparent;transition:border-color 0.1s steps(1,end);pointer-events:none;} .ds-feed__art{position:absolute;inset:13% 24% 21%;filter:grayscale(1) contrast(1.08) brightness(0.96);transition:filter 0.24s steps(3,end);} .ds-feed__art svg{width:100%;height:100%;display:block;} .ds-feed__noise{position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0.09) 0 1px,transparent 1px 3px);} .ds-osd{position:absolute;z-index:3;margin:0;display:flex;align-items:center;gap:0.4em;font-family:var(--f-osd);font-size:19px;line-height:1;letter-spacing:0.04em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);white-space:nowrap;} .ds-osd--tl{top:14px;left:16px;} .ds-osd--tr{top:14px;right:16px;} .ds-osd--bl{bottom:14px;left:16px;flex-direction:column;align-items:flex-start;gap:5px;} .ds-rec{display:none;width:0.5em;height:0.5em;border-radius:50%;background:var(--rec);box-shadow:0 0 0 1px #000;animation:ds-blink 1.2s steps(1,end) infinite;} @keyframes ds-blink{50%{opacity:0;}} .ds-feed:hover::after,.ds-feed:focus-visible::after{border-color:var(--osd);} .ds-feed:hover .ds-feed__art,.ds-feed:focus-visible .ds-feed__art{filter:none;} .ds-feed:hover .ds-rec,.ds-feed:focus-visible .ds-rec{display:inline-block;} .ds-feed:focus-visible{outline:none;} @media (prefers-reduced-motion:reduce){.ds-rec{animation:none;}}"
+      "description": "One product as one camera: grey feed, greyscale subject, OSD corners; goes live on hover or focus (colour, 1.06 crop, motion box).",
+      "html": "<button class=\"ds-feed\"><div class=\"ds-feed__art\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><path d=\"M30 20 L45 14 H55 L70 20 L84 34 L74 44 L68 40 V88 H32 V40 L26 44 L16 34 Z\" fill=\"#3d5a80\"/></svg><span class=\"ds-track\"></span></div><div class=\"ds-feed__noise\"></div><p class=\"ds-osd ds-osd--tl\"><span class=\"ds-rec\"></span>CAM 02</p><p class=\"ds-osd ds-osd--tr\">21:04:17</p><p class=\"ds-osd ds-osd--bl\"><span>Heavy hoodie</span><span>$140 &middot; 9 left</span></p></button>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feed{position:relative;display:block;width:320px;aspect-ratio:4/3;padding:0;overflow:hidden;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 38%,var(--feed-hi),var(--feed-lo) 78%);color:var(--osd);cursor:pointer;text-align:left;} .ds-feed::after{content:'';position:absolute;inset:0;z-index:4;border:3px solid transparent;transition:border-color 0.1s steps(1,end);pointer-events:none;} .ds-feed__art{position:absolute;inset:13% 24% 21%;filter:grayscale(1) contrast(1.08) brightness(0.96);transition:filter 0.24s steps(3,end),transform 0.24s steps(3,end);} .ds-feed__art svg{width:100%;height:100%;display:block;} .ds-feed__noise{position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0.09) 0 1px,transparent 1px 3px);} .ds-osd{position:absolute;z-index:3;margin:0;display:flex;align-items:center;gap:0.4em;font-family:var(--f-osd);font-size:19px;line-height:1;letter-spacing:0.04em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);white-space:nowrap;} .ds-osd--tl{top:14px;left:16px;} .ds-osd--tr{top:14px;right:16px;} .ds-osd--bl{bottom:14px;left:16px;flex-direction:column;align-items:flex-start;gap:5px;} .ds-rec{display:none;width:0.5em;height:0.5em;border-radius:50%;background:var(--rec);box-shadow:0 0 0 1px #000;animation:ds-blink 1.2s steps(1,end) infinite;} @keyframes ds-blink{50%{opacity:0;}} .ds-feed:hover::after,.ds-feed:focus-visible::after{border-color:var(--osd);} .ds-feed:hover .ds-feed__art,.ds-feed:focus-visible .ds-feed__art{filter:none;transform:scale(1.06);} .ds-track{position:absolute;inset:-6% -10%;z-index:1;border:2px solid var(--osd);box-shadow:0 0 0 1px #000,inset 0 0 0 1px #000;pointer-events:none;} .ds-track::before{content:'Motion';position:absolute;top:-1px;left:-1px;padding:2px 5px 1px;background:var(--osd);box-shadow:0 0 0 1px #000;font-family:var(--f-osd);font-size:15px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;color:#000;} @keyframes ds-track-lock{from{transform:scale(0.8);}to{transform:none;}} .ds-feed .ds-track{inset:4% -6% 5%;visibility:hidden;} .ds-feed:hover .ds-track,.ds-feed:focus-visible .ds-track{visibility:visible;animation:ds-track-lock 0.24s steps(3,end) 0.12s both;} .ds-feed:hover .ds-rec,.ds-feed:focus-visible .ds-rec{display:inline-block;} .ds-feed:focus-visible{outline:none;} @media (prefers-reduced-motion:reduce){.ds-rec,.ds-track{animation:none!important;}.ds-feed__art{transform:none!important;}}"
     },
     {
       "name": "Lost Feed",
@@ -421,7 +489,23 @@
       "refersTo": "feed-tile-lost",
       "description": "A sold-out piece: the feed loses signal.",
       "html": "<div class=\"ds-lost\"><span>No signal</span></div>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-lost{display:grid;place-items:center;width:320px;aspect-ratio:4/3;background:#2c2d2b repeating-linear-gradient(to bottom,rgba(255,255,255,0.06) 0 1px,transparent 1px 3px);} .ds-lost span{font-family:var(--f-osd);font-size:34px;line-height:1;letter-spacing:0.08em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-lost{display:grid;place-items:center;width:320px;aspect-ratio:4/3;background:#2c2d2b repeating-linear-gradient(to bottom,rgba(255,255,255,0.06) 0 1px,transparent 1px 3px);} .ds-lost span{font-family:var(--f-osd);font-size:34px;line-height:1;letter-spacing:0.08em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);}"
+    },
+    {
+      "name": "Recorder Panel",
+      "kind": "custom",
+      "refersTo": "recorder-panel",
+      "description": "The recorder's front panel closing the monitor wall: REC DVR, running timecode, channel range. Hardware, never interactive.",
+      "html": "<div class=\"ds-dvr\" aria-hidden=\"true\"><p class=\"ds-dvr__head\"><span class=\"ds-rec\"></span>REC&ensp;DVR</p><p class=\"ds-dvr__tc\">21:04:17:12</p><p class=\"ds-dvr__foot\">CH 02-09 &middot; 25 FPS</p></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-dvr{display:flex;flex-direction:column;justify-content:space-between;width:320px;aspect-ratio:4/3;padding:14px 16px;background:var(--dvr);box-shadow:inset 0 0 0 1px var(--dvr-edge);font-family:var(--f-osd);line-height:1;letter-spacing:0.04em;text-transform:uppercase;white-space:nowrap;color:var(--osd);} .ds-dvr p{margin:0;} .ds-dvr__head{display:flex;align-items:center;gap:0.4em;font-size:19px;} .ds-dvr__tc{font-size:42px;} .ds-dvr__foot{font-size:19px;color:var(--osd-dim);} .ds-rec{display:inline-block;width:0.5em;height:0.5em;border-radius:50%;background:var(--rec);box-shadow:0 0 0 1px #000;animation:ds-blink 1.2s steps(1,end) infinite;} @keyframes ds-blink{50%{opacity:0;}} @media (prefers-reduced-motion:reduce){.ds-rec{animation:none;}}"
+    },
+    {
+      "name": "Motion Box",
+      "kind": "custom",
+      "refersTo": "motion-tag",
+      "description": "Motion detection round a live target: 2px OSD White frame, black keyline, filled Motion tag; grows onto the target in stepped frames.",
+      "html": "<div class=\"ds-mfeed\"><div class=\"ds-target\"><span class=\"ds-track\"></span></div></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-mfeed{position:relative;width:320px;aspect-ratio:4/3;background:radial-gradient(ellipse at 50% 38%,var(--feed-hi),var(--feed-lo) 78%);} .ds-target{position:absolute;inset:22% 32% 20%;} .ds-track{position:absolute;inset:-6% -10%;z-index:1;border:2px solid var(--osd);box-shadow:0 0 0 1px #000,inset 0 0 0 1px #000;pointer-events:none;} .ds-track::before{content:'Motion';position:absolute;top:-1px;left:-1px;padding:2px 5px 1px;background:var(--osd);box-shadow:0 0 0 1px #000;font-family:var(--f-osd);font-size:15px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;color:#000;} @keyframes ds-track-lock{from{transform:scale(0.8);}to{transform:none;}} .ds-track{inset:-3%;animation:ds-track-lock 0.24s steps(3,end) 0.3s both;} @media (prefers-reduced-motion:reduce){.ds-track{animation:none;}}"
     },
     {
       "name": "Toast",
@@ -429,17 +513,18 @@
       "refersTo": "toast",
       "description": "Black OSD slate; errors carry the red marker.",
       "html": "<div class=\"ds-toast ds-toast--error\">Store offline</div>",
-      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-toast{display:inline-flex;align-items:center;gap:10px;padding:10px 14px 8px;background:#000;color:var(--osd);border:1px solid var(--osd);font-family:var(--f-osd);font-size:21px;line-height:1.05;letter-spacing:0.03em;text-transform:uppercase;} .ds-toast--error::before{content:'';flex:none;width:10px;height:10px;background:var(--rec);}"
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--dvr:#0c0d0c;--dvr-edge:#343533;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-toast{display:inline-flex;align-items:center;gap:10px;padding:10px 14px 8px;background:#000;color:var(--osd);border:1px solid var(--osd);font-family:var(--f-osd);font-size:21px;line-height:1.05;letter-spacing:0.03em;text-transform:uppercase;} .ds-toast--error::before{content:'';flex:none;width:10px;height:10px;background:var(--rec);}"
     }
   ],
   "narrative": {
     "northStar": "The Security Feed",
-    "overview": "The store is the vault's security system. Visitors watch the vault on CCTV: the label speaks in on-screen display lettering over live, grainy grey feeds, and the shop is a monitor wall where every product is a camera. Around the feeds the world is poured concrete: a pale grey ground, near-black ink, hairline and two-pixel rules, square corners everywhere. Nothing is decorated that a security rig would not show.\n\nThe system runs on one deliberate light theme. The concrete is the room; the dark rack behind the monitor wall and the dark vault gate are places inside that room, not a dark mode. There is no theme switch and no `prefers-color-scheme` branch (`color-scheme: light`). Density is high and terse: a voice set in a heavy, extra-wide grotesk, product facts in camera lettering, very few words.\n\nMotion is video, not interface. Nearly every transition and animation is quantised with `steps()`: grain jitters, the hero camera drifts in 160 discrete steps, a single scan roll passes on load, the REC dot blinks hard, and opening a product cuts from a horizontal slit to fullscreen. The one smooth movement is the physical vault door swinging open on entry. Reduced motion removes drift, grain movement, the roll, the blink and the cut.",
+    "overview": "The store is the vault's security system. Visitors watch the vault on CCTV: the label speaks in on-screen display lettering over live, grainy grey feeds, and the shop is a monitor wall where every product is a camera. Around the feeds the world is poured concrete: a pale grey ground, near-black ink, hairline and two-pixel rules, square corners everywhere. Nothing is decorated that a security rig would not show.\n\nThe system runs on one deliberate light theme. The concrete is the room; the dark rack behind the monitor wall and the dark vault gate are places inside that room, not a dark mode. There is no theme switch and no `prefers-color-scheme` branch (`color-scheme: light`). Density is high and terse: a voice set in a heavy, extra-wide grotesk, product facts in camera lettering, very few words.\n\nMotion is video, not interface. Nearly every transition and animation is quantised with `steps()`: grain jitters, the hero camera drifts in 160 discrete steps, a single scan roll passes on load, the REC dot blinks hard, a live camera crops in on its subject, the motion-detection box locks onto a target, timecode counts frames at 25 per second, and opening a product cuts from a horizontal slit to fullscreen and zooms the camera in. The one smooth movement is the physical vault door swinging open on entry. Reduced motion removes drift, grain movement, the roll, the blink, the crop, the box animations, the cut, the zoom and the frame count.\n\nThe finish review judged this world at its ceiling after the monitor wall gained its main feed, recorder panel, timecode, zoom and motion detection. Future work extends the world's existing devices; it does not add new kinds of camera furniture.",
     "keyCharacteristics": [
       "Pale concrete ground, grey feeds, white on-screen lettering with a hard black outline.",
       "Two typefaces with separate jobs: Archivo for voice and labels, VT323 for camera lettering and data.",
       "Square corners on every surface and control; circles only for the REC dot and the vault dial.",
       "Garments show desaturated until their feed is selected.",
+      "The camera system's own instruments as the only ornament: timecode, zoom readout, motion-detection box, the recorder panel.",
       "Stepped, video-like timing; one smooth exception for the vault door.",
       "A single light theme by design."
     ],
@@ -456,7 +541,7 @@
       },
       {
         "name": "The Two Jobs Rule",
-        "body": "Archivo speaks; VT323 reports. VT323 appears only as on-screen camera lettering (camera labels, clocks, \"No signal\", the dial numerals) and as data (prices, stock, quantities, sizes chosen in the bag, subtotals, toasts). Headings, body copy, buttons and form labels are always Archivo. In a row that pairs a label with a value, the label is Archivo and the value is VT323.",
+        "body": "Archivo speaks; VT323 reports. VT323 appears only as on-screen camera lettering (camera labels, clocks and timecode, \"No signal\", the zoom readout, the motion tag, the recorder panel, the dial numerals) and as data (prices, stock, quantities, sizes chosen in the bag, subtotals, toasts). Headings, body copy, buttons and form labels are always Archivo. In a row that pairs a label with a value, the label is Archivo and the value is VT323.",
         "section": "typography"
       },
       {
@@ -466,7 +551,7 @@
       },
       {
         "name": "The Picture Holds The Depth Rule",
-        "body": "Shadows, vignettes and grain belong to the camera image and the vault itself. Panels, buttons, chips, the drawer and the toast stay flat.",
+        "body": "Shadows, vignettes and grain belong to the camera image and the vault itself. Panels, buttons, chips, the drawer and the toast stay flat. The keylines on the REC dot, the motion box and the recorder panel are strokes, never offset or blurred.",
         "section": "elevation"
       }
     ],
@@ -474,16 +559,25 @@
       "**Do** set prices, stock, quantities, subtotals and every camera label in VT323; set every heading, label, button and sentence in Archivo.",
       "**Do** put the hard black OSD outline on all white lettering that sits on a camera picture.",
       "**Do** keep every control and panel square (0px) and draw structure with 1px and 2px Ink rules.",
-      "**Do** quantise motion with `steps()` and remove drift, grain movement, the scan roll, the REC blink and the camera cut under reduced motion.",
+      "**Do** quantise motion with `steps()` and remove drift, grain movement, the scan roll, the REC blink, the tile crop, the motion box animations, the camera cut, the zoom and the timecode frame count under reduced motion.",
       "**Do** show a garment greyscale until its feed is hovered, focused or opened.",
-      "**Do** show sold-out pieces as lost signal from real stock, never as a red badge."
+      "**Do** show sold-out pieces as lost signal from real stock, never as a red badge.",
+      "**Do** keep the first camera as the wall's main feed and close the wall with the recorder panel.",
+      "**Do** run timecode frames only while the clock is on screen, and tick every clock on the second.",
+      "**Do** put scroll offsets on the content (`scroll-margin-top: var(--bar-h)` on main and footer targets), never on the bar or the root."
     ],
     "donts": [
       "**Don't** add a dark theme or a theme toggle; the system is one light concrete world.",
       "**Don't** use Recording Red for anything except the REC dot and the fault marker; prices, CTAs and scarcity stay grey and white.",
       "**Don't** set body copy, buttons or headings in VT323, or data values in Archivo.",
       "**Don't** round corners on rectangles or give panels, buttons or the drawer drop shadows.",
-      "**Don't** bring back serif type, gold, or the hero-banner-over-card-grid store this world replaced."
+      "**Don't** bring back serif type, gold, or the hero-banner-over-card-grid store this world replaced.",
+      "**Don't** make the recorder panel interactive: no focus, no click, no hover state, no product in it.",
+      "**Don't** draw the motion box on a lost feed, a resting tile or anything that is not a live target.",
+      "**Don't** put \"No signal\" inside a transformed or animated stage; it must stay above the static.",
+      "**Don't** add new kinds of overlay text to a feed beyond the camera id, clock, caption or zoom readout, and \"No signal\".",
+      "**Don't** give the top bar or the root scroll offsets; focusing the bar must never scroll the page.",
+      "**Don't** move focus from a removed bag row onto another row's control; it goes to the bag heading."
     ]
   }
 }
