@@ -20,6 +20,7 @@
         <div class="vault-inner">
             <h2 id="vaultTitle" class="vault-title">VULT LABEL</h2>
             <div class="vault-door">
+                <span class="track" aria-hidden="true"></span>
                 <svg class="vault-bolts" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100.0" cy="7.0" r="2.6"/><circle cx="165.8" cy="34.2" r="2.6"/><circle cx="193.0" cy="100.0" r="2.6"/><circle cx="165.8" cy="165.8" r="2.6"/><circle cx="100.0" cy="193.0" r="2.6"/><circle cx="34.2" cy="165.8" r="2.6"/><circle cx="7.0" cy="100.0" r="2.6"/><circle cx="34.2" cy="34.2" r="2.6"/></svg>
                 <div id="vaultDial" class="vault-dial" tabindex="0" role="slider" aria-label="Combination dial"
                      aria-valuemin="0" aria-valuemax="99" aria-valuenow="0">
@@ -96,8 +97,14 @@
                 <h2 id="dropTitle" class="section-title">Drop 03</h2>
                 <p class="wall-meta" id="shopCount"></p>
             </div>
-            <!-- One camera feed per product, rendered by script.js -->
-            <div class="wall" id="shopGrid"></div>
+            <!-- One camera feed per product, rendered by script.js; the recorder's panel fills the last screen -->
+            <div class="wall" id="shopGrid">
+                <div id="wallDvr" class="wall-dvr" aria-hidden="true">
+                    <p class="wall-dvr__head"><span class="rec-dot"></span>REC&ensp;DVR</p>
+                    <p class="wall-dvr__tc"><time class="osd-clock" data-format="tc"></time></p>
+                    <p class="wall-dvr__foot" id="wallDvrChannels"></p>
+                </div>
+            </div>
         </section>
 
         <section id="info" class="info" aria-labelledby="infoTitle">
@@ -130,7 +137,8 @@
                 <div id="modalImage" class="cam-view__art"></div>
                 <div class="feed-noise" aria-hidden="true"></div>
                 <p class="osd osd--tl"><span class="rec-dot" aria-hidden="true"></span><span id="modalCam">CAM 02</span> &middot; LIVE</p>
-                <p class="osd osd--tr"><time class="osd-clock" data-format="time"></time></p>
+                <p class="osd osd--tr"><time class="osd-clock" data-format="tc"></time></p>
+                <p class="osd osd--bl" aria-hidden="true">Zoom 2.0x</p>
             </div>
             <div class="cam-view__info">
                 <div class="cam-view__top">

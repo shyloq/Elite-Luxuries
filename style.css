@@ -26,6 +26,8 @@
     --feed-hi: #b4b6b1;
     --feed-lo: #8b8d88;
     --rack: #161716;
+    --dvr: #0c0d0c;
+    --dvr-edge: #343533;
     --ink: #121312;
     --ink-soft: #4a4c49;
     --osd: #f5f5f0;
@@ -384,9 +386,12 @@ button { font: inherit; color: inherit; }
     color: var(--osd-dim);
 }
 
+/* A real monitor wall mixes sizes: the first camera is the main feed, two screens
+   wide and two high, and the recorder's panel takes the last screen */
 .wall {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-flow: dense;
     gap: 6px;
 }
 
@@ -419,7 +424,7 @@ button { font: inherit; color: inherit; }
     position: absolute;
     inset: 13% 24% 21%;
     filter: grayscale(1) contrast(1.08) brightness(0.96);
-    transition: filter 0.24s steps(3, end);
+    transition: filter 0.24s steps(3, end), transform 0.24s steps(3, end);
 }
 
 .feed-tile__art svg { width: 100%; height: 100%; }
@@ -437,10 +442,87 @@ button { font: inherit; color: inherit; }
 
 .feed-tile__name { line-height: 0.95; }
 
+.feed-tile--main {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: auto;
+}
+
+.feed-tile--main .feed-tile__art { inset: 12% 27% 19%; }
+.feed-tile--main .osd { font-size: clamp(18px, 1.7vw, 27px); }
+.feed-tile--main .feed-tile__name { font-size: 1.5em; }
+.feed-tile--main.feed-tile--lost .feed-tile__nosignal span { font-size: clamp(34px, 4vw, 64px); }
+
+/* The recorder's front panel: running timecode, not a camera, not a button */
+.wall-dvr {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+    aspect-ratio: 4 / 3;
+    padding: 14px 16px;
+    overflow: hidden;
+    background: var(--dvr);
+    box-shadow: inset 0 0 0 1px var(--dvr-edge);
+    font-family: var(--f-osd);
+    line-height: 1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: var(--osd);
+}
+
+.wall-dvr__head {
+    display: flex;
+    align-items: center;
+    gap: 0.4em;
+    font-size: clamp(16px, 1.35vw, 21px);
+}
+
+.wall-dvr__tc { font-size: clamp(30px, 3.1vw, 50px); }
+.wall-dvr__foot { font-size: clamp(16px, 1.35vw, 21px); color: var(--osd-dim); }
+
+/* Motion detection: a box around the garment with its tag on the corner */
+.track {
+    position: absolute;
+    inset: -6% -10%;
+    z-index: 1;
+    border: 2px solid var(--osd);
+    box-shadow: 0 0 0 1px #000, inset 0 0 0 1px #000;
+    pointer-events: none;
+}
+
+.track::before {
+    content: 'Motion';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 2px 5px 1px;
+    background: var(--osd);
+    box-shadow: 0 0 0 1px #000;
+    font-family: var(--f-osd);
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #000;
+}
+
+/* On a tile the box stays clear of the camera label above and the name below */
+.feed-tile .track { inset: 4% -6% 5%; visibility: hidden; }
+
+/* The box grows onto its target, so it never reaches past the labels around it */
+@keyframes track-lock {
+    from { transform: scale(0.8); }
+    to { transform: none; }
+}
+
 .feed-tile:hover::after,
 .feed-tile:focus-visible::after { border-color: var(--osd); }
 .feed-tile:hover .feed-tile__art,
-.feed-tile:focus-visible .feed-tile__art { filter: none; }
+.feed-tile:focus-visible .feed-tile__art { filter: none; transform: scale(1.06); }
+.feed-tile:hover .track,
+.feed-tile:focus-visible .track { visibility: visible; animation: track-lock 0.24s steps(3, end) 0.12s both; }
 .feed-tile:hover .feed-noise,
 .feed-tile:focus-visible .feed-noise { opacity: 0.12; }
 .feed-tile:hover .rec-dot,
@@ -603,12 +685,34 @@ button { font: inherit; color: inherit; }
     position: relative;
     min-height: 0;
     overflow: hidden;
+    container-type: size;
     background: radial-gradient(ellipse at 50% 40%, var(--feed-hi), var(--feed-lo) 80%);
 }
 
+/* A square stage in the middle of the feed, so the motion box fits the garment */
 .cam-view__art {
     position: absolute;
-    inset: 13% 20% 15%;
+    inset: 0;
+    width: min(64cqw, 70cqh);
+    height: min(64cqw, 70cqh);
+    margin: auto;
+    animation: cam-zoom 0.4s steps(5, end) 0.2s both;
+}
+
+@keyframes cam-zoom {
+    from { transform: scale(0.5); }
+    to { transform: none; }
+}
+
+.cam-view__art .track {
+    inset: -3%;
+    animation: track-lock 0.24s steps(3, end) 0.6s both, track-drift 3.6s steps(1, end) 0.9s infinite;
+}
+
+@keyframes track-drift {
+    25% { translate: 4px -3px; }
+    50% { translate: -3px 2px; }
+    75% { translate: 2px 4px; }
 }
 
 .cam-view__art svg { width: 100%; height: 100%; }
@@ -1083,6 +1187,34 @@ button { font: inherit; color: inherit; }
 
 .vault-bolts circle { fill: #5d5f5b; }
 
+/* The door is seen through CAM 00: soft, grainy and scanned. Overlays stay crisp. */
+.vault-bolts,
+.vault-dial svg { filter: blur(0.5px) contrast(1.08); }
+
+.vault-door::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    border-radius: 50%;
+    pointer-events: none;
+    background:
+        repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px),
+        var(--noise) 0 0 / 200px 200px;
+    mix-blend-mode: overlay;
+    opacity: 0.55;
+    animation: grain 0.6s steps(6) infinite;
+}
+
+.vault-door .track {
+    inset: -3%;
+    z-index: 2;
+    visibility: hidden;
+}
+
+.vault-gate.motion .vault-door .track { visibility: visible; animation: track-lock 0.2s steps(2, end) both; }
+.vault-gate.open .vault-door .track { visibility: hidden; }
+
 .vault-dial {
     width: 80%;
     aspect-ratio: 1;
@@ -1159,6 +1291,9 @@ button { font: inherit; color: inherit; }
 
 @media (max-width: 899px) {
     .wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .wall-dvr { padding: 10px; }
+    /* One column pair: the main feed takes a full row of its own */
+    .feed-tile--main { grid-row: auto; aspect-ratio: 4 / 3; }
     .feed-tile__label { left: 10px; bottom: 10px; right: 10px; }
     .feed-tile .osd--tl { top: 10px; left: 10px; }
     .feed-tile .osd--tr { top: 10px; right: 10px; }
@@ -1189,16 +1324,27 @@ button { font: inherit; color: inherit; }
 
     .feed-tile .osd { font-size: 15px; }
     .feed-tile__art { inset: 17% 27% 36%; }
+    .feed-tile--main .osd { font-size: 17px; }
+    .feed-tile--main .feed-tile__art { inset: 14% 28% 27%; }
+    .wall-dvr__head,
+    .wall-dvr__foot { font-size: 15px; }
+    .wall-dvr__tc { font-size: clamp(22px, 7vw, 34px); }
+    .track::before { font-size: 13px; }
 }
 
 @media (max-width: 420px) {
     .feed-tile .osd--tr { display: none; }
+    /* Small screens have no room for a box between the labels */
+    .feed-tile:not(.feed-tile--main) .track { display: none; }
     .feed-tile .feed-tile__nosignal { place-items: start center; padding-top: 24%; }
     .feed-tile .feed-tile__nosignal span { font-size: 20px; }
 }
 
 @media (max-width: 379px) {
     .osd-date { display: none; }
+    /* Keep each small tile's label to two lines, clear of the garment */
+    .feed-tile .feed-tile__label { font-size: 14px; letter-spacing: 0; }
+    .feed-tile:not(.feed-tile--main) .feed-tile__art { inset: 22% 31% 43%; }
     .wordmark { font-size: 14px; }
     .bar-nav { gap: 10px; font-size: 11px; letter-spacing: 0.03em; }
 }
@@ -1210,8 +1356,12 @@ button { font: inherit; color: inherit; }
     .scan-roll,
     .rec-dot,
     .cam-view__panel,
+    .cam-view__art,
+    .track,
+    .vault-door::after,
     .vault-dial.nope,
-    .vault-gate.clicked .vault-readout { animation: none; }
+    .vault-gate.clicked .vault-readout { animation: none !important; }
+    .feed-tile .feed-tile__art { transform: none !important; }
     .scan-roll { display: none; }
     .vault-gate,
     .vault-door,

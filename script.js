@@ -72,8 +72,14 @@ const productModal = document.getElementById('productModal');
 let modalProduct = null;
 let modalIndex = -1;
 let modalReturnFocus = null;
-// Products with an Add to bag request in flight
-const addingProducts = new Set();
+// Products with an Add to bag request in flight, and the size (variant id) being added
+const addingProducts = new Map();
+// The recorder's panel: it closes out the monitor wall after every render
+const wallDvr = document.getElementById('wallDvr');
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+// The box the camera's motion detection draws around a garment
+const TRACK = '<span class="track" aria-hidden="true"></span>';
 
 // Each product is a camera on the monitor wall; camera 01 is the vault door.
 function cameraLabel(index) {
@@ -106,22 +112,49 @@ function stockText(product) {
     } catch (e) {}
 })();
 
-// Camera timestamps
+// Camera timestamps. Timecode clocks ("tc") also count frames, 25 a second as CCTV
+// records, while they are on screen; with reduced motion they show the time only.
+const clockTime = now => pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+const timecode = now => clockTime(now) + (reduceMotion.matches ? '' : ':' + pad2(Math.floor(now.getMilliseconds() / 40)));
+
 function updateClocks() {
     const now = new Date();
-    const time = pad2(now.getHours()) + ':' + pad2(now.getMinutes()) + ':' + pad2(now.getSeconds());
+    const time = clockTime(now);
     const date = now.getFullYear() + '-' + pad2(now.getMonth() + 1) + '-' + pad2(now.getDate());
     document.querySelectorAll('.osd-clock').forEach(el => {
         if (el.dataset.format === 'full') {
             el.innerHTML = '<span class="osd-date">' + date + '&nbsp;</span>' + time;
         } else {
-            el.textContent = time;
+            el.textContent = el.dataset.format === 'tc' ? timecode(now) : time;
         }
     });
 }
 
-updateClocks();
-setInterval(updateClocks, 1000);
+// Tick on the second, so every clock on the page changes together
+(function tickClocks() {
+    updateClocks();
+    setTimeout(tickClocks, 1000 - (Date.now() % 1000));
+})();
+
+(function runTimecode() {
+    const onScreen = new Set();
+    let running = false;
+    function frame() {
+        if (!onScreen.size || reduceMotion.matches) { running = false; return; }
+        const text = timecode(new Date());
+        onScreen.forEach(el => { if (el.textContent !== text) el.textContent = text; });
+        requestAnimationFrame(frame);
+    }
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => e.isIntersecting ? onScreen.add(e.target) : onScreen.delete(e.target));
+        if (onScreen.size && !running) { running = true; requestAnimationFrame(frame); }
+    });
+    document.querySelectorAll('.osd-clock[data-format="tc"]').forEach(el => observer.observe(el));
+    reduceMotion.addEventListener('change', () => {
+        updateClocks();
+        if (onScreen.size && !running) { running = true; requestAnimationFrame(frame); }
+    });
+})();
 
 function renderShop() {
     const grid = document.getElementById('shopGrid');
@@ -131,11 +164,12 @@ function renderShop() {
     PRODUCTS.forEach((product, index) => {
         const tile = document.createElement('button');
         tile.type = 'button';
-        tile.className = 'feed-tile' + (product.soldOut ? ' feed-tile--lost' : '');
+        // The first camera is the wall's main feed
+        tile.className = 'feed-tile' + (index === 0 ? ' feed-tile--main' : '') + (product.soldOut ? ' feed-tile--lost' : '');
         tile.innerHTML =
             (product.soldOut
                 ? '<div class="feed-tile__nosignal" aria-hidden="true"><span>No signal</span></div>'
-                : '<div class="feed-tile__art">' + productArt(product) + '</div>') +
+                : '<div class="feed-tile__art">' + productArt(product) + TRACK + '</div>') +
             '<div class="feed-noise" aria-hidden="true"></div>' +
             '<p class="osd osd--tl" aria-hidden="true"><span class="rec-dot"></span><span class="feed-tile__cam"></span></p>' +
             '<p class="osd osd--tr" aria-hidden="true"><time class="osd-clock" data-format="time"></time></p>' +
@@ -148,6 +182,9 @@ function renderShop() {
         tile.addEventListener('click', () => openProductModal(index, tile));
         grid.appendChild(tile);
     });
+    grid.appendChild(wallDvr);
+    document.getElementById('wallDvrChannels').textContent =
+        'CH 02' + (PRODUCTS.length > 1 ? '-' + cameraLabel(PRODUCTS.length - 1).slice(4) : '') + ' · 25 FPS';
 
     const gone = PRODUCTS.filter(p => p.soldOut).length;
     const count = PRODUCTS.length + ' pieces' + (gone ? ' · ' + gone + ' sold out' : '');
@@ -201,6 +238,14 @@ renderShop();
     let step = 0;          // which number of the combination is next
     let dragging = false;
     let lastAngle = 0;
+    let stillTimer = 0;
+
+    // CAM 00 draws its motion box around the door while the dial is moving
+    function motion() {
+        gate.classList.add('motion');
+        clearTimeout(stillTimer);
+        stillTimer = setTimeout(() => { if (!dragging) gate.classList.remove('motion'); }, 900);
+    }
 
     const valueOf = rot => ((Math.round(-rot / DEG_PER_NUMBER) % 100) + 100) % 100;
 
@@ -281,11 +326,13 @@ renderShop();
         rotation += delta;
         lastAngle = a;
         render();
+        motion();
     });
 
     function release() {
         if (!dragging) return;
         dragging = false;
+        motion();
         dial.classList.remove('turning');
         rotation = Math.round(rotation / DEG_PER_NUMBER) * DEG_PER_NUMBER;
         render();
@@ -308,6 +355,7 @@ renderShop();
         }
         e.preventDefault();
         render();
+        motion();
     });
 
     showStep();
@@ -342,12 +390,13 @@ function openProductModal(index, opener, options = {}) {
     document.getElementById('modalFeed').classList.toggle('cam-view__feed--lost', !!product.soldOut);
     document.getElementById('modalImage').innerHTML = product.soldOut
         ? '<div class="feed-tile__nosignal"><span>No signal</span></div>'
-        : productArt(product);
+        : productArt(product) + TRACK;
 
     // Live products carry variants with stock; the built-in list only has size names
     list.innerHTML = '';
     const sizes = product.variants || (product.sizes || []).map(size => ({ id: '', size, inStock: !product.soldOut }));
     let firstInStock = null;
+    const inFlight = addingProducts.get(product.name);
     sizes.forEach(v => {
         const label = document.createElement('label');
         label.className = 'size';
@@ -363,6 +412,8 @@ function openProductModal(index, opener, options = {}) {
         list.appendChild(label);
         if (v.inStock && !firstInStock) firstInStock = input;
         if (v.inStock && v.size === keepSize) firstInStock = input;
+        // Reopened while its add is in flight: show the size being added
+        if (v.inStock && inFlight && v.id === inFlight) firstInStock = input;
     });
     if (firstInStock) firstInStock.checked = true;
 
@@ -428,15 +479,16 @@ async function addToCart() {
         showToast('Pick a size first.', 'error');
         return;
     }
+    const size = checked.nextElementSibling.textContent;
     const addButton = document.getElementById('modalAdd');
-    addingProducts.add(product.name);
+    addingProducts.set(product.name, checked.value);
     addButton.setAttribute('aria-disabled', 'true');
     addButton.textContent = 'Adding...';
     try {
         await VultStore.addToBag(checked.value);
         const stillShowing = () => modalProduct && modalProduct.name === product.name;
         if (stillShowing() && !productModal.hidden) closeProductModal();
-        showToast(product.name + ' added to your bag.');
+        showToast(product.name + ' (' + size + ') added to your bag.');
     } catch (e) {
         showToast(product.name + ': ' + e.message, 'error');
     } finally {

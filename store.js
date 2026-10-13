@@ -301,6 +301,8 @@ const VultStore = (() => {
         if (placing) return;
         // A field of spaces is an empty field
         els.form.querySelectorAll('input').forEach(input => { input.value = input.value.trim(); });
+        // A new attempt replaces the last one's error, even if it stops at a field
+        els.error.textContent = '';
         if (!els.form.reportValidity()) return;
         const f = Object.fromEntries(new FormData(els.form));
         const address = {
@@ -312,7 +314,6 @@ const VultStore = (() => {
             postal_code: f.postal_code,
             country_code: 'us'
         };
-        els.error.textContent = '';
         // aria-disabled rather than disabled: a disabled button drops keyboard focus
         placing = true;
         els.submit.setAttribute('aria-disabled', 'true');
