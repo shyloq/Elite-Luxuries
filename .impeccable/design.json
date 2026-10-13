@@ -1,0 +1,489 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-13T05:02:29+00:00",
+  "title": "Design System: VULT LABEL",
+  "extensions": {
+    "colorMeta": {
+      "concrete": {
+        "role": "neutral",
+        "displayName": "Pale Concrete",
+        "canonical": "oklch(86.9% 0.007 107)",
+        "tonalRamp": [
+          "oklch(15% 0.007 107)",
+          "oklch(26% 0.007 107)",
+          "oklch(38% 0.007 107)",
+          "oklch(49% 0.007 107)",
+          "oklch(61% 0.007 107)",
+          "oklch(72% 0.007 107)",
+          "oklch(84% 0.007 107)",
+          "oklch(95% 0.007 107)"
+        ]
+      },
+      "concrete-deep": {
+        "role": "neutral",
+        "displayName": "Deep Concrete",
+        "canonical": "oklch(81.5% 0.008 107)",
+        "tonalRamp": [
+          "oklch(15% 0.008 107)",
+          "oklch(26% 0.008 107)",
+          "oklch(38% 0.008 107)",
+          "oklch(49% 0.008 107)",
+          "oklch(61% 0.008 107)",
+          "oklch(72% 0.008 107)",
+          "oklch(84% 0.008 107)",
+          "oklch(95% 0.008 107)"
+        ]
+      },
+      "field": {
+        "role": "neutral",
+        "displayName": "Field Concrete",
+        "canonical": "oklch(91.4% 0.007 107)",
+        "tonalRamp": [
+          "oklch(15% 0.007 107)",
+          "oklch(26% 0.007 107)",
+          "oklch(38% 0.007 107)",
+          "oklch(49% 0.007 107)",
+          "oklch(61% 0.007 107)",
+          "oklch(72% 0.007 107)",
+          "oklch(84% 0.007 107)",
+          "oklch(95% 0.007 107)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Hairline Grey",
+        "canonical": "oklch(73.5% 0.009 114)",
+        "tonalRamp": [
+          "oklch(15% 0.009 114)",
+          "oklch(26% 0.009 114)",
+          "oklch(38% 0.009 114)",
+          "oklch(49% 0.009 114)",
+          "oklch(61% 0.009 114)",
+          "oklch(72% 0.009 114)",
+          "oklch(84% 0.009 114)",
+          "oklch(95% 0.009 114)"
+        ]
+      },
+      "feed-hi": {
+        "role": "neutral",
+        "displayName": "Feed Highlight",
+        "canonical": "oklch(77.3% 0.007 124)",
+        "tonalRamp": [
+          "oklch(15% 0.007 124)",
+          "oklch(26% 0.007 124)",
+          "oklch(38% 0.007 124)",
+          "oklch(49% 0.007 124)",
+          "oklch(61% 0.007 124)",
+          "oklch(72% 0.007 124)",
+          "oklch(84% 0.007 124)",
+          "oklch(95% 0.007 124)"
+        ]
+      },
+      "feed-lo": {
+        "role": "neutral",
+        "displayName": "Feed Shadow",
+        "canonical": "oklch(64.0% 0.008 125)",
+        "tonalRamp": [
+          "oklch(15% 0.008 125)",
+          "oklch(26% 0.008 125)",
+          "oklch(38% 0.008 125)",
+          "oklch(49% 0.008 125)",
+          "oklch(61% 0.008 125)",
+          "oklch(72% 0.008 125)",
+          "oklch(84% 0.008 125)",
+          "oklch(95% 0.008 125)"
+        ]
+      },
+      "signal-lost": {
+        "role": "neutral",
+        "displayName": "Signal Lost",
+        "canonical": "oklch(29.5% 0.004 129)",
+        "tonalRamp": [
+          "oklch(15% 0.004 129)",
+          "oklch(26% 0.004 129)",
+          "oklch(38% 0.004 129)",
+          "oklch(49% 0.004 129)",
+          "oklch(61% 0.004 129)",
+          "oklch(72% 0.004 129)",
+          "oklch(84% 0.004 129)",
+          "oklch(95% 0.004 129)"
+        ]
+      },
+      "rack": {
+        "role": "neutral",
+        "displayName": "Rack Black",
+        "canonical": "oklch(20.3% 0.002 145)",
+        "tonalRamp": [
+          "oklch(15% 0.002 145)",
+          "oklch(26% 0.002 145)",
+          "oklch(38% 0.002 145)",
+          "oklch(49% 0.002 145)",
+          "oklch(61% 0.002 145)",
+          "oklch(72% 0.002 145)",
+          "oklch(84% 0.002 145)",
+          "oklch(95% 0.002 145)"
+        ]
+      },
+      "ink": {
+        "role": "primary",
+        "displayName": "Ink",
+        "canonical": "oklch(18.5% 0.003 145)",
+        "tonalRamp": [
+          "oklch(15% 0.003 145)",
+          "oklch(26% 0.003 145)",
+          "oklch(38% 0.003 145)",
+          "oklch(49% 0.003 145)",
+          "oklch(61% 0.003 145)",
+          "oklch(72% 0.003 145)",
+          "oklch(84% 0.003 145)",
+          "oklch(95% 0.003 145)"
+        ]
+      },
+      "ink-soft": {
+        "role": "neutral",
+        "displayName": "Soft Ink",
+        "canonical": "oklch(41.4% 0.006 135)",
+        "tonalRamp": [
+          "oklch(15% 0.006 135)",
+          "oklch(26% 0.006 135)",
+          "oklch(38% 0.006 135)",
+          "oklch(49% 0.006 135)",
+          "oklch(61% 0.006 135)",
+          "oklch(72% 0.006 135)",
+          "oklch(84% 0.006 135)",
+          "oklch(95% 0.006 135)"
+        ]
+      },
+      "osd": {
+        "role": "neutral",
+        "displayName": "OSD White",
+        "canonical": "oklch(96.9% 0.007 107)",
+        "tonalRamp": [
+          "oklch(15% 0.007 107)",
+          "oklch(26% 0.007 107)",
+          "oklch(38% 0.007 107)",
+          "oklch(49% 0.007 107)",
+          "oklch(61% 0.007 107)",
+          "oklch(72% 0.007 107)",
+          "oklch(84% 0.007 107)",
+          "oklch(95% 0.007 107)"
+        ]
+      },
+      "osd-dim": {
+        "role": "neutral",
+        "displayName": "OSD Dim",
+        "canonical": "oklch(83.7% 0.008 114)",
+        "tonalRamp": [
+          "oklch(15% 0.008 114)",
+          "oklch(26% 0.008 114)",
+          "oklch(38% 0.008 114)",
+          "oklch(49% 0.008 114)",
+          "oklch(61% 0.008 114)",
+          "oklch(72% 0.008 114)",
+          "oklch(84% 0.008 114)",
+          "oklch(95% 0.008 114)"
+        ]
+      },
+      "rec": {
+        "role": "primary",
+        "displayName": "Recording Red",
+        "canonical": "oklch(58.5% 0.218 29)",
+        "tonalRamp": [
+          "oklch(15% 0.218 29)",
+          "oklch(26% 0.218 29)",
+          "oklch(38% 0.218 29)",
+          "oklch(49% 0.218 29)",
+          "oklch(61% 0.218 29)",
+          "oklch(72% 0.218 29)",
+          "oklch(84% 0.218 29)",
+          "oklch(95% 0.218 29)"
+        ]
+      },
+      "error": {
+        "role": "primary",
+        "displayName": "Fault Red",
+        "canonical": "oklch(42.0% 0.156 29)",
+        "tonalRamp": [
+          "oklch(15% 0.156 29)",
+          "oklch(26% 0.156 29)",
+          "oklch(38% 0.156 29)",
+          "oklch(49% 0.156 29)",
+          "oklch(61% 0.156 29)",
+          "oklch(72% 0.156 29)",
+          "oklch(84% 0.156 29)",
+          "oklch(95% 0.156 29)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The brand statement over camera 01. One per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Product name in the product view."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "VULT LABEL in the top bar and bag head; the footer repeats it as a giant mark."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and notes, tabular numerals on."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "Opening paragraph of the information band."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Form labels, size legend, log terms, bag row labels."
+      },
+      "nav": {
+        "displayName": "Nav",
+        "purpose": "Top bar and footer links."
+      },
+      "button": {
+        "displayName": "Button",
+        "purpose": "Button text."
+      },
+      "osd": {
+        "displayName": "On-screen display",
+        "purpose": "Camera ids, clocks and feed captions, with the hard black outline."
+      },
+      "osd-data": {
+        "displayName": "OSD data",
+        "purpose": "Stock, quantities, bag amounts."
+      },
+      "osd-price": {
+        "displayName": "OSD price",
+        "purpose": "Product price in the product view."
+      }
+    },
+    "shadows": [
+      {
+        "name": "osd-outline",
+        "value": "1px 0 0 #000, -1px 0 0 #000, 0 1px 0 #000, 0 -1px 0 #000, 1px 1px 0 #000, -1px -1px 0 #000",
+        "purpose": "text-shadow stroke on all camera lettering; the OSD's native outline."
+      },
+      {
+        "name": "rec-ring",
+        "value": "0 0 0 1px #000",
+        "purpose": "Keyline round the REC dot."
+      },
+      {
+        "name": "statement-lift",
+        "value": "0 2px 24px rgba(0, 0, 0, 0.35)",
+        "purpose": "text-shadow under the display statement on the hero feed only."
+      },
+      {
+        "name": "vault-door-cast",
+        "value": "inset 0 0 0 10px #3c3d3b, inset 0 0 0 12px #5d5f5b, 0 30px 60px rgba(0, 0, 0, 0.45)",
+        "purpose": "The physical vault door at the entry gate."
+      }
+    ],
+    "motion": [
+      {
+        "name": "cut-2",
+        "value": "0.12s steps(2, end)",
+        "purpose": "Button and control colour inversion."
+      },
+      {
+        "name": "frame-snap",
+        "value": "0.1s steps(1, end)",
+        "purpose": "Feed selection frame appearing."
+      },
+      {
+        "name": "go-live",
+        "value": "0.24s steps(3, end)",
+        "purpose": "Colour returning to a feed's subject."
+      },
+      {
+        "name": "camera-cut",
+        "value": "0.24s steps(4, end)",
+        "purpose": "Product view opening from a horizontal slit (clip-path inset 49% to 0)."
+      },
+      {
+        "name": "rec-blink",
+        "value": "1.2s steps(1, end) infinite",
+        "purpose": "REC dot."
+      },
+      {
+        "name": "grain",
+        "value": "0.6s steps(6) infinite",
+        "purpose": "Feed noise jitter."
+      },
+      {
+        "name": "camera-drift",
+        "value": "40s steps(160, end) infinite alternate",
+        "purpose": "Hero camera pan and zoom."
+      },
+      {
+        "name": "scan-roll",
+        "value": "1.5s steps(30, end) 0.15s 1",
+        "purpose": "One scan roll over the hero on load."
+      },
+      {
+        "name": "vault-swing",
+        "value": "1.2s cubic-bezier(0.6, 0, 0.2, 1) 0.3s",
+        "purpose": "The vault door opening; the one smooth physical movement."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce",
+        "purpose": "Removes drift, grain movement, scan roll, REC blink, camera cut, dial shake and door transitions."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wall-2col",
+        "value": "899px"
+      },
+      {
+        "name": "compact",
+        "value": "720px"
+      },
+      {
+        "name": "narrow",
+        "value": "420px"
+      },
+      {
+        "name": "tiny",
+        "value": "379px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ink slab with OSD White text; inverts in a two-step cut on hover. Used for Add to bag, Checkout, Place order.",
+      "html": "<button class=\"ds-btn\">Add to bag</button>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;background:var(--ink);color:var(--osd);border:2px solid var(--ink);border-radius:0;cursor:pointer;transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn:hover{background:var(--osd);color:var(--ink);} .ds-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;} .ds-btn:disabled{opacity:0.45;cursor:not-allowed;}"
+    },
+    {
+      "name": "Button On Feed",
+      "kind": "button",
+      "refersTo": "button-on-feed",
+      "description": "The primary action over camera 01: starts inverted, hovers to Ink.",
+      "html": "<div class=\"ds-feedbg\"><a class=\"ds-btn-feed\" href=\"#\">View Drop 03</a></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feedbg{padding:32px;background:#5c5e5a;} .ds-btn-feed{display:inline-flex;align-items:center;min-height:52px;padding:14px 26px 13px;font-family:var(--f-display);font-weight:800;font-stretch:112%;font-size:14px;line-height:1;letter-spacing:0.06em;text-transform:uppercase;text-decoration:none;background:var(--osd);color:var(--ink);border:2px solid var(--osd);transition:background-color 0.12s steps(2,end),color 0.12s steps(2,end);} .ds-btn-feed:hover{background:var(--ink);color:var(--osd);} .ds-btn-feed:focus-visible{outline:2px solid var(--osd);outline-offset:3px;}"
+    },
+    {
+      "name": "Icon Button",
+      "kind": "button",
+      "refersTo": "icon-button",
+      "description": "44px square close control with a stroked SVG.",
+      "html": "<button class=\"ds-icon-btn\" aria-label=\"Close\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 5 L19 19 M19 5 L5 19\"/></svg></button>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-icon-btn{display:grid;place-items:center;width:44px;height:44px;padding:0;background:transparent;color:var(--ink);border:1px solid var(--ink);border-radius:0;cursor:pointer;} .ds-icon-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;} .ds-icon-btn:hover{background:var(--ink);color:var(--osd);} .ds-icon-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
+    },
+    {
+      "name": "Size Chip",
+      "kind": "chip",
+      "refersTo": "size-chip",
+      "description": "Square size picker cells: hover Deep Concrete, selected Ink, unavailable struck through.",
+      "html": "<div class=\"ds-sizes\"><label class=\"ds-size\"><input type=\"radio\" name=\"s\"><span>S</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"s\" checked><span>M</span></label><label class=\"ds-size\"><input type=\"radio\" name=\"s\" disabled><span>L</span></label></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-sizes{display:flex;gap:8px;background:var(--concrete);padding:16px;} .ds-size{position:relative;} .ds-size input{position:absolute;opacity:0;width:1px;height:1px;} .ds-size span{display:grid;place-items:center;min-width:58px;height:48px;padding:0 12px;border:1px solid var(--ink);color:var(--ink);font-family:var(--f-body);font-weight:700;font-stretch:112%;font-size:15px;line-height:1;letter-spacing:0.04em;cursor:pointer;} .ds-size:hover span{background:var(--concrete-deep);} .ds-size input:checked+span{background:var(--ink);color:var(--osd);} .ds-size input:focus-visible+span{outline:2px solid var(--ink);outline-offset:3px;} .ds-size input:disabled+span{border-color:var(--line);color:#6b6d69;text-decoration:line-through;background:transparent;cursor:not-allowed;}"
+    },
+    {
+      "name": "Checkout Field",
+      "kind": "input",
+      "refersTo": "input-field",
+      "description": "Field Concrete input with an Archivo label above.",
+      "html": "<div class=\"ds-field\"><label for=\"ds-e\">Email</label><input id=\"ds-e\" type=\"email\"></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-field{display:flex;flex-direction:column;gap:6px;padding:16px;background:var(--concrete);} .ds-field label{font-family:var(--f-body);font-weight:800;font-stretch:112%;font-size:12px;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink);} .ds-field input{width:100%;padding:12px;background:#e3e3de;color:var(--ink);border:1px solid var(--ink);border-radius:0;font:16px var(--f-body);} .ds-field input:focus{outline:2px solid var(--ink);outline-offset:0;}"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "refersTo": "top-bar",
+      "description": "Sticky concrete bar: wide wordmark left, label-set links and bag count right.",
+      "html": "<header class=\"ds-bar\"><a class=\"ds-wordmark\" href=\"#\">VULT LABEL</a><nav class=\"ds-nav\"><a href=\"#\">Drop 03</a><a href=\"#\">Info</a><button type=\"button\">Bag [0]</button></nav></header>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-bar{display:flex;align-items:center;justify-content:space-between;gap:16px;height:52px;padding:0 24px;background:var(--concrete);color:var(--ink);border-bottom:1px solid var(--ink);} .ds-wordmark{font-family:var(--f-display);font-weight:900;font-stretch:125%;font-size:19px;line-height:1;letter-spacing:-0.01em;text-decoration:none;color:inherit;white-space:nowrap;} .ds-nav{display:flex;align-items:center;gap:28px;font-family:var(--f-body);font-weight:750;font-stretch:112%;font-size:13px;letter-spacing:0.05em;text-transform:uppercase;} .ds-nav a,.ds-nav button{color:inherit;text-decoration:none;text-underline-offset:5px;text-decoration-thickness:2px;background:none;border:0;padding:8px 0;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer;} .ds-nav a:hover,.ds-nav button:hover{text-decoration:underline;} .ds-nav a:focus-visible,.ds-nav button:focus-visible{outline:2px solid var(--ink);outline-offset:3px;}"
+    },
+    {
+      "name": "Feed Tile",
+      "kind": "card",
+      "refersTo": "feed-tile",
+      "description": "One product as one camera: grey feed, greyscale subject, OSD corners; goes live on hover or focus.",
+      "html": "<button class=\"ds-feed\"><div class=\"ds-feed__art\"><svg viewBox=\"0 0 100 100\" aria-hidden=\"true\"><path d=\"M30 20 L45 14 H55 L70 20 L84 34 L74 44 L68 40 V88 H32 V40 L26 44 L16 34 Z\" fill=\"#3d5a80\"/></svg></div><div class=\"ds-feed__noise\"></div><p class=\"ds-osd ds-osd--tl\"><span class=\"ds-rec\"></span>CAM 02</p><p class=\"ds-osd ds-osd--tr\">21:04:17</p><p class=\"ds-osd ds-osd--bl\"><span>Heavy hoodie</span><span>$140 &middot; 9 left</span></p></button>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-feed{position:relative;display:block;width:320px;aspect-ratio:4/3;padding:0;overflow:hidden;border:0;border-radius:0;background:radial-gradient(ellipse at 50% 38%,var(--feed-hi),var(--feed-lo) 78%);color:var(--osd);cursor:pointer;text-align:left;} .ds-feed::after{content:'';position:absolute;inset:0;z-index:4;border:3px solid transparent;transition:border-color 0.1s steps(1,end);pointer-events:none;} .ds-feed__art{position:absolute;inset:13% 24% 21%;filter:grayscale(1) contrast(1.08) brightness(0.96);transition:filter 0.24s steps(3,end);} .ds-feed__art svg{width:100%;height:100%;display:block;} .ds-feed__noise{position:absolute;inset:0;z-index:2;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0.09) 0 1px,transparent 1px 3px);} .ds-osd{position:absolute;z-index:3;margin:0;display:flex;align-items:center;gap:0.4em;font-family:var(--f-osd);font-size:19px;line-height:1;letter-spacing:0.04em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);white-space:nowrap;} .ds-osd--tl{top:14px;left:16px;} .ds-osd--tr{top:14px;right:16px;} .ds-osd--bl{bottom:14px;left:16px;flex-direction:column;align-items:flex-start;gap:5px;} .ds-rec{display:none;width:0.5em;height:0.5em;border-radius:50%;background:var(--rec);box-shadow:0 0 0 1px #000;animation:ds-blink 1.2s steps(1,end) infinite;} @keyframes ds-blink{50%{opacity:0;}} .ds-feed:hover::after,.ds-feed:focus-visible::after{border-color:var(--osd);} .ds-feed:hover .ds-feed__art,.ds-feed:focus-visible .ds-feed__art{filter:none;} .ds-feed:hover .ds-rec,.ds-feed:focus-visible .ds-rec{display:inline-block;} .ds-feed:focus-visible{outline:none;} @media (prefers-reduced-motion:reduce){.ds-rec{animation:none;}}"
+    },
+    {
+      "name": "Lost Feed",
+      "kind": "card",
+      "refersTo": "feed-tile-lost",
+      "description": "A sold-out piece: the feed loses signal.",
+      "html": "<div class=\"ds-lost\"><span>No signal</span></div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-lost{display:grid;place-items:center;width:320px;aspect-ratio:4/3;background:#2c2d2b repeating-linear-gradient(to bottom,rgba(255,255,255,0.06) 0 1px,transparent 1px 3px);} .ds-lost span{font-family:var(--f-osd);font-size:34px;line-height:1;letter-spacing:0.08em;text-transform:uppercase;color:var(--osd);text-shadow:var(--osd-outline);}"
+    },
+    {
+      "name": "Toast",
+      "kind": "custom",
+      "refersTo": "toast",
+      "description": "Black OSD slate; errors carry the red marker.",
+      "html": "<div class=\"ds-toast ds-toast--error\">Store offline</div>",
+      "css": ":host{--concrete:#d4d4cf;--concrete-deep:#c3c3bd;--line:#a9aaa4;--feed-hi:#b4b6b1;--feed-lo:#8b8d88;--rack:#161716;--ink:#121312;--ink-soft:#4a4c49;--osd:#f5f5f0;--osd-dim:#c9cac4;--rec:#e0281e;--error:#8f1710;--f-display:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-body:'Archivo Variable','Helvetica Neue',Arial,sans-serif;--f-osd:'VT323','Courier New',monospace;--osd-outline:1px 0 0 #000,-1px 0 0 #000,0 1px 0 #000,0 -1px 0 #000,1px 1px 0 #000,-1px -1px 0 #000;} .ds-toast{display:inline-flex;align-items:center;gap:10px;padding:10px 14px 8px;background:#000;color:var(--osd);border:1px solid var(--osd);font-family:var(--f-osd);font-size:21px;line-height:1.05;letter-spacing:0.03em;text-transform:uppercase;} .ds-toast--error::before{content:'';flex:none;width:10px;height:10px;background:var(--rec);}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Security Feed",
+    "overview": "The store is the vault's security system. Visitors watch the vault on CCTV: the label speaks in on-screen display lettering over live, grainy grey feeds, and the shop is a monitor wall where every product is a camera. Around the feeds the world is poured concrete: a pale grey ground, near-black ink, hairline and two-pixel rules, square corners everywhere. Nothing is decorated that a security rig would not show.\n\nThe system runs on one deliberate light theme. The concrete is the room; the dark rack behind the monitor wall and the dark vault gate are places inside that room, not a dark mode. There is no theme switch and no `prefers-color-scheme` branch (`color-scheme: light`). Density is high and terse: a voice set in a heavy, extra-wide grotesk, product facts in camera lettering, very few words.\n\nMotion is video, not interface. Nearly every transition and animation is quantised with `steps()`: grain jitters, the hero camera drifts in 160 discrete steps, a single scan roll passes on load, the REC dot blinks hard, and opening a product cuts from a horizontal slit to fullscreen. The one smooth movement is the physical vault door swinging open on entry. Reduced motion removes drift, grain movement, the roll, the blink and the cut.",
+    "keyCharacteristics": [
+      "Pale concrete ground, grey feeds, white on-screen lettering with a hard black outline.",
+      "Two typefaces with separate jobs: Archivo for voice and labels, VT323 for camera lettering and data.",
+      "Square corners on every surface and control; circles only for the REC dot and the vault dial.",
+      "Garments show desaturated until their feed is selected.",
+      "Stepped, video-like timing; one smooth exception for the vault door.",
+      "A single light theme by design."
+    ],
+    "rules": [
+      {
+        "name": "The One Red Rule",
+        "body": "Saturated red belongs to the recording system: the REC dot, and the small marker that flags a fault. Prices, sale states, CTAs and scarcity never turn red.",
+        "section": "colors"
+      },
+      {
+        "name": "The Concrete Room Rule",
+        "body": "One light theme. Dark grounds (the rack, the vault gate, lost feeds, the hero feed) are places in the world, entered and left; they are never a global dark mode.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Jobs Rule",
+        "body": "Archivo speaks; VT323 reports. VT323 appears only as on-screen camera lettering (camera labels, clocks, \"No signal\", the dial numerals) and as data (prices, stock, quantities, sizes chosen in the bag, subtotals, toasts). Headings, body copy, buttons and form labels are always Archivo. In a row that pairs a label with a value, the label is Archivo and the value is VT323.",
+        "section": "typography"
+      },
+      {
+        "name": "The Wide Voice Rule",
+        "body": "Every Archivo heading is weight 900 at width 112% or 125%, uppercase, with negative tracking. Every Archivo label is 750 to 800, width 112%, uppercase, with positive tracking. Body text is the only Archivo set at normal width and mixed case.",
+        "section": "typography"
+      },
+      {
+        "name": "The Picture Holds The Depth Rule",
+        "body": "Shadows, vignettes and grain belong to the camera image and the vault itself. Panels, buttons, chips, the drawer and the toast stay flat.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** set prices, stock, quantities, subtotals and every camera label in VT323; set every heading, label, button and sentence in Archivo.",
+      "**Do** put the hard black OSD outline on all white lettering that sits on a camera picture.",
+      "**Do** keep every control and panel square (0px) and draw structure with 1px and 2px Ink rules.",
+      "**Do** quantise motion with `steps()` and remove drift, grain movement, the scan roll, the REC blink and the camera cut under reduced motion.",
+      "**Do** show a garment greyscale until its feed is hovered, focused or opened.",
+      "**Do** show sold-out pieces as lost signal from real stock, never as a red badge."
+    ],
+    "donts": [
+      "**Don't** add a dark theme or a theme toggle; the system is one light concrete world.",
+      "**Don't** use Recording Red for anything except the REC dot and the fault marker; prices, CTAs and scarcity stay grey and white.",
+      "**Don't** set body copy, buttons or headings in VT323, or data values in Archivo.",
+      "**Don't** round corners on rectangles or give panels, buttons or the drawer drop shadows.",
+      "**Don't** bring back serif type, gold, or the hero-banner-over-card-grid store this world replaced."
+    ]
+  }
+}

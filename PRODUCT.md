@@ -27,7 +27,7 @@ The vault is the brand: every visit starts by turning a combination dial to get 
 
 ## Capabilities and Constraints
 
-- Static HTML, CSS and JavaScript (`index.html`, `style.css`, `script.js`, `store.js`) with Tailwind loaded from its CDN; the store backend is Medusa 2.21.2.
+- Static HTML, CSS and JavaScript (`index.html`, `style.css`, `script.js`, `store.js`) with self-hosted fonts in `fonts/`; the store backend is Medusa 2.21.2.
 - The vault gate, shop grid, product pop-up with sizes and stock, bag drawer and checkout must keep working.
 - No product photography exists. Products show drawn garment placeholders whose shape and color come from each product's Medusa metadata.
 - Undecided: which pieces are core line; real contact details; social handles; the brand story.
