@@ -19,6 +19,7 @@ const VultStore = (() => {
         scrim: document.getElementById('bagScrim'),
         drawer: document.getElementById('bagDrawer'),
         close: document.getElementById('bagClose'),
+        title: document.getElementById('bagTitle'),
         view: document.getElementById('bagView'),
         items: document.getElementById('bagItems'),
         subtotal: document.getElementById('bagSubtotal'),
@@ -199,11 +200,14 @@ const VultStore = (() => {
         }
         if (pendingQty.get(lineId) !== quantity) return; // more clicks arrived; their request renders
         pendingQty.delete(lineId);
-        // Rows update in place, so focus only needs a new home when its row was removed
+        // Rows update in place, so focus only needs a new home when its row was removed.
+        // It goes to the bag's heading, not to another row's button, so pressing again
+        // never takes a different piece out; the note says what left the bag.
         const focusedRow = document.activeElement.closest('[data-line]');
         renderBag();
         if (focusedRow && !document.contains(focusedRow) && !els.drawer.hidden) {
-            (els.checkout.disabled ? els.close : els.checkout).focus({ preventScroll: true });
+            els.note.textContent = focusedRow.querySelector('.bag-name').textContent + ' removed.';
+            els.title.focus({ preventScroll: true });
         }
     }
 

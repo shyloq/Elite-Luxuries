@@ -53,7 +53,6 @@
 html {
     scrollbar-gutter: stable;
     scroll-behavior: smooth;
-    scroll-padding-top: var(--bar-h);
     background: var(--concrete);
     scrollbar-color: var(--ink) var(--concrete-deep);
 }
@@ -187,6 +186,15 @@ button { font: inherit; color: inherit; }
     background: var(--concrete);
     border-bottom: 1px solid var(--ink);
 }
+
+/* Jumps and keyboard focus land clear of the sticky bar. This sits on the page content,
+   not on the page: the bar itself is always on screen and focusing it must not scroll */
+main,
+main [id],
+main a,
+main button,
+.foot a,
+.foot button { scroll-margin-top: var(--bar-h); }
 
 .wordmark {
     font-family: var(--f-display);
@@ -719,6 +727,10 @@ button { font: inherit; color: inherit; }
 .cam-view__feed .feed-noise { opacity: 0.16; }
 .cam-view__feed--lost { background: #2c2d2b; }
 .cam-view__feed--lost .feed-noise { opacity: 0.85; mix-blend-mode: normal; }
+/* A camera with no signal has nothing to zoom on; without the animation, NO SIGNAL
+   also stays above the static instead of inside the stage's stacking context */
+.cam-view__feed--lost .cam-view__art { animation: none; }
+.cam-view__feed--lost .cam-view__zoom { display: none; }
 
 .cam-view__info {
     display: flex;
