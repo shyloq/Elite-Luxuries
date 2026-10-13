@@ -37,15 +37,22 @@ const pad2 = n => String(n).padStart(2, '0');
 
 // One owner for the page's overlays (vault entry, product view, bag). The newest open
 // overlay owns focus: everything else on the page is inert and the page does not scroll.
+// The one exception is the product view on wide screens, which opens below the top bar:
+// there the bar stays live, so the bag and the menu still work from a product.
 const Overlays = (() => {
     const stack = [];
+    const wide = window.matchMedia('(min-width: 900px)');
     function sync() {
         const top = stack[stack.length - 1] || null;
+        const view = document.getElementById('productModal');
+        const barLive = top === view && wide.matches;
         document.querySelectorAll('body > .bar, body > main, body > .foot, body > [data-overlay]').forEach(el => {
-            el.inert = top !== null && el !== top;
+            el.inert = top !== null && el !== top && !(barLive && el.classList.contains('bar'));
         });
+        view.setAttribute('aria-modal', String(!barLive));
         document.body.style.overflow = top ? 'hidden' : '';
     }
+    wide.addEventListener('change', sync);
     return {
         open(el) {
             if (!stack.includes(el)) stack.push(el);
@@ -387,13 +394,16 @@ function closeProductModal() {
     if (target) target.focus();
 }
 
-// kind: 'error' or 'loading'. While the bag is open it shows the change itself, so
-// confirmations are skipped and errors drop to the bottom corner, clear of the drawer.
+// kind: 'error' or 'loading'. One toast at a time.
 function showToast(message, kind) {
-    const bagOpen = !document.getElementById('bagDrawer').hidden;
-    if (bagOpen && kind !== 'error') return;
+    if (!document.getElementById('bagDrawer').hidden) {
+        // The open bag shows changes itself; an error goes to its own status line
+        if (kind === 'error') document.getElementById('bagNote').textContent = message;
+        return;
+    }
+    document.querySelectorAll('.store-toast').forEach(t => t.remove());
     const notification = document.createElement('div');
-    notification.className = 'store-toast' + (kind ? ' store-toast--' + kind : '') + (bagOpen ? ' store-toast--low' : '');
+    notification.className = 'store-toast' + (kind ? ' store-toast--' + kind : '');
     notification.setAttribute('role', 'status');
     notification.textContent = message;
     document.body.appendChild(notification);
@@ -428,7 +438,7 @@ async function addToCart() {
         if (stillShowing() && !productModal.hidden) closeProductModal();
         showToast(product.name + ' added to your bag.');
     } catch (e) {
-        showToast(e.message, 'error');
+        showToast(product.name + ': ' + e.message, 'error');
     } finally {
         addingProducts.delete(product.name);
         // Only reset the button if it still belongs to this product
@@ -440,6 +450,11 @@ async function addToCart() {
 }
 
 document.getElementById('modalAdd').addEventListener('click', addToCart);
+
+// With the bar live beside a product, its links leave the product view first
+document.querySelector('.bar').addEventListener('click', e => {
+    if (e.target.closest('a') && !productModal.hidden) closeProductModal();
+});
 document.getElementById('modalClose').addEventListener('click', closeProductModal);
 
 productModal.addEventListener('click', e => {

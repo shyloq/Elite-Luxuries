@@ -49,6 +49,7 @@
 [hidden] { display: none !important; }
 
 html {
+    scrollbar-gutter: stable;
     scroll-behavior: smooth;
     scroll-padding-top: var(--bar-h);
     background: var(--concrete);
@@ -772,13 +773,6 @@ button { font: inherit; color: inherit; }
     pointer-events: none;
 }
 
-.store-toast--low {
-    top: auto;
-    right: auto;
-    left: 16px;
-    bottom: 16px;
-}
-
 .store-toast--error::before {
     content: '';
     flex: none;
@@ -1014,6 +1008,8 @@ button { font: inherit; color: inherit; }
     gap: 12px;
     min-width: 0;
 }
+
+.bag-email { text-transform: none; }
 
 .bag-done {
     font-family: var(--f-display);

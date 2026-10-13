@@ -199,11 +199,11 @@ const VultStore = (() => {
         }
         if (pendingQty.get(lineId) !== quantity) return; // more clicks arrived; their request renders
         pendingQty.delete(lineId);
-        renderBag();
         // Rows update in place, so focus only needs a new home when its row was removed
-        const active = document.activeElement;
-        if (!els.drawer.hidden && (active === document.body || !document.contains(active))) {
-            (els.checkout.disabled ? els.close : els.checkout).focus();
+        const focusedRow = document.activeElement.closest('[data-line]');
+        renderBag();
+        if (focusedRow && !document.contains(focusedRow) && !els.drawer.hidden) {
+            (els.checkout.disabled ? els.close : els.checkout).focus({ preventScroll: true });
         }
     }
 
@@ -278,6 +278,7 @@ const VultStore = (() => {
 
     function openBag() {
         document.querySelectorAll('.store-toast').forEach(t => t.remove());
+        els.note.textContent = '';
         showPanel('bag', false);
         renderBag();
         els.drawer.hidden = false;
@@ -345,7 +346,12 @@ const VultStore = (() => {
             cart = null;
             writeCartId(null);
             renderBag();
-            els.doneText.textContent = 'Order #' + order.display_id + ' is placed under ' + order.email + '.';
+            // The email keeps its own case inside the upper-case confirmation
+            els.doneText.textContent = 'Order #' + order.display_id + ' is placed under ';
+            const email = document.createElement('span');
+            email.className = 'bag-email';
+            email.textContent = order.email;
+            els.doneText.append(email, '.');
             els.doneTotals.innerHTML = '';
             [['Items', order.item_total], ['Shipping', order.shipping_total], ['Total', order.total]].forEach(([label, value]) => {
                 const row = document.createElement('div');
