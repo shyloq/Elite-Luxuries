@@ -1,5 +1,3 @@
-import fs from "fs"
-import path from "path"
 import { ExecArgs } from "@medusajs/framework/types"
 import {
   ContainerRegistrationKeys,
@@ -364,19 +362,7 @@ export default async function seedVultStore({ container }: ExecArgs) {
     },
   })
 
-  // Point the storefront at this backend.
-  const storeConfigPath = path.resolve(process.cwd(), "..", "store-config.js")
-  fs.writeFileSync(
-    storeConfigPath,
-    `// Written by backend/src/scripts/seed.ts. The publishable key is safe to expose.\n` +
-      `window.VULT_STORE = {\n` +
-      `    backendUrl: ${JSON.stringify(process.env.STOREFRONT_BACKEND_URL || "http://localhost:9000")},\n` +
-      `    publishableKey: ${JSON.stringify(publishableKey.token)}\n` +
-      `};\n`
-  )
-
   logger.info(`Region: ${region.name} (${region.id})`)
   logger.info(`Publishable key: ${publishableKey.token}`)
-  logger.info(`Wrote ${storeConfigPath}`)
   logger.info("VULT LABEL store is ready.")
 }

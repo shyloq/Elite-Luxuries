@@ -7,7 +7,9 @@
     "build": "medusa build",
     "seed": "medusa exec ./src/scripts/seed.ts",
     "start": "medusa start",
-    "dev": "medusa develop"
+    "dev": "medusa develop",
+    "start:production": "cd .medusa/server && npm run predeploy && npm run start",
+    "predeploy": "medusa db:migrate && medusa exec ./src/scripts/seed.js && (test -z \"$ADMIN_EMAIL\" || medusa user -e \"$ADMIN_EMAIL\" -p \"$ADMIN_PASSWORD\" || true)"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.21.2",

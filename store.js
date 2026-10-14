@@ -1,13 +1,14 @@
 // Connects the site to the Medusa backend in backend/: live products and stock,
-// the bag, and checkout. Settings come from store-config.js, which the backend's
-// seed script writes. Without it, the shop keeps the built-in product list.
+// the bag, and checkout. store-config.js says where the backend is; the backend
+// hands over its publishable key itself. Without a backend, the shop keeps the
+// built-in product list.
 const VultStore = (() => {
-    const config = window.VULT_STORE || {};
+    const config = Object.assign({}, window.VULT_STORE);
     const CART_KEY = 'vult-cart-id';
     const SIZE_ORDER = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL', 'OS'];
 
     // 'loading' until the store answers, then 'connected' or 'offline'
-    let state = config.backendUrl && config.publishableKey ? 'loading' : 'offline';
+    let state = config.backendUrl ? 'loading' : 'offline';
     let connected = false;
     let region = null;
     let cart = null;
@@ -393,6 +394,11 @@ const VultStore = (() => {
         renderBag();
         if (state === 'offline') return;
         try {
+            if (!config.publishableKey) {
+                const res = await fetch(config.backendUrl.replace(/\/$/, '') + '/storefront-config');
+                if (!res.ok) throw new Error('The store has no storefront key (' + res.status + ').');
+                config.publishableKey = (await res.json()).publishable_key;
+            }
             const { regions } = await api('/store/regions');
             region = regions[0];
             if (!region) throw new Error('The store has no region set up.');
