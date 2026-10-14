@@ -130,10 +130,12 @@
         </div>
     </div>
 
+    <p id="announce" class="announce" hidden></p>
+
     <header class="bar">
         <a class="wordmark" href="#top" aria-label="VULT LABEL, back to top">VULT LABEL</a>
         <nav class="bar-nav" aria-label="Main">
-            <a href="#drop">Drop 03</a>
+            <a href="#drop" data-content="dropTitle">Drop 03</a>
             <a href="#info">Info</a>
             <button id="bagButton" type="button" class="bar-bag">Bag [<span id="bagCount">0</span>]</button>
         </nav>
@@ -174,15 +176,15 @@
             <p class="osd osd--tl"><span class="rec-dot" aria-hidden="true"></span>REC&ensp;CAM 01 &middot; VAULT DOOR</p>
             <p class="osd osd--tr"><time class="osd-clock" data-format="full"></time></p>
             <div class="cam-hero__copy">
-                <h1 class="statement">Made in numbered runs. Locked until the drop.</h1>
-                <a class="btn" href="#drop">View Drop 03</a>
+                <h1 class="statement" data-content="statement">Made in numbered runs. Locked until the drop.</h1>
+                <a class="btn" href="#drop" data-content="heroButton">View Drop 03</a>
             </div>
             <p class="osd osd--br" id="heroStatus">Drop 03 &middot; live</p>
         </section>
 
         <section id="drop" class="wall-section" aria-labelledby="dropTitle">
             <div class="wall-head">
-                <h2 id="dropTitle" class="section-title">Drop 03</h2>
+                <h2 id="dropTitle" class="section-title" data-content="dropTitle">Drop 03</h2>
                 <p class="wall-meta" id="shopCount"></p>
             </div>
             <!-- One camera feed per product, rendered by script.js; the recorder's panel fills the last screen -->
@@ -195,10 +197,31 @@
             </div>
         </section>
 
+        <!-- Next drop: countdown and waitlist, from the command center (site-content.js) -->
+        <section id="next" class="next-drop" aria-labelledby="nextTitle" hidden>
+            <div class="feed-noise" aria-hidden="true"></div>
+            <p class="osd osd--tl" aria-hidden="true"><span class="rec-dot"></span>CAM 10 &middot; NEXT DROP</p>
+            <div class="next-drop__inner">
+                <h2 id="nextTitle" class="section-title" data-content="nextTitle">Next drop</h2>
+                <p id="nextName" class="next-drop__name"></p>
+                <p id="nextCountdown" class="next-drop__count" role="timer"></p>
+                <p class="next-drop__note" data-content="nextNote"></p>
+                <form id="waitlistForm" class="next-drop__form" novalidate>
+                    <label for="waitlistEmail">Email</label>
+                    <div class="next-drop__row">
+                        <input id="waitlistEmail" name="email" type="email" autocomplete="email" required>
+                        <button id="waitlistSubmit" type="submit" class="btn">Join the waitlist</button>
+                    </div>
+                    <input class="hp" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+                    <p id="waitlistStatus" class="next-drop__status" role="status"></p>
+                </form>
+            </div>
+        </section>
+
         <section id="info" class="info" aria-labelledby="infoTitle">
-            <h2 id="infoTitle" class="section-title">How the vault works</h2>
-            <p class="info-lede">VULT LABEL is a new label. Every visit starts at the door, and the combination is written on it.</p>
-            <dl class="log">
+            <h2 id="infoTitle" class="section-title" data-content="infoTitle">How the vault works</h2>
+            <p class="info-lede" data-content="infoLede">VULT LABEL is a new label. Every visit starts at the door, and the combination is written on it.</p>
+            <dl id="infoRows" class="log">
                 <div class="log-row"><dt>Restocks</dt><dd>Drops: never. Core line: always.</dd></div>
                 <div class="log-row"><dt>Shipping</dt><dd>United States only. $8, free from $150.</dd></div>
                 <div class="log-row"><dt>Entry</dt><dd>12 &middot; 47 &middot; 83</dd></div>
@@ -211,7 +234,7 @@
         <div class="foot-row">
             <p>&copy; 2026 VULT LABEL</p>
             <nav class="foot-nav" aria-label="Footer">
-                <a href="#drop">Drop 03</a>
+                <a href="#drop" data-content="dropTitle">Drop 03</a>
                 <a href="#info">Info</a>
                 <button id="lockVault" type="button">Lock the vault</button>
             </nav>
@@ -309,5 +332,6 @@
     <script src="store-config.js"></script>
     <script src="script.js"></script>
     <script src="store.js"></script>
+    <script src="site-content.js"></script>
 </body>
 </html>

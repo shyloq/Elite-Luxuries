@@ -1,8 +1,11 @@
-// Where the store backend lives (see backend/README.md). On this computer the
-// site uses the backend at localhost:9000; anywhere else it uses the hosted one.
-// Leave HOSTED_BACKEND empty to run the site without a store.
+// Where the store backend and the command center live (see backend/README.md and
+// command-center/README.md). On this computer the site uses local copies; anywhere else
+// it uses the hosted ones. Leave an address empty to run the site without it.
 const HOSTED_BACKEND = '';
+const HOSTED_COMMAND_CENTER = '';
 
+const LOCAL = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
 window.VULT_STORE = {
-    backendUrl: /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? 'http://localhost:9000' : HOSTED_BACKEND
+    backendUrl: LOCAL ? 'http://localhost:9000' : HOSTED_BACKEND,
+    commandCenterUrl: LOCAL ? 'http://localhost:3000' : HOSTED_COMMAND_CENTER
 };

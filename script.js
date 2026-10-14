@@ -266,7 +266,16 @@ function updateClocks() {
     });
 })();
 
+// The command center can name the product shown as the wall's main feed
+let mainFeedName = '';
+function setMainFeed(name) {
+    mainFeedName = name;
+    renderShop();
+}
+
 function renderShop() {
+    const main = PRODUCTS.findIndex(p => mainFeedName && p.name.toLowerCase() === mainFeedName.toLowerCase());
+    if (main > 0) PRODUCTS.unshift(...PRODUCTS.splice(main, 1));
     const grid = document.getElementById('shopGrid');
     // A late render (live products arriving) replaces the tiles; keep a focused tile's place
     const focusedTile = [...grid.children].indexOf(document.activeElement);

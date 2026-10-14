@@ -594,6 +594,96 @@ main button,
     text-shadow: var(--osd-outline);
 }
 
+/* ---------- Announcement bar (command center) ---------- */
+
+.announce {
+    padding: 9px var(--gutter) 8px;
+    background: var(--ink);
+    color: var(--osd);
+    font-family: var(--f-osd);
+    font-size: 19px;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* ---------- Next drop: CAM 10, countdown and waitlist ---------- */
+
+.next-drop {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(64px, 8vw, 112px) clamp(16px, 4vw, 56px);
+    background: radial-gradient(ellipse at 50% 40%, #5a5c58, #1e1f1d 85%);
+    color: var(--osd);
+}
+
+.next-drop__inner {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    max-width: 640px;
+}
+
+.next-drop__name {
+    font-family: var(--f-display);
+    font-weight: 900;
+    font-stretch: 125%;
+    font-size: clamp(22px, 2.4vw, 32px);
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.next-drop__name:empty { display: none; }
+
+.next-drop__count {
+    font-family: var(--f-osd);
+    font-size: clamp(40px, 7vw, 88px);
+    line-height: 1;
+    letter-spacing: 0.02em;
+    text-shadow: var(--osd-outline);
+}
+
+.next-drop__note { max-width: 44ch; color: #dcdcd6; }
+.next-drop__note:empty { display: none; }
+
+.next-drop__form { display: flex; flex-direction: column; gap: 8px; }
+
+.next-drop__form label {
+    font-weight: 800;
+    font-stretch: 112%;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.next-drop__row { display: flex; gap: 8px; }
+
+.next-drop__row input {
+    flex: 1;
+    min-width: 0;
+    padding: 12px;
+    border: 1px solid var(--osd);
+    border-radius: 0;
+    background: rgba(0, 0, 0, 0.35);
+    color: var(--osd);
+    font: 16px var(--f-body);
+}
+
+.next-drop__row input:focus { outline: 2px solid var(--osd); outline-offset: 0; }
+
+.next-drop .btn { background: var(--osd); color: var(--ink); border-color: var(--osd); }
+.next-drop .btn:hover:not(:disabled) { background: var(--ink); color: var(--osd); }
+.next-drop .btn:focus-visible { outline-color: var(--osd); }
+.next-drop__status { min-height: 1.5em; font-family: var(--f-osd); font-size: 20px; letter-spacing: 0.03em; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; }
+
+@media (max-width: 520px) {
+    .next-drop__row { flex-direction: column; }
+}
+
 /* ---------- How the vault works ---------- */
 
 .info {
