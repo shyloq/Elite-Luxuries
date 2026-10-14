@@ -68,6 +68,8 @@ routes. Those routes answer browsers only from the addresses in
 5. Connect the store: on GitHub, edit `store-config.js` and put that address
    between the quotes of `HOSTED_COMMAND_CENTER`, keeping `https://`.
 
+Pick a long password. After 5 wrong tries from one address, login pauses for 15 minutes.
+
 To change the password later, change `COMMAND_PASSWORD` in Vercel and
 redeploy. Changing `SESSION_SECRET` logs out every device.
 

@@ -13,13 +13,17 @@ function toLocalInput(iso: string | null) {
 
 export function LaunchForm({ name, launchAt }: { name: string; launchAt: string | null }) {
   const [local, setLocal] = useState("")
-  const [offset, setOffset] = useState(0)
-  useEffect(() => { setLocal(toLocalInput(launchAt)); setOffset(new Date().getTimezoneOffset()) }, [launchAt])
+  useEffect(() => { setLocal(toLocalInput(launchAt)) }, [launchAt])
+  // The browser turns the entered time into an exact moment, with the offset for that date
+  // (so a launch after a daylight-saving change keeps its hour). Before the page is
+  // interactive the stored moment is sent back unchanged.
+  const iso = local ? new Date(local).toISOString() : launchAt ?? ""
   return (
     <form action={saveLaunch} className="row-form">
       <label>Launch name<input name="name" defaultValue={name} maxLength={60} required /></label>
       <label>Opens<input name="launch_at" type="datetime-local" value={local} onChange={(e) => setLocal(e.target.value)} /></label>
-      <input type="hidden" name="tz_offset" value={offset} />
+      <input type="hidden" name="launch_iso" value={iso} />
+      <label className="inline check"><input type="checkbox" name="clear" /> No date yet</label>
       <button className="btn" type="submit">Save launch</button>
     </form>
   )

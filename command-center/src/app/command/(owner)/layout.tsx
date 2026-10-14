@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { logout } from "../actions"
 import { requireOwner } from "@/lib/owner"
+import { TimeZoneCookie } from "@/components/TimeZoneCookie"
 
 export const dynamic = "force-dynamic"
 export const metadata = { title: "Command center · VULT LABEL" }
@@ -17,6 +18,7 @@ export default async function OwnerLayout({ children }: { children: React.ReactN
   await requireOwner()
   return (
     <div className="cc">
+      <TimeZoneCookie />
       <header className="cc-bar">
         <Link className="wordmark" href="/command">VULT LABEL</Link>
         <nav className="cc-nav" aria-label="Command center">

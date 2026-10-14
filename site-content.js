@@ -15,7 +15,12 @@
     }
 
     function applyContent(c) {
-        ['statement', 'heroButton', 'dropTitle', 'nextTitle', 'nextNote', 'infoTitle', 'infoLede'].forEach(k => setText(k, c[k]));
+        ['statement', 'heroButton', 'dropTitle', 'nextTitle', 'infoTitle'].forEach(k => setText(k, c[k]));
+        // These two may be left empty on purpose, which removes them from the page
+        ['nextNote', 'infoLede'].forEach(k => {
+            if (typeof c[k] !== 'string') return;
+            document.querySelectorAll('[data-content="' + k + '"]').forEach(el => { el.textContent = c[k]; el.hidden = !c[k]; });
+        });
 
         const announce = document.getElementById('announce');
         announce.textContent = c.announcement || '';
@@ -38,24 +43,30 @@
         // Sections after the opening camera, in the owner's order; hidden ones leave the page
         const layout = c.layout || {};
         const main = document.querySelector('main');
+        const focused = document.activeElement;
+        let after = document.querySelector('.cam-hero');
         (layout.order || []).forEach(id => {
             const section = document.getElementById(id);
-            if (section) main.appendChild(section);
+            if (!section) return;
+            if (section.previousElementSibling !== after) main.insertBefore(section, after.nextElementSibling);
+            after = section;
         });
+        if (focused && focused !== document.activeElement && document.contains(focused)) focused.focus({ preventScroll: true });
         ['drop', 'info'].forEach(id => { document.getElementById(id).hidden = (layout.hidden || []).includes(id); });
         next.hidden = (layout.hidden || []).includes('next');
         document.querySelectorAll('a[href="#drop"]').forEach(a => { a.hidden = (layout.hidden || []).includes('drop'); });
         document.querySelectorAll('a[href="#info"]').forEach(a => { a.hidden = (layout.hidden || []).includes('info'); });
 
-        if (layout.mainFeed && typeof setMainFeed === 'function') setMainFeed(layout.mainFeed);
+        // Re-render the wall: the main feed may have changed, and its status line names the drop
+        if (typeof setMainFeed === 'function') setMainFeed(layout.mainFeed || '');
     }
 
     const pad = n => String(n).padStart(2, '0');
     function tick() {
         const out = document.getElementById('nextCountdown');
-        if (!launchAt) { out.textContent = 'Date to be announced'; return; }
+        if (!launchAt) { out.textContent = 'Date to be announced'; out.removeAttribute('aria-label'); return; }
         const left = Math.max(0, Math.floor((launchAt - Date.now()) / 1000));
-        if (!left) { out.textContent = 'Open now'; clearInterval(countdownTimer); return; }
+        if (!left) { out.textContent = 'Open now'; out.removeAttribute('aria-label'); clearInterval(countdownTimer); return; }
         const d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60), s = left % 60;
         out.textContent = pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
         out.setAttribute('aria-label', d + ' days, ' + h + ' hours, ' + m + ' minutes to go');
@@ -81,27 +92,39 @@
     const form = document.getElementById('waitlistForm');
     const status = document.getElementById('waitlistStatus');
     const submit = document.getElementById('waitlistSubmit');
+    let joining = false;
     form.addEventListener('submit', async e => {
         e.preventDefault();
+        if (joining) return;
+        status.textContent = '';
         const email = form.email.value.trim();
         if (!form.reportValidity()) return;
-        submit.disabled = true;
+        // aria-disabled, not disabled: a disabled button drops the shopper's focus
+        joining = true;
+        submit.setAttribute('aria-disabled', 'true');
         status.textContent = 'Joining...';
+        const unavailable = 'The waitlist is unavailable. Try again soon.';
         try {
-            const res = await fetch(base + '/api/waitlist', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, source: 'store', company: form.company.value })
-            });
+            let res;
+            try {
+                res = await fetch(base + '/api/waitlist', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'store', company: form.company.value })
+                });
+            } catch (networkError) {
+                throw new Error(unavailable);
+            }
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) throw new Error(data.message || 'The waitlist is unavailable. Try again soon.');
+            if (!res.ok) throw new Error(data.message || unavailable);
             form.reset();
             status.textContent = "You're on the list. We'll email you before the vault opens.";
         } catch (err) {
-            status.textContent = err.message === 'Failed to fetch' ? 'The waitlist is unavailable. Try again soon.' : err.message;
+            status.textContent = err.message;
             form.email.focus();
         } finally {
-            submit.disabled = false;
+            joining = false;
+            submit.removeAttribute('aria-disabled');
         }
     });
 })();

@@ -1,6 +1,6 @@
 "use server"
 
-import { cookies } from "next/headers"
+import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { revalidatePath } from "next/cache"
 import { check, db } from "@/lib/db"
@@ -15,16 +15,30 @@ const isoDate = (value: string) => (/^\d{4}-\d{2}-\d{2}$/.test(value) ? value : 
 
 // ---------- Login ----------
 
+// Wrong passwords per address. Kept in the server's memory: enough to slow guessing,
+// and a strong COMMAND_PASSWORD is still the real protection.
+const failures = new Map<string, { count: number; until: number }>()
+const MAX_TRIES = 5
+const LOCK_MS = 15 * 60 * 1000
+
 export async function login(_: string | null, form: FormData): Promise<string | null> {
   const expected = process.env.COMMAND_PASSWORD
   if (!expected) return "COMMAND_PASSWORD is not set on the server."
+  const ip = ((await headers()).get("x-forwarded-for") || "local").split(",")[0].trim()
+  const record = failures.get(ip)
+  if (record && record.count >= MAX_TRIES && record.until > Date.now()) {
+    return "Too many wrong passwords. Try again in 15 minutes."
+  }
   // Compare digests so the comparison takes the same time whatever was typed
   const digest = async (s: string) => Buffer.from(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(s))).toString("hex")
   const given = String(form.get("password") ?? "")
   if (!timingSafeEqual(await digest(given), await digest(expected))) {
+    const next = { count: (record && record.until > Date.now() ? record.count : 0) + 1, until: Date.now() + LOCK_MS }
+    failures.set(ip, next)
     await new Promise((r) => setTimeout(r, 800))
-    return "That password is not right."
+    return next.count >= MAX_TRIES ? "Too many wrong passwords. Try again in 15 minutes." : "That password is not right."
   }
+  failures.delete(ip)
   ;(await cookies()).set(SESSION_COOKIE, await createSession(), {
     httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax", path: "/", maxAge: SESSION_DAYS * 86400,
   })
@@ -40,13 +54,12 @@ export async function logout() {
 
 export async function saveLaunch(form: FormData) {
   await requireOwner()
-  const local = str(form, "launch_at", 20) // "2026-11-20T18:00" in the owner's own time zone
-  const offset = Number(form.get("tz_offset")) // minutes, from the owner's browser
-  let launchAt: string | null = null
-  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(local) && Number.isFinite(offset)) {
-    launchAt = new Date(Date.parse(local + ":00Z") + offset * 60000).toISOString()
-  }
-  check(await db().from("launch").update({ name: str(form, "name", 60) || "Next drop", launch_at: launchAt, updated_at: new Date().toISOString() }).eq("id", 1))
+  // The browser sends the exact moment (launch_iso); an empty value keeps the stored date
+  const iso = str(form, "launch_iso", 40)
+  const update: Record<string, unknown> = { name: str(form, "name", 60) || "Next drop", updated_at: new Date().toISOString() }
+  if (form.get("clear") === "on") update.launch_at = null
+  else if (iso && !Number.isNaN(Date.parse(iso))) update.launch_at = new Date(iso).toISOString()
+  check(await db().from("launch").update(update).eq("id", 1))
   revalidatePath("/command")
   revalidatePath("/")
 }

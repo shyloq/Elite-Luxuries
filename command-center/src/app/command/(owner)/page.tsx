@@ -2,11 +2,12 @@ import Link from "next/link"
 import { check, db } from "@/lib/db"
 import { Countdown } from "@/components/Countdown"
 import { LaunchForm } from "./LaunchForm"
+import { ownerToday } from "@/lib/today"
 
 type Post = { id: string; post_date: string | null; platform: string; idea: string; status: string }
 
 export default async function Overview() {
-  const today = new Date().toISOString().slice(0, 10)
+  const today = await ownerToday()
   const [launch, waitlist, tasks, posts] = await Promise.all([
     db().from("launch").select("name, launch_at").eq("id", 1).single(),
     db().from("waitlist").select("id", { count: "exact", head: true }),

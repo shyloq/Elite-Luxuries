@@ -277,8 +277,10 @@ function renderShop() {
     const main = PRODUCTS.findIndex(p => mainFeedName && p.name.toLowerCase() === mainFeedName.toLowerCase());
     if (main > 0) PRODUCTS.unshift(...PRODUCTS.splice(main, 1));
     const grid = document.getElementById('shopGrid');
-    // A late render (live products arriving) replaces the tiles; keep a focused tile's place
+    // A late render (live products arriving, a new main feed) replaces the tiles; keep focus
+    // on the same product, or on the same place if that product is gone
     const focusedTile = [...grid.children].indexOf(document.activeElement);
+    const focusedName = focusedTile !== -1 ? document.activeElement.querySelector('.feed-tile__name')?.textContent : null;
     grid.innerHTML = '';
     PRODUCTS.forEach((product, index) => {
         const tile = document.createElement('button');
@@ -309,9 +311,13 @@ function renderShop() {
     const count = PRODUCTS.length + ' pieces' + (gone ? ' · ' + gone + ' sold out' : '');
     document.getElementById('shopCount').textContent = count;
     document.getElementById('heroStatus').textContent =
-        'Drop 03 · ' + (PRODUCTS.length - gone) + ' of ' + PRODUCTS.length + ' in stock';
+        document.getElementById('dropTitle').textContent + ' · ' + (PRODUCTS.length - gone) + ' of ' + PRODUCTS.length + ' in stock';
     updateClocks();
-    if (focusedTile !== -1 && grid.children[focusedTile]) grid.children[focusedTile].focus({ preventScroll: true });
+    if (focusedTile !== -1) {
+        const same = PRODUCTS.findIndex(p => p.name === focusedName);
+        const target = grid.children[same !== -1 ? same : focusedTile];
+        if (target) target.focus({ preventScroll: true });
+    }
 
     // The product view may be showing a product from the list this render replaced
     if (!productModal.hidden && modalProduct) {
@@ -426,7 +432,8 @@ renderShop();
         setTimeout(() => {
             gate.hidden = true;
             Overlays.close(gate);
-            document.querySelector('.cam-hero .btn').focus({ preventScroll: true });
+            const button = document.querySelector('.cam-hero .btn');
+            (button.hidden ? document.querySelector('.bar .wordmark') : button).focus({ preventScroll: true });
         }, reduce ? 300 : 1600);
     }
 
@@ -554,6 +561,7 @@ function openProductModal(index, opener, options = {}) {
         addButton.textContent = firstInStock ? 'Add to bag' : 'Sold out';
     }
 
+    markBarEdge();
     productModal.hidden = false;
     Overlays.open(productModal);
     if (!options.refresh) {
@@ -572,8 +580,15 @@ function closeProductModal() {
     if (target) target.focus();
 }
 
+// The product view and toasts sit just below the bar, wherever it is on screen
+function markBarEdge() {
+    const edge = Math.max(0, document.querySelector('.bar').getBoundingClientRect().bottom);
+    document.documentElement.style.setProperty('--view-top', edge + 'px');
+}
+
 // kind: 'error' or 'loading'. One toast at a time.
 function showToast(message, kind) {
+    markBarEdge();
     if (!document.getElementById('bagDrawer').hidden) {
         // The open bag shows changes itself; an error goes to its own status line
         if (kind === 'error') document.getElementById('bagNote').textContent = message;

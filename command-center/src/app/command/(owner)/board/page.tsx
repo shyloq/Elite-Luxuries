@@ -1,4 +1,5 @@
 import { check, db } from "@/lib/db"
+import { ownerToday } from "@/lib/today"
 import { addTask, deleteTask, moveTask, updateTask } from "../../actions"
 
 type Task = { id: string; title: string; category: string; status: string; contact: string | null; due_on: string | null; notes: string | null }
@@ -20,7 +21,7 @@ function TaskFields({ task }: { task?: Task }) {
 
 export default async function Board() {
   const tasks = check(await db().from("tasks").select("*").order("due_on", { nullsFirst: false }).order("created_at")) as Task[]
-  const today = new Date().toISOString().slice(0, 10)
+  const today = await ownerToday()
   return (
     <>
       <h1 className="cc-title">Suppliers and samples</h1>

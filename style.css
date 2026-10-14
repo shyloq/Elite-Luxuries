@@ -247,6 +247,11 @@ main button,
     white-space: nowrap;
 }
 
+/* A long drop title shortens itself instead of pushing Bag off a phone screen */
+.bar-nav { min-width: 0; }
+.wordmark, .bar-bag { flex-shrink: 0; }
+.bar-nav a { min-width: 0; max-width: 16ch; overflow: hidden; text-overflow: ellipsis; }
+
 .bar-nav a,
 .bar-bag {
     text-decoration: none;
@@ -794,7 +799,7 @@ main button,
 
 .cam-view {
     position: fixed;
-    inset: var(--bar-h) 0 0;
+    inset: var(--view-top, var(--bar-h)) 0 0;
     z-index: 50;
     background: var(--concrete);
 }
@@ -995,7 +1000,7 @@ main button,
 
 .store-toast {
     position: fixed;
-    top: calc(var(--bar-h) + 12px);
+    top: calc(var(--view-top, var(--bar-h)) + 12px);
     right: 16px;
     z-index: 70;
     display: flex;

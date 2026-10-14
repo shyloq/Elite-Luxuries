@@ -1,14 +1,16 @@
 import Link from "next/link"
 import { check, db } from "@/lib/db"
 import { PostForm, type Post } from "../PostForm"
+import { ownerToday } from "@/lib/today"
 
 const pad = (n: number) => String(n).padStart(2, "0")
 const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
 export default async function Calendar({ searchParams }: { searchParams: Promise<{ m?: string }> }) {
   const { m } = await searchParams
-  const now = new Date()
-  const [year, month] = /^\d{4}-\d{2}$/.test(m ?? "") ? m!.split("-").map(Number) : [now.getFullYear(), now.getMonth() + 1]
+  const today = await ownerToday()
+  const asked = /^\d{4}-\d{2}$/.test(m ?? "") ? m!.split("-").map(Number) : null
+  const [year, month] = asked && asked[1] >= 1 && asked[1] <= 12 ? asked : today.slice(0, 7).split("-").map(Number)
   const first = `${year}-${pad(month)}-01`
   const days = new Date(Date.UTC(year, month, 0)).getUTCDate()
   const last = `${year}-${pad(month)}-${pad(days)}`
@@ -16,7 +18,6 @@ export default async function Calendar({ searchParams }: { searchParams: Promise
   const prev = month === 1 ? `${year - 1}-12` : `${year}-${pad(month - 1)}`
   const next = month === 12 ? `${year + 1}-01` : `${year}-${pad(month + 1)}`
   const label = new Date(Date.UTC(year, month - 1, 1)).toLocaleString("en-US", { month: "long", year: "numeric", timeZone: "UTC" })
-  const today = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`
 
   const [dated, bank] = await Promise.all([
     db().from("posts").select("id, post_date, platform, idea, status").gte("post_date", first).lte("post_date", last).order("created_at"),
