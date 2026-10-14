@@ -12,6 +12,92 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Shared material for the drawn products and the vault: fabric grain and drape
+         lit from the upper left, the light falling across a garment, and steel -->
+    <svg class="svg-defs" width="0" height="0" aria-hidden="true" focusable="false">
+        <defs>
+            <filter id="fx-cotton" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="4.2" numOctaves="2" seed="3" result="grain"/>
+                <feDiffuseLighting in="grain" surfaceScale=".45" diffuseConstant="1.12" lighting-color="#fff" result="grainLit"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+                <feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="1" seed="8" result="drape"/>
+                <feDiffuseLighting in="drape" surfaceScale="2.6" diffuseConstant="1.1" lighting-color="#fff" result="drapeLit"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+                <feBlend in="SourceGraphic" in2="grainLit" mode="multiply" result="woven"/>
+                <feBlend in="woven" in2="drapeLit" mode="multiply" result="draped"/>
+                <feComposite in="draped" in2="SourceAlpha" operator="in"/>
+            </filter>
+            <filter id="fx-fleece" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="3.2" numOctaves="2" seed="11" result="grain"/>
+                <feDiffuseLighting in="grain" surfaceScale=".7" diffuseConstant="1.12" lighting-color="#fff" result="grainLit"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+                <feTurbulence type="fractalNoise" baseFrequency=".03" numOctaves="1" seed="16" result="drape"/>
+                <feDiffuseLighting in="drape" surfaceScale="2.6" diffuseConstant="1.1" lighting-color="#fff" result="drapeLit"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+                <feBlend in="SourceGraphic" in2="grainLit" mode="multiply" result="woven"/>
+                <feBlend in="woven" in2="drapeLit" mode="multiply" result="draped"/>
+                <feComposite in="draped" in2="SourceAlpha" operator="in"/>
+            </filter>
+            <filter id="fx-canvas" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="5.5 2.2" numOctaves="2" seed="21" result="grain"/>
+                <feDiffuseLighting in="grain" surfaceScale=".6" diffuseConstant="1.12" lighting-color="#fff" result="grainLit"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+                <feTurbulence type="fractalNoise" baseFrequency=".04" numOctaves="1" seed="26" result="drape"/>
+                <feDiffuseLighting in="drape" surfaceScale="2.6" diffuseConstant="1.1" lighting-color="#fff" result="drapeLit"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+                <feBlend in="SourceGraphic" in2="grainLit" mode="multiply" result="woven"/>
+                <feBlend in="woven" in2="drapeLit" mode="multiply" result="draped"/>
+                <feComposite in="draped" in2="SourceAlpha" operator="in"/>
+            </filter>
+            <filter id="fx-twill" x="-10%" y="-10%" width="120%" height="120%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency="4.6 3" numOctaves="2" seed="31" result="grain"/>
+                <feDiffuseLighting in="grain" surfaceScale=".55" diffuseConstant="1.12" lighting-color="#fff" result="grainLit"><feDistantLight azimuth="225" elevation="62"/></feDiffuseLighting>
+                <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="1" seed="36" result="drape"/>
+                <feDiffuseLighting in="drape" surfaceScale="2.6" diffuseConstant="1.1" lighting-color="#fff" result="drapeLit"><feDistantLight azimuth="225" elevation="58"/></feDiffuseLighting>
+                <feBlend in="SourceGraphic" in2="grainLit" mode="multiply" result="woven"/>
+                <feBlend in="woven" in2="drapeLit" mode="multiply" result="draped"/>
+                <feComposite in="draped" in2="SourceAlpha" operator="in"/>
+            </filter>
+            <linearGradient id="fx-volume" x1="0" x2="1" y1="0" y2="0">
+                <stop offset="0" stop-color="#000" stop-opacity=".42"/>
+                <stop offset=".16" stop-color="#000" stop-opacity=".1"/>
+                <stop offset=".42" stop-color="#fff" stop-opacity=".1"/>
+                <stop offset=".72" stop-color="#000" stop-opacity="0"/>
+                <stop offset="1" stop-color="#000" stop-opacity=".48"/>
+            </linearGradient>
+            <linearGradient id="fx-fall" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#fff" stop-opacity=".08"/>
+                <stop offset=".55" stop-color="#000" stop-opacity="0"/>
+                <stop offset="1" stop-color="#000" stop-opacity=".28"/>
+            </linearGradient>
+            <radialGradient id="mx-steel" cx=".36" cy=".3" r=".85">
+                <stop offset="0" stop-color="#9a9d98"/>
+                <stop offset=".45" stop-color="#5d605c"/>
+                <stop offset="1" stop-color="#262826"/>
+            </radialGradient>
+            <radialGradient id="mx-hub" cx=".4" cy=".34" r=".8">
+                <stop offset="0" stop-color="#6f726d"/>
+                <stop offset=".6" stop-color="#3a3c3a"/>
+                <stop offset="1" stop-color="#1c1d1c"/>
+            </radialGradient>
+            <radialGradient id="mx-cap" cx=".38" cy=".3" r=".75">
+                <stop offset="0" stop-color="#4a4c49"/>
+                <stop offset="1" stop-color="#0d0e0d"/>
+            </radialGradient>
+            <radialGradient id="mx-bolt" cx=".35" cy=".3" r=".7">
+                <stop offset="0" stop-color="#d6d8d3"/>
+                <stop offset=".5" stop-color="#7d807b"/>
+                <stop offset="1" stop-color="#2d2f2d"/>
+            </radialGradient>
+            <filter id="mx-brushed" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">
+                <feTurbulence type="fractalNoise" baseFrequency=".002 .9" numOctaves="2" seed="7" result="streaks"/>
+                <feColorMatrix in="streaks" type="saturate" values="0" result="grey"/>
+                <feBlend in="SourceGraphic" in2="grey" mode="soft-light" result="brushed"/>
+                <feComposite in="brushed" in2="SourceAlpha" operator="in"/>
+            </filter>
+            <filter id="mx-engrave" x="-20%" y="-20%" width="140%" height="140%">
+                <feOffset dx=".5" dy=".6" in="SourceAlpha" result="down"/>
+                <feFlood flood-color="#000" flood-opacity=".8"/>
+                <feComposite in2="down" operator="in" result="shadow"/>
+                <feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+        </defs>
+    </svg>
+
     <!-- Vault entry: turn the dial to the combination to enter the site -->
     <div id="vaultGate" class="vault-gate" data-overlay role="dialog" aria-modal="true" aria-labelledby="vaultTitle">
         <div class="feed-noise" aria-hidden="true"></div>
@@ -21,7 +107,7 @@
             <h2 id="vaultTitle" class="vault-title">VULT LABEL</h2>
             <div class="vault-door">
                 <span class="track" aria-hidden="true"></span>
-                <svg class="vault-bolts" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100.0" cy="7.0" r="2.6"/><circle cx="165.8" cy="34.2" r="2.6"/><circle cx="193.0" cy="100.0" r="2.6"/><circle cx="165.8" cy="165.8" r="2.6"/><circle cx="100.0" cy="193.0" r="2.6"/><circle cx="34.2" cy="165.8" r="2.6"/><circle cx="7.0" cy="100.0" r="2.6"/><circle cx="34.2" cy="34.2" r="2.6"/></svg>
+                <svg class="vault-bolts" viewBox="0 0 200 200" aria-hidden="true"><circle cx="100.0" cy="7.0" r="3.4"/><circle cx="165.8" cy="34.2" r="3.4"/><circle cx="193.0" cy="100.0" r="3.4"/><circle cx="165.8" cy="165.8" r="3.4"/><circle cx="100.0" cy="193.0" r="3.4"/><circle cx="34.2" cy="165.8" r="3.4"/><circle cx="7.0" cy="100.0" r="3.4"/><circle cx="34.2" cy="34.2" r="3.4"/></svg>
                 <div id="vaultDial" class="vault-dial" tabindex="0" role="slider" aria-label="Combination dial"
                      aria-valuemin="0" aria-valuemax="99" aria-valuenow="0">
                     <svg viewBox="0 0 200 200" aria-hidden="true">

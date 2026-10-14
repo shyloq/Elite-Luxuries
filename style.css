@@ -58,6 +58,7 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
+.svg-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 html {
     scrollbar-gutter: stable;
@@ -313,7 +314,7 @@ main button,
 .sc-floor { fill: #6c6e6a; }
 .sc-edge { stroke: #565854; stroke-width: 3; fill: none; }
 .sc-frame { fill: #747672; stroke: #575955; stroke-width: 8; }
-.sc-door { fill: #a9aba6; }
+.sc-door { fill: url(#mx-steel); }
 .sc-ring { fill: none; stroke: #8b8d88; stroke-width: 12; }
 .sc-bolts circle { fill: #686a66; }
 .sc-wheel circle:first-child { fill: #5a5c58; }
@@ -466,6 +467,9 @@ main button,
 }
 
 .feed-tile__art svg { width: 100%; height: 100%; overflow: visible; }
+/* The ceiling light throws each piece's shadow onto the wall behind it */
+.feed-tile__art svg,
+.cam-view__art svg { filter: drop-shadow(3px 7px 6px rgba(0, 0, 0, 0.34)); }
 
 .feed-tile .osd { font-size: clamp(16px, 1.35vw, 21px); }
 .feed-tile .rec-dot { display: none; }
@@ -1216,8 +1220,21 @@ main button,
     width: min(74vw, 330px);
     aspect-ratio: 1;
     border-radius: 50%;
-    background: #2f302e;
-    box-shadow: inset 0 0 0 10px #3c3d3b, inset 0 0 0 12px #5d5f5b, 0 30px 60px rgba(0, 0, 0, 0.45);
+    /* Brushed steel turned on a lathe: fine circular grain, two broad reflections,
+       a machined outer ring and the shadow the door throws on the wall */
+    background:
+        radial-gradient(circle at 34% 26%, rgba(255, 255, 255, 0.2), transparent 40%),
+        radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.5) 71%),
+        repeating-conic-gradient(#3f423f 0deg 0.7deg, #4b4e4a 0.7deg 1.5deg, #444744 1.5deg 2.4deg),
+        conic-gradient(from 200deg, #272927, #777a75 55deg, #30322f 125deg, #6a6d68 215deg, #2a2c2a 290deg, #272927);
+    background-blend-mode: screen, multiply, overlay, normal;
+    box-shadow:
+        inset 0 0 0 9px #2a2c2a,
+        inset 0 1px 0 10px rgba(255, 255, 255, 0.16),
+        inset 0 0 0 13px #555853,
+        inset 0 -2px 0 14px rgba(0, 0, 0, 0.5),
+        0 34px 70px rgba(0, 0, 0, 0.55),
+        0 0 0 2px #1b1c1b;
     transition: transform 1.2s cubic-bezier(0.6, 0, 0.2, 1) 0.3s;
 }
 
@@ -1229,7 +1246,7 @@ main button,
     pointer-events: none;
 }
 
-.vault-bolts circle { fill: #5d5f5b; }
+.vault-bolts circle { fill: url(#mx-bolt); stroke: #1b1c1b; stroke-width: .6; }
 
 /* The door is seen through CAM 00: soft, grainy and scanned. Overlays stay crisp. */
 .vault-bolts,
@@ -1272,14 +1289,15 @@ main button,
 .vault-dial:focus-visible { outline: 2px solid var(--osd); outline-offset: 6px; }
 .vault-dial svg { width: 100%; height: 100%; }
 
-.dial-body { fill: #1f201e; stroke: #5d5f5b; stroke-width: 3; }
-.dial-hub { fill: #2b2c2a; stroke: #5d5f5b; stroke-width: 2; }
+.dial-body { fill: url(#mx-steel); stroke: #1b1c1b; stroke-width: 2; filter: url(#mx-brushed); }
+.dial-hub { fill: url(#mx-hub); stroke: #121312; stroke-width: 1.5; }
 .dial-mark { stroke: var(--osd); stroke-width: 4; stroke-linecap: round; }
-.dial-cap { fill: #121312; stroke: #5d5f5b; stroke-width: 2; }
+.dial-cap { fill: url(#mx-cap); stroke: #6a6d68; stroke-width: 1; }
+.dial-knurl { stroke: #000; stroke-opacity: .55; stroke-width: 1.1; }
 .dial-word { font-family: var(--f-osd); font-size: 15px; letter-spacing: 2px; fill: var(--osd); }
 .dial-pointer { fill: var(--osd); }
 .dial-tick { stroke: var(--osd); }
-.dial-num { font-family: var(--f-osd); font-size: 13px; fill: var(--osd); }
+.dial-num { font-family: var(--f-osd); font-size: 13px; fill: #ecece7; filter: url(#mx-engrave); }
 
 .vault-face { transform-origin: 100px 100px; transform-box: view-box; }
 .vault-dial.nope { animation: vault-nope 0.35s steps(4, end); }

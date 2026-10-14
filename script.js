@@ -23,7 +23,7 @@ let PRODUCTS = [
 // Garment drawings, 100x100. FILL is the product's colour; shading, seams and
 // stitching are drawn over it in black or white at low opacity, so they work on
 // any colour. Tops hang from the rail on a hanger; the cap and tote stand on the floor.
-const INK = 'stroke="#111" stroke-width="1.1" stroke-linejoin="round"';
+const INK = 'stroke="#000" stroke-opacity=".38" stroke-width=".55" stroke-linejoin="round"';
 const SEAM = 'fill="none" stroke="#000" stroke-opacity=".45" stroke-width=".7"';
 const STITCH = 'fill="none" stroke="#000" stroke-opacity=".5" stroke-width=".5" stroke-dasharray="1.1 1"';
 const FOLD = 'fill="none" stroke="#000" stroke-opacity=".2" stroke-width=".8" stroke-linecap="round"';
@@ -45,8 +45,15 @@ function rib(x1, y1, x2, y2, len, n, angle = 0) {
     return '<path d="' + out + '" fill="none" stroke="#000" stroke-opacity=".28" stroke-width=".45"/>';
 }
 
+// A garment in its fabric: the body in the product colour, its details, then the
+// light across it. The fabric filters and the light gradient are in index.html.
+function dress(fabric, body, details) {
+    return '<g filter="url(#fx-' + fabric + ')"><path d="' + body + '" fill="FILL"/>' + details +
+        '<path d="' + body + '" fill="url(#fx-volume)"/><path d="' + body + '" fill="url(#fx-fall)"/></g>';
+}
+
 const GARMENTS = {
-    tee: RAIL + HANGER +
+    tee: RAIL + HANGER + dress('cotton', 'M35 15 L21 20 L7 35 L18 45 L26 39 L26 90 Q50 92 74 90 L74 39 L82 45 L93 35 L79 20 L65 15 C61 22 39 22 35 15 Z',
         '<path d="M35 15 L21 20 L7 35 L18 45 L26 39 L26 90 Q50 92 74 90 L74 39 L82 45 L93 35 L79 20 L65 15 C61 22 39 22 35 15 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M26 39 L26 90 Q30 90.4 33 90.5 L32 41 Z" ' + SHADE + '/><path d="M74 39 L74 90 Q70 90.4 67 90.5 L68 41 Z" ' + DEEP + '/>' +
         '<path d="M7 35 L18 45 L20 43 L10 33 Z" ' + SHADE + '/><path d="M93 35 L82 45 L80 43 L90 33 Z" ' + DEEP + '/>' +
@@ -55,8 +62,8 @@ const GARMENTS = {
         '<path d="M37.5 17.5 C41.5 25 58.5 25 62.5 17.5" ' + STITCH + '/>' +
         '<path d="M26 39 C27 31 26 25 22.5 20.5 M74 39 C73 31 74 25 77.5 20.5" ' + SEAM + '/>' +
         '<path d="M9.6 36.6 L19.6 44 M90.4 36.6 L80.4 44 M26.3 86.6 Q50 88.6 73.7 86.6" ' + STITCH + '/>' +
-        '<path d="M40 58 Q43 72 40.5 88 M61 52 Q58 68 61.5 88 M33 30 Q38 33 41 31" ' + FOLD + '/>',
-    hoodie: RAIL + HANGER +
+        '<path d="M40 58 Q43 72 40.5 88 M61 52 Q58 68 61.5 88 M33 30 Q38 33 41 31" ' + FOLD + '/>'),
+    hoodie: RAIL + HANGER + dress('fleece', 'M36 17 C35 5 65 5 64 17 L80 23 Q88 38 94 58 L84 62 Q79 50 75 43 L75 85 L25 85 L25 43 Q21 50 16 62 L6 58 Q12 38 20 23 Z',
         '<path d="M36 17 C35 5 65 5 64 17 L80 23 Q88 38 94 58 L84 62 Q79 50 75 43 L75 85 L25 85 L25 43 Q21 50 16 62 L6 58 Q12 38 20 23 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M25 43 L25 85 L32 85 L31 45 Z" ' + SHADE + '/><path d="M75 43 L75 85 L68 85 L69 45 Z" ' + DEEP + '/>' +
         '<path d="M6 58 Q12 38 20 23 L22 26 Q15 41 10 59.5 Z" ' + SHADE + '/><path d="M94 58 Q88 38 80 23 L78 26 Q85 41 90 59.5 Z" ' + DEEP + '/>' +
@@ -71,9 +78,9 @@ const GARMENTS = {
         '<path d="M25 85 L75 85 L75 92 Q50 93.5 25 92 Z" fill="FILL" ' + INK + '/>' + rib(26.5, 85.6, 73.5, 85.6, 6.2, 22) +
         '<path d="M6 58 L16 62 L14.4 67 L4.4 63 Z M94 58 L84 62 L85.6 67 L95.6 63 Z" fill="FILL" ' + INK + '/>' +
         rib(6.6, 59, 15.4, 62.6, 4, 5, -0.36) + rib(93.4, 59, 84.6, 62.6, 4, 5, 0.36) +
-        '<path d="M42 64 Q45 70 43 76 M58 47 Q56 52 59 57 M30 30 Q34 33 37 31" ' + FOLD + '/>',
+        '<path d="M42 64 Q45 70 43 76 M58 47 Q56 52 59 57 M30 30 Q34 33 37 31" ' + FOLD + '/>'),
     cargo: '<path d="M30 1.5 H70" stroke="#2c2d2a" stroke-width="2"/><path d="M33 1.5 V8.5 M67 1.5 V8.5" stroke="#3a3b37" stroke-width="1.2"/>' +
-        '<path d="M31.5 6.5 h3 v3.5 h-3 z M65.5 6.5 h3 v3.5 h-3 z" fill="#4a4b47"/>' +
+        '<path d="M31.5 6.5 h3 v3.5 h-3 z M65.5 6.5 h3 v3.5 h-3 z" fill="#4a4b47"/>' + dress('canvas', 'M27 8 L73 8 L78 90 L57 90 L50 32 L43 90 L22 90 Z',
         '<path d="M27 8 L73 8 L78 90 L57 90 L50 32 L43 90 L22 90 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M50 32 L43 90 L47.5 90 L51 37 Z" ' + DEEP + '/><path d="M50 32 L57 90 L60 90 L52 33 Z" ' + SHADE + '/>' +
         '<path d="M27 8 L22 90 L25 90 L29.5 9 Z" ' + SHADE + '/><path d="M73 8 L78 90 L75 90 L70.5 9 Z" ' + DEEP + '/>' +
@@ -88,8 +95,8 @@ const GARMENTS = {
         '<path d="M23.4 49.2 L35.4 49.2 L35.5 50.6 L23.5 50.6 Z M76.6 49.2 L64.6 49.2 L64.5 50.6 L76.5 50.6 Z" ' + DEEP + '/>' +
         '<circle cx="29.3" cy="47.4" r=".9" fill="#2a2a28"/><circle cx="70.7" cy="47.4" r=".9" fill="#2a2a28"/>' +
         '<path d="M22.4 86.6 L42.6 86.6 M57.4 86.6 L77.6 86.6" ' + STITCH + '/>' +
-        '<path d="M26 70 Q32 72 39 69 M61 69 Q68 72 74 70 M27 76 Q33 77 40 75 M60 75 Q67 77 73 76 M36 20 Q38 26 37 31" ' + FOLD + '/>',
-    jacket: RAIL + HANGER +
+        '<path d="M26 70 Q32 72 39 69 M61 69 Q68 72 74 70 M27 76 Q33 77 40 75 M60 75 Q67 77 73 76 M36 20 Q38 26 37 31" ' + FOLD + '/>'),
+    jacket: RAIL + HANGER + dress('canvas', 'M36 12 L20 18 L8 64 L20 66 L26 44 L26 90 L74 90 L74 44 L80 66 L92 64 L80 18 L64 12 Z',
         '<path d="M36 12 L20 18 L8 64 L20 66 L26 44 L26 90 L74 90 L74 44 L80 66 L92 64 L80 18 L64 12 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M26 44 L26 90 L32 90 L31 46 Z" ' + SHADE + '/><path d="M74 44 L74 90 L68 90 L69 46 Z" ' + DEEP + '/>' +
         '<path d="M8 64 L20 18 L22 21 L11 64.5 Z" ' + SHADE + '/><path d="M92 64 L80 18 L78 21 L89 64.5 Z" ' + DEEP + '/>' +
@@ -105,8 +112,8 @@ const GARMENTS = {
         '<path d="M31 63.4 L44 63.4 M56 63.4 L69 63.4 M26.3 87 L73.7 87" ' + STITCH + '/>' +
         '<path d="M8 64 L20 66 L19.3 70.4 L7.1 68.4 Z M92 64 L80 66 L80.7 70.4 L92.9 68.4 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M26 44 Q25 30 21 19 M74 44 Q75 30 79 19" ' + SEAM + '/>' +
-        '<path d="M37 55 Q39 58 38 61 M63 55 Q61 58 62 61 M14 40 Q16 44 15 49" ' + FOLD + '/>',
-    cap: FLOOR(38, 72.5) +
+        '<path d="M37 55 Q39 58 38 61 M63 55 Q61 58 62 61 M14 40 Q16 44 15 49" ' + FOLD + '/>'),
+    cap: FLOOR(38, 72.5) + dress('twill', 'M16 62 C16 30 84 30 84 62 Z',
         '<path d="M16 62 C16 30 84 30 84 62 Z" fill="FILL" ' + INK + '/>' +
         '<path d="M16 62 C16 46 22 38 30 34 C24 42 22 52 23 62 Z" ' + SHADE + '/><path d="M30 40 Q40 34 50 33 Q43 40 39 52 Z" ' + LIGHT + '/>' +
         '<path d="M50 31 Q41 45 39 62 M50 31 Q62 44 66 62" ' + SEAM + '/>' +
@@ -117,8 +124,8 @@ const GARMENTS = {
         '<path d="M53 64.2 L93.5 64.2 M53 66.4 C66 68.2 82 68.4 92.5 66.4" ' + STITCH + '/>' +
         '<path d="M50 70 C70 74 96 72 96 62 L96 64.5 C94 73 70 76 50 72 Z" fill="#000" fill-opacity=".35"/>' +
         '<circle cx="50" cy="31" r="2.4" fill="FILL" ' + INK + '/>' +
-        '<path d="M14.6 54.5 h4.4 v5.4 h-4.4 z" fill="#b08d3c" stroke="#111" stroke-width=".5"/>',
-    tote: FLOOR(36, 91) +
+        '<path d="M14.6 54.5 h4.4 v5.4 h-4.4 z" fill="#b08d3c" stroke="#111" stroke-width=".5"/>'),
+    tote: FLOOR(36, 91) + dress('canvas', 'M20 32 L80 32 L82 90 L18 90 Z',
         '<path d="M34 33 C34 7 46 7 46 33 M54 33 C54 7 66 7 66 33" fill="none" stroke="#111" stroke-width="4.6"/>' +
         '<path d="M34 33 C34 7 46 7 46 33 M54 33 C54 7 66 7 66 33" fill="none" stroke="FILL" stroke-width="2.8"/>' +
         '<path d="M34 33 C34 9 46 9 46 33 M54 33 C54 9 66 9 66 33" fill="none" stroke="#000" stroke-opacity=".2" stroke-width=".9"/>' +
@@ -128,7 +135,8 @@ const GARMENTS = {
         '<path d="M31.8 32.6 h5 v7 h-5 z M43.2 32.6 h5 v7 h-5 z M51.8 32.6 h5 v7 h-5 z M63.2 32.6 h5 v7 h-5 z" ' + STITCH + '/>' +
         '<path d="M20.4 36.4 L79.6 36.4 M21 88 L79 88" ' + STITCH + '/>' +
         '<path d="M34 44 Q36 52 33 60 M68 48 Q66 56 69 64" ' + FOLD + '/>' +
-        '<text x="50" y="68" text-anchor="middle" font-family="Archivo Variable, Arial, sans-serif" font-weight="900" font-stretch="125%" font-size="12.5" fill="#111" fill-opacity=".86">VULT</text>'
+        '<text x="50" y="68" text-anchor="middle" font-family="Archivo Variable, Arial, sans-serif" font-weight="900" font-stretch="125%" font-size="12.5" fill="#111" fill-opacity=".86">VULT</text>')
+
 };
 
 function productArt(product) {
@@ -334,6 +342,14 @@ renderShop();
             ticks += '<text class="dial-num" x="' + xt.toFixed(2) + '" y="' + yt.toFixed(2) + '" text-anchor="middle">' + i + '</text>';
         }
     }
+    // Knurled grip around the outer edge
+    let knurl = '';
+    for (let i = 0; i < 120; i++) {
+        const a = (i / 120) * Math.PI * 2;
+        knurl += 'M' + (100 + Math.sin(a) * 92.5).toFixed(2) + ' ' + (100 - Math.cos(a) * 92.5).toFixed(2) +
+            ' L' + (100 + Math.sin(a) * 96).toFixed(2) + ' ' + (100 - Math.cos(a) * 96).toFixed(2) + ' ';
+    }
+    ticks = '<path class="dial-knurl" d="' + knurl + '"/>' + ticks;
     face.insertAdjacentHTML('afterbegin', ticks);
 
     let rotation = 0;      // degrees, clockwise
