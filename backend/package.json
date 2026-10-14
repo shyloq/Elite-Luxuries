@@ -9,7 +9,7 @@
     "start": "medusa start",
     "dev": "medusa develop",
     "start:production": "cd .medusa/server && npm run predeploy && npm run start",
-    "predeploy": "medusa db:migrate && medusa exec ./src/scripts/seed.js && (test -z \"$ADMIN_EMAIL\" || medusa user -e \"$ADMIN_EMAIL\" -p \"$ADMIN_PASSWORD\" || true)"
+    "predeploy": "medusa db:migrate && (medusa exec ./src/scripts/seed.js || echo 'Seed failed; starting anyway.') && (test -z \"$ADMIN_EMAIL\" || test -z \"$ADMIN_PASSWORD\" || medusa user -e \"$ADMIN_EMAIL\" --password=\"$ADMIN_PASSWORD\" || echo 'Admin login not created (it may already exist).')"
   },
   "dependencies": {
     "@medusajs/admin-sdk": "2.21.2",

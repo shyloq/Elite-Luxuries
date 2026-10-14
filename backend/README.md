@@ -63,23 +63,37 @@ if the products already exist.
 
 ## Host it on Railway
 
-The repo is set up for [Railway](https://railway.com): `railway.json` holds
-the build and start commands, and every start runs the database migrations,
-loads Drop 03 if the database is empty (it never touches existing products),
-and creates the admin login from `ADMIN_EMAIL` / `ADMIN_PASSWORD` if it does
-not exist yet.
+[Railway](https://railway.com) runs the server and its database. Every start
+runs the database migrations, loads Drop 03 into a fresh database (it never
+touches a store that is already set up), and creates the admin login from
+`ADMIN_EMAIL` / `ADMIN_PASSWORD` if it does not exist yet.
 
-1. In Railway, create a project with **Deploy from GitHub repo** and pick this
-   repository.
-2. Open the new service's **Settings**:
-   - **Root Directory**: `/backend`
-   - **Config-as-code / Railway config file**: `/backend/railway.json`
-3. Add a database to the project: **New > Database > PostgreSQL**.
-4. In the service's **Variables**, open the **Raw Editor** and paste this,
-   filling in your own values:
+**Account.** Sign up with your GitHub account (that verifies it). The trial
+gives $5 of credit for 30 days. Before taking real orders, move to the Hobby
+plan ($5 a month plus usage): the free plan is too small to run the store,
+and Railway deletes a trial's database 30 days after its credit runs out.
+
+1. Create a project with **Deploy from GitHub repo** and pick this
+   repository. Railway starts a first deploy straight away; it will fail,
+   which is expected, because nothing below is set yet.
+2. Add the database: **New > Database > PostgreSQL**.
+3. Open the store service (the one named after the repository), then its
+   **Settings**:
+   - **Source > Root Directory**: `/backend`
+   - **Build > Custom Build Command**:
+     `npm run build && cd .medusa/server && npm install --omit=dev`
+   - **Deploy > Custom Start Command**: `npm run start:production`
+   - **Deploy > Healthcheck Path**: `/health`
+   - **Networking > Generate Domain**. If it asks for a port, enter `9000`.
+     Your store's address looks like `https://something.up.railway.app`.
+4. Open the service's **Variables**, choose **Raw Editor** and paste this,
+   filling in your own values. Fill in `ADMIN_PASSWORD` now: the login is
+   created once, and changing the variable later does nothing (change the
+   password inside the dashboard instead).
 
    ```
    NODE_ENV=production
+   PORT=9000
    DATABASE_URL=${{Postgres.DATABASE_URL}}
    JWT_SECRET=<a long random string>
    COOKIE_SECRET=<a different long random string>
@@ -90,12 +104,23 @@ not exist yet.
    ADMIN_PASSWORD=<a strong password>
    ```
 
-5. Under **Settings > Networking**, choose **Generate Domain**. Your store's
-   address looks like `https://something.up.railway.app`, and the admin
-   dashboard is at that address plus `/app`.
-6. Put that address in `HOSTED_BACKEND` in the site's `store-config.js` and
-   push. `STORE_CORS` must list the address the site is served from (no
-   trailing slash; separate several with commas).
+5. Railway does not apply settings and variables on its own. A banner at the
+   top of the project lists the changes waiting; click **Deploy** in it, then
+   wait until the service shows **Active** (its **Deployments** tab shows the
+   logs). Do this again whenever you change a setting or variable later.
+6. Check it: your store's address plus `/health` shows `OK`, and the address
+   plus `/app` opens the admin dashboard, where you log in with
+   `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Each deploy logs you out of the
+   dashboard.
+7. Point the site at it: on GitHub, open `store-config.js`, click the pencil
+   icon, and put your address between the quotes, keeping `https://`:
+
+   ```js
+   const HOSTED_BACKEND = 'https://something.up.railway.app';
+   ```
+
+   Commit the change to `main`. `STORE_CORS` must list the address the site
+   is served from (no trailing slash; separate several with commas).
 
 ## Host the site on GitHub Pages
 
@@ -105,6 +130,11 @@ branch `main`, folder `/ (root)`. The site appears at
 add it to `STORE_CORS` on Railway.
 
 ## Before taking real orders
+
+- **Railway plan.** Upgrade from the trial to the Hobby plan (see above).
+- **Product photos.** Don't upload images in the dashboard yet: they are kept
+  on the server's disk and lost on every deploy until a file storage provider
+  (for example S3) is set up.
 
 - **Card payments.** Orders currently use Medusa's manual payment provider,
   so nothing is charged. Add the Stripe payment provider and use it in

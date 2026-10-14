@@ -1,5 +1,5 @@
 import type { MedusaRequest, MedusaResponse } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, parseCorsOrigins } from "@medusajs/framework/utils"
 
 /**
  * GET /storefront-config
@@ -29,9 +29,9 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 // allow the same origins as STORE_CORS (a plain GET needs no preflight).
 function allowStoreOrigin(req: MedusaRequest, res: MedusaResponse) {
   const origin = req.headers.origin
-  const allowed = (process.env.STORE_CORS || "").split(",").map((o) => o.trim())
+  const allowed = parseCorsOrigins(process.env.STORE_CORS || "")
   res.setHeader("Vary", "Origin")
-  if (origin && allowed.includes(origin)) {
+  if (origin && allowed.some((o) => (o instanceof RegExp ? o.test(origin) : o === origin))) {
     res.setHeader("Access-Control-Allow-Origin", origin)
   }
 }

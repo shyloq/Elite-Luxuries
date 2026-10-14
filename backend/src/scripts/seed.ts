@@ -153,13 +153,16 @@ export default async function seedVultStore({ container }: ExecArgs) {
   const salesChannelModule = container.resolve(Modules.SALES_CHANNEL)
   const storeModule = container.resolve(Modules.STORE)
 
+  // Seed only a fresh database. A region means the store was set up before,
+  // even if the owner has since deleted or renamed the Drop 03 products.
+  const { data: regions_ } = await query.graph({ entity: "region", fields: ["id"] })
   const { data: existing } = await query.graph({
     entity: "product",
     fields: ["id"],
     filters: { handle: DROP_03.map((p) => p.handle) },
   })
-  if (existing.length) {
-    logger.info("VULT products already exist. Nothing to seed.")
+  if (regions_.length || existing.length) {
+    logger.info("The store is already set up. Nothing to seed.")
     return
   }
 
